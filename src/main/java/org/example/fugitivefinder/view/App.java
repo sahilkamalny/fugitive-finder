@@ -10,7 +10,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(
-                App.class.getResource("/org.example.fugitivefinder/splash.fxml")
+                App.class.getResource("/org.example.fugitivefinder/dashboard.fxml")
         );
 
         Scene scene = new Scene(loader.load(), 1440, 900);
