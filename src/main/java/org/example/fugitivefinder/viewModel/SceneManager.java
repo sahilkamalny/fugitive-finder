@@ -1,28 +1,26 @@
 package org.example.fugitivefinder.viewModel;
 
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+public final class SceneManager {
 
-public class SceneManager {
-    private final Stage stage;
-
-    public SceneManager(Stage stage) {
-        this.stage = stage;
+    private SceneManager() {
     }
-    public void switchScene(String fxmlFileName) {
+
+    public static void switchScene(Node sourceNode, String fxmlPath, double width, double height) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/files/" + fxmlFileName));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
+            FXMLLoader loader = new FXMLLoader(
+                    SceneManager.class.getResource(fxmlPath)
+            );
+            Scene scene = new Scene(loader.load(), width, height);
+            Stage stage = (Stage) sourceNode.getScene().getWindow();
             stage.setScene(scene);
             stage.show();
-        } catch (IOException e) {
-                 e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
-
