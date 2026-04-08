@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="900.0" prefWidth="1440.0"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.fugitivefinder.controller.DashboardController"
+            prefHeight="400.0" prefWidth="600.0">
+    <children>
+        <StackPane fx:id="mapContainer"
+                   AnchorPane.bottomAnchor="0.0"
+                   AnchorPane.leftAnchor="0.0"
+                   AnchorPane.rightAnchor="0.0"
+                   AnchorPane.topAnchor="0.0" />
+    </children>
+</AnchorPane>
+            style="-fx-background-color: #081120;">
+
+    <left>
+        <VBox prefWidth="220.0" spacing="18.0" style="-fx-background-color: #0f172a; -fx-padding: 20;">
+            <children>
+                <HBox spacing="10.0">
+                    <children>
+                        <ImageView fitHeight="48.0" fitWidth="48.0" preserveRatio="true">
+                            <image>
+                                <Image url="@images/logo.png" />
+                            </image>
+                        </ImageView>
+                        <Label text="Fugitive Finder" textFill="WHITE" wrapText="true">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+
+                <Label text="Dashboard" style="-fx-background-color: #1e293b; -fx-text-fill: white; -fx-padding: 12 16; -fx-background-radius: 10;" />
+                <Label text="Rewards" onMouseClicked="#goToRewards" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Label>
+                <Label text="Profile" onMouseClicked="#goToUserProfile" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Label>
+            </children>
+        </VBox>
+    </left>
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="14.0" style="-fx-background-color: #0b1320; -fx-padding: 18 24;">
+            <children>
+                <Label text="Dashboard" textFill="WHITE">
+                    <font>
+                        <Font size="30.0" />
+                    </font>
+                </Label>
+                <Region HBox.hgrow="ALWAYS" />
+                <Label fx:id="usernameLabel" text="DetectiveUser" textFill="WHITE">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                </Label>
+                <ImageView fitHeight="44.0" fitWidth="44.0" preserveRatio="true">
+                    <image>
+                        <Image url="@images/detective-avatar.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox spacing="22.0" style="-fx-padding: 24;">
+            <children>
+                <Label text="Welcome back" textFill="WHITE">
+                    <font>
+                        <Font size="28.0" />
+                    </font>
+                </Label>
+
+                <HBox spacing="18.0">
+                    <children>
+                        <AnchorPane prefHeight="120.0" prefWidth="260.0" style="-fx-background-color: #1e293b; -fx-background-radius: 16;">
+                            <children>
+                                <Label layoutX="20.0" layoutY="20.0" text="Total Most Wanted" textFill="#cbd5e1" />
+                                <Label fx:id="totalWantedLabel" layoutX="20.0" layoutY="55.0" text="0" textFill="WHITE">
+                                    <font>
+                                        <Font size="34.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </AnchorPane>
+
+                        <AnchorPane prefHeight="120.0" prefWidth="260.0" style="-fx-background-color: #1e293b; -fx-background-radius: 16;">
+                            <children>
+                                <Label layoutX="20.0" layoutY="20.0" text="Reward Cases" textFill="#cbd5e1" />
+                                <Label fx:id="rewardCasesLabel" layoutX="20.0" layoutY="55.0" text="0" textFill="WHITE">
+                                    <font>
+                                        <Font size="34.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </AnchorPane>
+
+                        <AnchorPane prefHeight="120.0" prefWidth="260.0" style="-fx-background-color: #1e293b; -fx-background-radius: 16;">
+                            <children>
+                                <Label layoutX="20.0" layoutY="20.0" text="Recent Updates" textFill="#cbd5e1" />
+                                <Label fx:id="updatesLabel" layoutX="20.0" layoutY="55.0" text="0" textFill="WHITE">
+                                    <font>
+                                        <Font size="34.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </AnchorPane>
+                    </children>
+                </HBox>
+
+                <Label text="Featured Targets" textFill="WHITE">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                </Label>
+
+                <ScrollPane fitToWidth="true" prefHeight="520.0" style="-fx-background-color: transparent;">
+                    <content>
+                        <FlowPane fx:id="featuredCardsPane" hgap="18.0" prefWrapLength="1060.0" vgap="18.0" />
+                    </content>
+                </ScrollPane>
+            </children>
+        </VBox>
+    </center>
+</BorderPane>
