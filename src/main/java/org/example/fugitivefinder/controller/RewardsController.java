@@ -10,6 +10,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import org.example.fugitivefinder.model.WantedPerson;
 import org.example.fugitivefinder.viewModel.RewardsViewModel;
+import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
 
 public class RewardsController {
 
@@ -34,6 +36,15 @@ public class RewardsController {
     private void handleSearch() {
         viewModel.filter();
         renderCards();
+    }
+    @FXML
+    private void goToDashboard(MouseEvent event) {
+        viewModel.goToDashboard((Node) event.getSource());
+    }
+
+    @FXML
+    private void goToUserProfile(MouseEvent event) {
+        viewModel.goToUserProfile((Node) event.getSource());
     }
 
     private void renderCards() {

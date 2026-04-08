@@ -1,22 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="900.0" prefWidth="1440.0"
-            xmlns="http://javafx.com/javafx/23.0.1"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.example.fugitivefinder.controller.RewardsController"
-            style="-fx-background-color: #081120;">
+<BorderPane prefHeight="900.0" prefWidth="1440.0" style="-fx-background-color: #081120;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.fugitivefinder.controller.RewardsController">
 
     <left>
         <VBox prefWidth="220.0" spacing="18.0" style="-fx-background-color: #0f172a; -fx-padding: 20;">
@@ -36,9 +26,19 @@
                     </children>
                 </HBox>
 
-                <Label text="Dashboard" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;" />
-                <Label text="Rewards" style="-fx-background-color: #1e293b; -fx-text-fill: white; -fx-padding: 12 16; -fx-background-radius: 10;" />
-                <Label text="Profile" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;" />
+                <Label text="Dashboard" onMouseClicked="#goToDashboard" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Label>
+
+                <Label style="-fx-background-color: #1e293b; -fx-text-fill: white; -fx-padding: 12 16; -fx-background-radius: 10;" text="Rewards" />
+
+                <Label text="Profile" onMouseClicked="#goToUserProfile" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Label>
             </children>
         </VBox>
     </left>
@@ -52,9 +52,7 @@
                     </font>
                 </Label>
                 <Region HBox.hgrow="ALWAYS" />
-                <TextField fx:id="searchField" onAction="#handleSearch" prefHeight="42.0" prefWidth="250.0"
-                           promptText="Search rewards"
-                           style="-fx-background-radius: 10;" />
+                <TextField fx:id="searchField" onAction="#handleSearch" prefHeight="42.0" prefWidth="250.0" promptText="Search rewards" style="-fx-background-radius: 10;" />
             </children>
         </HBox>
     </top>
@@ -62,7 +60,7 @@
     <center>
         <VBox spacing="20.0" style="-fx-padding: 24;">
             <children>
-                <ImageView fitHeight="120.0" fitWidth="1080.0" preserveRatio="false">
+                <ImageView fitHeight="150.0" fitWidth="456.0" preserveRatio="false">
                     <image>
                         <Image url="@images/coins-banner.png" />
                     </image>
