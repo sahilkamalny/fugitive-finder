@@ -9,6 +9,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import org.example.fugitivefinder.model.WantedPerson;
 import org.example.fugitivefinder.viewModel.UserProfileViewModel;
+import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
 
 public class UserProfileController {
 
@@ -47,7 +49,15 @@ public class UserProfileController {
 
         renderSavedTargets();
     }
+    @FXML
+    private void goToDashboard(MouseEvent event) {
+        viewModel.goToDashboard((Node) event.getSource());
+    }
 
+    @FXML
+    private void goToRewards(MouseEvent event) {
+        viewModel.goToRewards((Node) event.getSource());
+    }
     private void renderSavedTargets() {
         savedTargetsPane.getChildren().clear();
 

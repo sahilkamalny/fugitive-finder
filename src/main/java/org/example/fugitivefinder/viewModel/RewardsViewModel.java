@@ -8,7 +8,6 @@ import javafx.scene.Node;
 import org.example.fugitivefinder.model.WantedPerson;
 import org.example.fugitivefinder.service.FbiApiService;
 import org.example.fugitivefinder.session.Session;
-import org.example.fugitivefinder.viewModel.SceneManager;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,5 +49,13 @@ public class RewardsViewModel {
     public void openCriminalProfile(Node sourceNode, WantedPerson person) {
         Session.getInstance().setSelectedWantedPerson(person);
         SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/criminal-profile.fxml", 1440, 900);
+    }
+
+    public void goToDashboard(Node sourceNode) {
+        SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/dashboard.fxml", 1440, 900);
+    }
+
+    public void goToUserProfile(Node sourceNode) {
+        SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/user-profile.fxml", 1440, 900);
     }
 }
