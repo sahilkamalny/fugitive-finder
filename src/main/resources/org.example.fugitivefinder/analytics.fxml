@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="900.0" prefWidth="1440.0"
+            xmlns="http://javafx.com/javafx/21.0.6"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.fugitivefinder.controller.AnalyticsController"
+            style="-fx-background-color: #081120;">
+
+    <!-- LEFT SIDEBAR -->
+    <left>
+        <VBox prefWidth="220.0" spacing="12.0"
+              style="-fx-background-color: #0f172a; -fx-padding: 20;">
+            <children>
+                <!-- Logo -->
+                <HBox spacing="10.0" alignment="CENTER_LEFT">
+                    <children>
+                        <ImageView fitHeight="48.0" fitWidth="48.0" preserveRatio="true">
+                            <image>
+                                <Image url="@images/logo.png" />
+                            </image>
+                        </ImageView>
+                        <Label text="Fugitive Finder" textFill="WHITE" wrapText="true">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+
+                <Region prefHeight="10.0" />
+
+                <!-- Navigation Items -->
+                <Label text="Dashboard" onMouseClicked="#goToDashboard"
+                       style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16; -fx-cursor: hand;" />
+
+                <Label text="Rewards" onMouseClicked="#goToRewards"
+                       style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16; -fx-cursor: hand;" />
+
+                <Label text="Analytics"
+                       style="-fx-background-color: #1e293b; -fx-text-fill: #4fd1c5; -fx-padding: 12 16; -fx-background-radius: 10; -fx-font-weight: bold;" />
+
+                <Label text="Profile" onMouseClicked="#goToUserProfile"
+                       style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16; -fx-cursor: hand;" />
+            </children>
+        </VBox>
+    </left>
+
+    <!-- TOP HEADER -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="14.0"
+              style="-fx-background-color: #0b1320; -fx-padding: 18 24;">
+            <children>
+                <Label text="Crime Analytics" textFill="WHITE">
+                    <font>
+                        <Font size="30.0" />
+                    </font>
+                </Label>
+
+                <Region HBox.hgrow="ALWAYS" />
+
+                <!-- Stats Cards -->
+                <VBox alignment="CENTER" spacing="2.0"
+                      style="-fx-background-color: #111827; -fx-background-radius: 10; -fx-padding: 8 16;">
+                    <children>
+                        <Label text="FBI Database" textFill="#94a3b8">
+                            <font><Font size="11.0" /></font>
+                        </Label>
+                        <Label fx:id="totalRecordsLabel" text="--" textFill="#4fd1c5">
+                            <font><Font size="18.0" /></font>
+                        </Label>
+                    </children>
+                </VBox>
+
+                <VBox alignment="CENTER" spacing="2.0"
+                      style="-fx-background-color: #111827; -fx-background-radius: 10; -fx-padding: 8 16;">
+                    <children>
+                        <Label text="Analyzed" textFill="#94a3b8">
+                            <font><Font size="11.0" /></font>
+                        </Label>
+                        <Label fx:id="recordsAnalyzedLabel" text="--" textFill="#f59e0b">
+                            <font><Font size="18.0" /></font>
+                        </Label>
+                    </children>
+                </VBox>
+
+                <ImageView fitHeight="44.0" fitWidth="44.0" preserveRatio="true">
+                    <image>
+                        <Image url="@images/detective-avatar.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </HBox>
+    </top>
+
+    <!-- CENTER CONTENT -->
+    <center>
+        <StackPane>
+            <children>
+                <!-- Loading Overlay -->
+                <VBox fx:id="loadingOverlay" alignment="CENTER" spacing="20.0"
+                      style="-fx-background-color: rgba(8,17,32,0.95);">
+                    <children>
+                        <ProgressIndicator fx:id="loadingSpinner"
+                                           prefWidth="80.0" prefHeight="80.0"
+                                           style="-fx-progress-color: #4fd1c5;" />
+                        <Label fx:id="statusLabel" text="Loading data from FBI API..."
+                               textFill="#cbd5e1">
+                            <font><Font size="18.0" /></font>
+                        </Label>
+                    </children>
+                </VBox>
+
+                <!-- Charts Grid -->
+                <VBox fx:id="chartsContainer" spacing="16.0"
+                      style="-fx-padding: 16;">
+                    <children>
+                        <GridPane hgap="16.0" vgap="16.0" VBox.vgrow="ALWAYS">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="ALWAYS" percentWidth="50.0" />
+                                <ColumnConstraints hgrow="ALWAYS" percentWidth="50.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints vgrow="ALWAYS" percentHeight="50.0" />
+                                <RowConstraints vgrow="ALWAYS" percentHeight="50.0" />
+                            </rowConstraints>
+
+                            <!-- Top Left: Crimes by Category (Bar Chart) -->
+                            <VBox GridPane.columnIndex="0" GridPane.rowIndex="0"
+                                  style="-fx-background-color: #111827; -fx-background-radius: 14; -fx-padding: 12;">
+                                <children>
+                                    <BarChart fx:id="subjectsChart"
+                                              VBox.vgrow="ALWAYS"
+                                              style="-fx-background-color: transparent;"
+                                              legendSide="BOTTOM">
+                                        <xAxis>
+                                            <CategoryAxis side="BOTTOM"
+                                                          tickLabelFill="#cbd5e1"
+                                                          tickLabelRotation="-35" />
+                                        </xAxis>
+                                        <yAxis>
+                                            <NumberAxis side="LEFT"
+                                                        tickLabelFill="#cbd5e1" />
+                                        </yAxis>
+                                    </BarChart>
+                                </children>
+                            </VBox>
+
+                            <!-- Top Right: Cases by Field Office (Pie Chart) -->
+                            <VBox GridPane.columnIndex="1" GridPane.rowIndex="0"
+                                  style="-fx-background-color: #111827; -fx-background-radius: 14; -fx-padding: 12;">
+                                <children>
+                                    <PieChart fx:id="fieldOfficeChart"
+                                              VBox.vgrow="ALWAYS"
+                                              style="-fx-background-color: transparent;"
+                                              legendSide="RIGHT" />
+                                </children>
+                            </VBox>
+
+                            <!-- Bottom Left: Fugitives by Race (Bar Chart) -->
+                            <VBox GridPane.columnIndex="0" GridPane.rowIndex="1"
+                                  style="-fx-background-color: #111827; -fx-background-radius: 14; -fx-padding: 12;">
+                                <children>
+                                    <BarChart fx:id="raceChart"
+                                              VBox.vgrow="ALWAYS"
+                                              style="-fx-background-color: transparent;"
+                                              legendSide="BOTTOM">
+                                        <xAxis>
+                                            <CategoryAxis side="BOTTOM"
+                                                          tickLabelFill="#cbd5e1" />
+                                        </xAxis>
+                                        <yAxis>
+                                            <NumberAxis side="LEFT"
+                                                        tickLabelFill="#cbd5e1" />
+                                        </yAxis>
+                                    </BarChart>
+                                </children>
+                            </VBox>
+
+                            <!-- Bottom Right: Sex Distribution (Pie Chart) -->
+                            <VBox GridPane.columnIndex="1" GridPane.rowIndex="1"
+                                  style="-fx-background-color: #111827; -fx-background-radius: 14; -fx-padding: 12;">
+                                <children>
+                                    <PieChart fx:id="sexChart"
+                                              VBox.vgrow="ALWAYS"
+                                              style="-fx-background-color: transparent;"
+                                              legendSide="RIGHT" />
+                                </children>
+                            </VBox>
+                        </GridPane>
+                    </children>
+                </VBox>
+            </children>
+        </StackPane>
+    </center>
+</BorderPane>
