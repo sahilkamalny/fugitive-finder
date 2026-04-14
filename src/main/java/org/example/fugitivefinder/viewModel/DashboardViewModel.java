@@ -1,5 +1,6 @@
 package org.example.fugitivefinder.viewModel;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -9,7 +10,6 @@ import org.example.fugitivefinder.model.AppUser;
 import org.example.fugitivefinder.model.WantedPerson;
 import org.example.fugitivefinder.service.FbiApiService;
 import org.example.fugitivefinder.session.Session;
-import org.example.fugitivefinder.viewModel.SceneManager;
 
 import java.util.List;
 
@@ -44,23 +44,25 @@ public class DashboardViewModel {
     public void loadData() {
         AppUser currentUser = Session.getInstance().getCurrentUser();
         if (currentUser != null) {
-            username.set(currentUser.getUsername());
+            Platform.runLater(() -> username.set(currentUser.getUsername()));
         }
 
         List<WantedPerson> people = FbiApiService.getWantedPeople();
 
-        totalWanted.set(String.valueOf(people.size()));
+        Platform.runLater(() -> {
+            totalWanted.set(String.valueOf(people.size()));
 
-        long rewardCount = people.stream()
-                .filter(person -> person.getReward_text() != null && !person.getReward_text().isBlank())
-                .count();
+            long rewardCount = people.stream()
+                    .filter(person -> person.getReward_text() != null && !person.getReward_text().isBlank())
+                    .count();
 
-        rewardCases.set(String.valueOf(rewardCount));
-        updates.set(String.valueOf(Math.min(10, people.size())));
+            rewardCases.set(String.valueOf(rewardCount));
+            updates.set(String.valueOf(Math.min(10, people.size())));
 
-        featuredTargets.clear();
-        int limit = Math.min(6, people.size());
-        featuredTargets.addAll(people.subList(0, limit));
+            featuredTargets.clear();
+            int limit = Math.min(6, people.size());
+            featuredTargets.addAll(people.subList(0, limit));
+        });
     }
 
     public void openCriminalProfile(Node sourceNode, WantedPerson person) {
