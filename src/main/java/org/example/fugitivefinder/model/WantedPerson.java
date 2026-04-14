@@ -1,7 +1,10 @@
 package org.example.fugitivefinder.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class WantedPerson {
 
     private String uid;
@@ -14,6 +17,7 @@ public class WantedPerson {
     private List<String> field_offices;
     private List<ImageItem> images;
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ImageItem {
         private String original;
 
