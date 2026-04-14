@@ -13,6 +13,8 @@ import javafx.scene.layout.VBox;
 import org.example.fugitivefinder.model.WantedPerson;
 import org.example.fugitivefinder.viewModel.DashboardViewModel;
 
+import java.util.List;
+
 public class DashboardController {
 
     @FXML
@@ -29,10 +31,13 @@ public class DashboardController {
 
     @FXML
     private FlowPane featuredCardsPane;
-    @FXML private StackPane mapContainer;
+    @FXML
+    private StackPane mapContainer;
 
     private DashboardViewModel viewModel;
     private MapView mapView;
+
+    private MapController currentLayer;
 
     @FXML
     public void initialize() {
@@ -43,9 +48,11 @@ public class DashboardController {
         rewardCasesLabel.textProperty().bind(viewModel.rewardCasesProperty());
         updatesLabel.textProperty().bind(viewModel.updatesProperty());
 
+
         mapView = new MapView();
-        mapView.setCenter(new MapPoint(39.8283,-98.5795));
-        mapView.setZoom(3);
+        mapView.setCenter(new MapPoint(37.0, -98.5795));
+        mapView.setZoom(4.8);
+
         mapContainer.getChildren().add(mapView);
 
         viewModel.loadData();
@@ -54,11 +61,19 @@ public class DashboardController {
         renderCards();
     }
 
+
+
     private void renderMap() {
-        for (MapPoint point : viewModel.getFugitiveLocations()) {
-            mapView.addLayer(new MapController(point));
+        if (currentLayer != null) {
+            mapView.removeLayer(currentLayer);
+        }
+        List<MapPoint> locations = viewModel.getFugitiveLocations();
+        if (!locations.isEmpty()) {
+            currentLayer = new MapController(locations);
+            mapView.addLayer(currentLayer);
         }
     }
+
     private void renderCards() {
         featuredCardsPane.getChildren().clear();
 
