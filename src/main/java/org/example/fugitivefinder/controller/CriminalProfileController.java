@@ -60,6 +60,11 @@ public class CriminalProfileController {
     }
 
     @FXML
+    private void goToRewards() {
+        SceneManager.switchScene(criminalImageView, "/org.example.fugitivefinder/rewards.fxml", 1440, 900);
+    }
+
+    @FXML
     private void saveTarget() {
         viewModel.saveTarget();
     }
