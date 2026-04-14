@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.example.fugitivefinder.viewModel.CriminalProfileViewModel;
+import org.example.fugitivefinder.viewModel.SceneManager;
 
 public class CriminalProfileController {
 
@@ -51,6 +52,11 @@ public class CriminalProfileController {
         if (imageUrl != null && !imageUrl.isBlank()) {
             criminalImageView.setImage(new Image(imageUrl, true));
         }
+    }
+
+    @FXML
+    private void goToDashboard() {
+        SceneManager.switchScene(criminalImageView, "/org.example.fugitivefinder/dashboard.fxml", 1440, 900);
     }
 
     @FXML
