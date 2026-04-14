@@ -6,24 +6,34 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class MapController extends MapLayer {
+    private final Map<MapPoint, Circle> circles = new HashMap<>();
 
-    private final MapPoint mapPoint;
-    private final Circle circle;
 
-    public MapController(MapPoint mapPoint) {
-        this.mapPoint = mapPoint;
-        this.circle = new Circle(8, Color.RED);
-        this.circle.setStroke(Color.BLACK);
-        this.circle.setStrokeWidth(2);
-        this.getChildren().add(circle);
+
+    public MapController(List<MapPoint> points) {
+        for (MapPoint point : points) {
+            Circle circle = new Circle(8, Color.RED);
+            circle.setStroke(Color.BLACK);
+            circle.setStrokeWidth(2);
+
+            circles.put(point, circle);
+            this.getChildren().add(circle);
+        }
     }
 
     @Override
     protected void layoutLayer() {
-        // This converts Latitude/Longitude to X/Y pixels on the screen
-        Point2D point2d = getMapPoint(mapPoint.getLatitude(), mapPoint.getLongitude());
-        circle.setTranslateX(point2d.getX());
-        circle.setTranslateY(point2d.getY());
+        circles.forEach((point, circle) -> {
+            Point2D point2d = getMapPoint(point.getLatitude(), point.getLongitude());
+            if (point2d != null) {
+                circle.setTranslateX(point2d.getX());
+                circle.setTranslateY(point2d.getY());
+            }
+        });
     }
 }
