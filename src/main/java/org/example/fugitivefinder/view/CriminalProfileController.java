@@ -1,4 +1,4 @@
-package org.example.fugitivefinder.controller;
+package org.example.fugitivefinder.view;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
