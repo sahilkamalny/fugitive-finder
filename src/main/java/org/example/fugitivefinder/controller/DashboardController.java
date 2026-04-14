@@ -38,8 +38,13 @@ public class DashboardController {
         rewardCasesLabel.textProperty().bind(viewModel.rewardCasesProperty());
         updatesLabel.textProperty().bind(viewModel.updatesProperty());
 
-        viewModel.loadData();
-        renderCards();
+        viewModel.getFeaturedTargets().addListener((javafx.collections.ListChangeListener<WantedPerson>) change -> {
+            renderCards();
+        });
+
+        new Thread(() -> {
+            viewModel.loadData();
+        }).start();
     }
 
     private void renderCards() {
