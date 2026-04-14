@@ -10,23 +10,14 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="900.0" prefWidth="1440.0"
+<BorderPane prefHeight="900.0" prefWidth="1440.0" style="-fx-background-color: #081120;"
             xmlns="http://javafx.com/javafx/23.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.example.fugitivefinder.controller.DashboardController"
-            prefHeight="400.0" prefWidth="600.0">
-    <children>
-        <StackPane fx:id="mapContainer"
-                   AnchorPane.bottomAnchor="0.0"
-                   AnchorPane.leftAnchor="0.0"
-                   AnchorPane.rightAnchor="0.0"
-                   AnchorPane.topAnchor="0.0" />
-    </children>
-</AnchorPane>
-            style="-fx-background-color: #081120;">
+            fx:controller="org.example.fugitivefinder.view.DashboardController">
 
     <left>
         <VBox prefWidth="220.0" spacing="18.0" style="-fx-background-color: #0f172a; -fx-padding: 20;">
@@ -46,13 +37,15 @@
                     </children>
                 </HBox>
 
-                <Label text="Dashboard" style="-fx-background-color: #1e293b; -fx-text-fill: white; -fx-padding: 12 16; -fx-background-radius: 10;" />
-                <Label text="Rewards" onMouseClicked="#goToRewards" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;">
+                <Label style="-fx-background-color: #1e293b; -fx-text-fill: white; -fx-padding: 12 16; -fx-background-radius: 10;" text="Dashboard" />
+
+                <Label onMouseClicked="#goToRewards" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;" text="Rewards">
                     <cursor>
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Label>
-                <Label text="Profile" onMouseClicked="#goToUserProfile" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;">
+
+                <Label onMouseClicked="#goToUserProfile" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;" text="Profile">
                     <cursor>
                         <Cursor fx:constant="HAND" />
                     </cursor>
@@ -130,15 +123,17 @@
                     </children>
                 </HBox>
 
+                <StackPane fx:id="mapContainer" prefHeight="200.0" style="-fx-background-color: #1e293b; -fx-background-radius: 16;" />
+
                 <Label text="Featured Targets" textFill="WHITE">
                     <font>
                         <Font size="24.0" />
                     </font>
                 </Label>
 
-                <ScrollPane fitToWidth="true" prefHeight="520.0" style="-fx-background-color: transparent;">
+                <ScrollPane fitToWidth="true" prefHeight="520.0" style="-fx-background-color: transparent; -fx-background: transparent;">
                     <content>
-                        <FlowPane fx:id="featuredCardsPane" hgap="18.0" prefWrapLength="1060.0" vgap="18.0" />
+                        <FlowPane fx:id="featuredCardsPane" hgap="18.0" prefWrapLength="1060.0" vgap="18.0" style="-fx-background-color: transparent;" />
                     </content>
                 </ScrollPane>
             </children>
