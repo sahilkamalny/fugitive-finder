@@ -10,14 +10,14 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="900.0" prefWidth="1440.0"
+<BorderPane prefHeight="900.0" prefWidth="1440.0" style="-fx-background-color: #081120;"
             xmlns="http://javafx.com/javafx/23.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.example.fugitivefinder.controller.DashboardController"
-            style="-fx-background-color: #081120;">
+            fx:controller="org.example.fugitivefinder.view.DashboardController">
 
     <left>
         <VBox prefWidth="220.0" spacing="18.0" style="-fx-background-color: #0f172a; -fx-padding: 20;">
@@ -37,13 +37,15 @@
                     </children>
                 </HBox>
 
-                <Label text="Dashboard" style="-fx-background-color: #1e293b; -fx-text-fill: white; -fx-padding: 12 16; -fx-background-radius: 10;" />
-                <Label text="Rewards" onMouseClicked="#goToRewards" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;">
+                <Label style="-fx-background-color: #1e293b; -fx-text-fill: white; -fx-padding: 12 16; -fx-background-radius: 10;" text="Dashboard" />
+
+                <Label onMouseClicked="#goToRewards" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;" text="Rewards">
                     <cursor>
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Label>
-                <Label text="Profile" onMouseClicked="#goToUserProfile" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;">
+
+                <Label onMouseClicked="#goToUserProfile" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;" text="Profile">
                     <cursor>
                         <Cursor fx:constant="HAND" />
                     </cursor>
@@ -76,63 +78,55 @@
     </top>
 
     <center>
-        <VBox spacing="22.0" style="-fx-padding: 24;">
-            <children>
-                <Label text="Welcome back" textFill="WHITE">
-                    <font>
-                        <Font size="28.0" />
-                    </font>
-                </Label>
-
-                <HBox spacing="18.0">
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-color: transparent;">
+            <content>
+                <VBox spacing="22.0" style="-fx-padding: 24; -fx-background-color: #081120;">
                     <children>
-                        <AnchorPane prefHeight="120.0" prefWidth="260.0" style="-fx-background-color: #1e293b; -fx-background-radius: 16;">
-                            <children>
-                                <Label layoutX="20.0" layoutY="20.0" text="Total Most Wanted" textFill="#cbd5e1" />
-                                <Label fx:id="totalWantedLabel" layoutX="20.0" layoutY="55.0" text="0" textFill="WHITE">
-                                    <font>
-                                        <Font size="34.0" />
-                                    </font>
-                                </Label>
-                            </children>
-                        </AnchorPane>
+                        <Label text="Welcome back" textFill="WHITE">
+                            <font><Font size="28.0" /></font>
+                        </Label>
 
-                        <AnchorPane prefHeight="120.0" prefWidth="260.0" style="-fx-background-color: #1e293b; -fx-background-radius: 16;">
+                        <HBox spacing="18.0">
                             <children>
-                                <Label layoutX="20.0" layoutY="20.0" text="Reward Cases" textFill="#cbd5e1" />
-                                <Label fx:id="rewardCasesLabel" layoutX="20.0" layoutY="55.0" text="0" textFill="WHITE">
-                                    <font>
-                                        <Font size="34.0" />
-                                    </font>
-                                </Label>
-                            </children>
-                        </AnchorPane>
+                                <AnchorPane prefHeight="120.0" prefWidth="260.0" style="-fx-background-color: #1e293b; -fx-background-radius: 16;">
+                                    <children>
+                                        <Label layoutX="20.0" layoutY="20.0" text="Total Most Wanted" textFill="#cbd5e1" />
+                                        <Label fx:id="totalWantedLabel" layoutX="20.0" layoutY="55.0" text="0" textFill="WHITE">
+                                            <font><Font size="34.0" /></font>
+                                        </Label>
+                                    </children>
+                                </AnchorPane>
 
-                        <AnchorPane prefHeight="120.0" prefWidth="260.0" style="-fx-background-color: #1e293b; -fx-background-radius: 16;">
-                            <children>
-                                <Label layoutX="20.0" layoutY="20.0" text="Recent Updates" textFill="#cbd5e1" />
-                                <Label fx:id="updatesLabel" layoutX="20.0" layoutY="55.0" text="0" textFill="WHITE">
-                                    <font>
-                                        <Font size="34.0" />
-                                    </font>
-                                </Label>
+                                <AnchorPane prefHeight="120.0" prefWidth="260.0" style="-fx-background-color: #1e293b; -fx-background-radius: 16;">
+                                    <children>
+                                        <Label layoutX="20.0" layoutY="20.0" text="Reward Cases" textFill="#cbd5e1" />
+                                        <Label fx:id="rewardCasesLabel" layoutX="20.0" layoutY="55.0" text="0" textFill="WHITE">
+                                            <font><Font size="34.0" /></font>
+                                        </Label>
+                                    </children>
+                                </AnchorPane>
+
+                                <AnchorPane prefHeight="120.0" prefWidth="260.0" style="-fx-background-color: #1e293b; -fx-background-radius: 16;">
+                                    <children>
+                                        <Label layoutX="20.0" layoutY="20.0" text="Recent Updates" textFill="#cbd5e1" />
+                                        <Label fx:id="updatesLabel" layoutX="20.0" layoutY="55.0" text="0" textFill="WHITE">
+                                            <font><Font size="34.0" /></font>
+                                        </Label>
+                                    </children>
+                                </AnchorPane>
                             </children>
-                        </AnchorPane>
+                        </HBox>
+
+                        <StackPane fx:id="mapContainer" prefHeight="620.0" style="-fx-background-color: #1e293b; -fx-background-radius: 16;" />
+
+                        <Label text="Featured Targets" textFill="WHITE">
+                            <font><Font size="24.0" /></font>
+                        </Label>
+
+                        <FlowPane fx:id="featuredCardsPane" hgap="18.0" prefWrapLength="1060.0" vgap="18.0" style="-fx-background-color: transparent;" />
                     </children>
-                </HBox>
-
-                <Label text="Featured Targets" textFill="WHITE">
-                    <font>
-                        <Font size="24.0" />
-                    </font>
-                </Label>
-
-                <ScrollPane fitToWidth="true" prefHeight="520.0" style="-fx-background-color: transparent;">
-                    <content>
-                        <FlowPane fx:id="featuredCardsPane" hgap="18.0" prefWrapLength="1060.0" vgap="18.0" />
-                    </content>
-                </ScrollPane>
-            </children>
-        </VBox>
+                </VBox>
+            </content>
+        </ScrollPane>
     </center>
 </BorderPane>

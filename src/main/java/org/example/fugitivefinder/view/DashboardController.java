@@ -1,14 +1,19 @@
-package org.example.fugitivefinder.controller;
+package org.example.fugitivefinder.view;
 
+import com.gluonhq.maps.MapPoint;
+import com.gluonhq.maps.MapView;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.example.fugitivefinder.model.WantedPerson;
 import org.example.fugitivefinder.viewModel.DashboardViewModel;
+
+import java.util.List;
 
 public class DashboardController {
 
@@ -26,8 +31,13 @@ public class DashboardController {
 
     @FXML
     private FlowPane featuredCardsPane;
+    @FXML
+    private StackPane mapContainer;
 
     private DashboardViewModel viewModel;
+    private MapView mapView;
+
+    private MapController currentLayer;
 
     @FXML
     public void initialize() {
@@ -38,8 +48,30 @@ public class DashboardController {
         rewardCasesLabel.textProperty().bind(viewModel.rewardCasesProperty());
         updatesLabel.textProperty().bind(viewModel.updatesProperty());
 
+
+        mapView = new MapView();
+        mapView.setCenter(new MapPoint(37.0, -98.5795));
+        mapView.setZoom(4.8);
+
+        mapContainer.getChildren().add(mapView);
+
         viewModel.loadData();
+
+        renderMap();
         renderCards();
+    }
+
+
+
+    private void renderMap() {
+        if (currentLayer != null) {
+            mapView.removeLayer(currentLayer);
+        }
+        List<MapPoint> locations = viewModel.getFugitiveLocations();
+        if (!locations.isEmpty()) {
+            currentLayer = new MapController(locations);
+            mapView.addLayer(currentLayer);
+        }
     }
 
     private void renderCards() {

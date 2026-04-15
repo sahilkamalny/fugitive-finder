@@ -1,5 +1,6 @@
 package org.example.fugitivefinder.viewModel;
 
+import com.gluonhq.maps.MapPoint;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -11,7 +12,13 @@ import org.example.fugitivefinder.service.FbiApiService;
 import org.example.fugitivefinder.session.Session;
 import org.example.fugitivefinder.viewModel.SceneManager;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DashboardViewModel {
 
@@ -21,24 +28,37 @@ public class DashboardViewModel {
     private final StringProperty updates = new SimpleStringProperty("0");
     private final ObservableList<WantedPerson> featuredTargets = FXCollections.observableArrayList();
 
-    public StringProperty usernameProperty() {
-        return username;
+    private final ObservableList<MapPoint> fugitiveLocations = FXCollections.observableArrayList();
+    private final Map<MapPoint, List<WantedPerson>> locationGroups = new HashMap<>();
+
+    private final Map<String, MapPoint> officeCoordinates = new HashMap<>();
+
+
+    public DashboardViewModel() {
+        loadOfficeCoordinates();
     }
 
-    public StringProperty totalWantedProperty() {
-        return totalWanted;
-    }
+    private void loadOfficeCoordinates() {
+        try (InputStream is = getClass().getResourceAsStream("/org/example/fugitivefinder/offices.json");
+             BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
 
-    public StringProperty rewardCasesProperty() {
-        return rewardCases;
-    }
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.contains("[") && line.contains("]")) {
+                    String key = line.split(":")[0].replace("\"", "").trim().toLowerCase();
+                    String coords = line.split("\\[")[1].split("\\]")[0];
+                    String[] latLng = coords.split(",");
 
-    public StringProperty updatesProperty() {
-        return updates;
-    }
+                    double lat = Double.parseDouble(latLng[0].trim());
+                    double lng = Double.parseDouble(latLng[1].trim());
 
-    public ObservableList<WantedPerson> getFeaturedTargets() {
-        return featuredTargets;
+                    officeCoordinates.put(key, new MapPoint(lat, lng));
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Could not load offices.json. Falling back to default center.");
+            e.printStackTrace();
+        }
     }
 
     public void loadData() {
@@ -61,6 +81,55 @@ public class DashboardViewModel {
         featuredTargets.clear();
         int limit = Math.min(6, people.size());
         featuredTargets.addAll(people.subList(0, limit));
+
+        locationGroups.clear();
+        fugitiveLocations.clear();
+
+        fugitiveLocations.add(new MapPoint(40.9465, -73.0692));
+        fugitiveLocations.add(new MapPoint(40.7512, -73.4287));
+        for (WantedPerson person : people) {
+            MapPoint point = findCoordinates(person.getField_offices());
+            if (point != null) {
+                locationGroups.computeIfAbsent(point, k -> new ArrayList<>()).add(person);
+                if (!fugitiveLocations.contains(point)) {
+                    fugitiveLocations.add(point);
+                }
+            }
+        }
+    }
+
+    private MapPoint findCoordinates(List<String> offices) {
+        if (offices == null || offices.isEmpty()) return null;
+        String officeName = offices.get(0).toLowerCase().replace(" ", "");
+        return officeCoordinates.getOrDefault(officeName, new MapPoint(39.8283, -98.5795));
+    }
+
+    public StringProperty usernameProperty() {
+        return username;
+    }
+
+    public StringProperty totalWantedProperty() {
+        return totalWanted;
+    }
+
+    public StringProperty rewardCasesProperty() {
+        return rewardCases;
+    }
+
+    public StringProperty updatesProperty() {
+        return updates;
+    }
+
+    public ObservableList<WantedPerson> getFeaturedTargets() {
+        return featuredTargets;
+    }
+
+    public ObservableList<MapPoint> getFugitiveLocations() {
+        return fugitiveLocations;
+    }
+
+    public List<WantedPerson> getPeopleAtLocation(MapPoint point) {
+        return locationGroups.getOrDefault(point, new ArrayList<>());
     }
 
     public void openCriminalProfile(Node sourceNode, WantedPerson person) {
