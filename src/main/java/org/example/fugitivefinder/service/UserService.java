@@ -2,40 +2,70 @@ package org.example.fugitivefinder.service;
 
 import org.example.fugitivefinder.model.AppUser;
 
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.*;
 
 public final class UserService {
 
-    private static final Map<String, AppUser> USERS_BY_EMAIL = new HashMap<>();
-
-    private UserService() {
-    }
-
-    public static AppUser createAccount(String firstName, String lastName,
+    public static boolean createAccount(String firstName, String lastName,
                                         String username, String email, String password) {
-        if (email == null || email.isBlank() || USERS_BY_EMAIL.containsKey(email.toLowerCase())) {
-            return null;
+        try {
+            URL url = new URL("http://127.0.0.1:8000/api/register/");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setDoOutput(true);
+
+            String jsonInput = String.format(
+                    "{\"firstName\":\"%s\",\"lastName\":\"%s\",\"username\":\"%s\",\"email\":\"%s\",\"password\":\"%s\"}",
+                    firstName, lastName, username, email, password
+            );
+
+            OutputStream os = conn.getOutputStream();
+            os.write(jsonInput.getBytes());
+            os.flush();
+            os.close();
+
+            int responseCode = conn.getResponseCode();
+
+            return responseCode == 200;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
-
-        AppUser user = new AppUser(
-                UUID.randomUUID().toString(),
-                username,
-                firstName,
-                lastName,
-                email,
-                "/org.example.fugitivefinder/images/detective-avatar.png",
-                new ArrayList<>()
-        );
-
-        USERS_BY_EMAIL.put(email.toLowerCase(), user);
-        return user;
     }
 
-    public static AppUser login(String email, String password) {
-        if (email == null || email.isBlank()) {
-            return null;
+    public static boolean login(String email, String password) {
+        try {
+            URL url = new URL("http://127.0.0.1:8000/api/login/");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setDoOutput(true);
+
+            String jsonInput = String.format(
+                    "{\"email\":\"%s\",\"password\":\"%s\"}",
+                    email, password
+            );
+
+            OutputStream os = conn.getOutputStream();
+            os.write(jsonInput.getBytes());
+            os.flush();
+            os.close();
+
+            int responseCode = conn.getResponseCode();
+
+            return responseCode == 200;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
-        return USERS_BY_EMAIL.get(email.toLowerCase());
     }
 
     public static void saveTargetForUser(AppUser user, String wantedUid) {
