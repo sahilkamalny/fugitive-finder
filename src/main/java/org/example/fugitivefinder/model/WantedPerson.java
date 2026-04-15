@@ -1,32 +1,66 @@
 package org.example.fugitivefinder.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class WantedPerson {
 
     private String uid;
     private String title;
     private String description;
-    private String reward_text;
-    private String warning_message;
+
+    @JsonProperty("reward_text")
+    private String rewardText;
+
+    @JsonProperty("warning_message")
+    private String warningMessage;
+
     private String status;
 
+    @JsonProperty("sex")
     private String sex;
+
+    @JsonProperty("race")
     private String race;
-    private String place_of_birth;
+
+    @JsonProperty("place_of_birth")
+    private String placeOfBirth;
+
+    @JsonProperty("nationality")
     private String nationality;
+
+    @JsonProperty("occupation")
     private String occupation;
-    private Integer age_now;
+
+    @JsonProperty("age_now")
+    private Integer ageNow;
+
+    @JsonProperty("subjects")
     private List<String> subjects;
+
+    @JsonProperty("aliases")
     private List<String> aliases;
-    private List<String> field_offices;
+
+    @JsonProperty("field_offices")
+    private List<String> fieldOffices;
+
+    @JsonProperty("locations")
     private List<String> locations;
+
+    @JsonProperty("images")
     private List<ImageItem> images;
 
+    // Optional (for map if you add later)
     private Double latitude;
     private Double longitude;
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ImageItem {
+
+        @JsonProperty("original")
         private String original;
 
         public String getOriginal() {
@@ -37,6 +71,8 @@ public class WantedPerson {
             this.original = original;
         }
     }
+
+    // ===================== BASIC GETTERS =====================
 
     public String getUid() {
         return uid;
@@ -55,7 +91,9 @@ public class WantedPerson {
     }
 
     public String getDescription() {
-        return description == null || description.isBlank() ? "No description available." : description;
+        return description == null || description.isBlank()
+                ? "No description available."
+                : description;
     }
 
     public void setDescription(String description) {
@@ -63,23 +101,23 @@ public class WantedPerson {
     }
 
     public String getReward_text() {
-        return reward_text;
+        return rewardText;
     }
 
-    public void setReward_text(String reward_text) {
-        this.reward_text = reward_text;
+    public void setReward_text(String rewardText) {
+        this.rewardText = rewardText;
     }
 
     public String getWarning_message() {
-        return warning_message;
+        return warningMessage;
     }
 
-    public void setWarning_message(String warning_message) {
-        this.warning_message = warning_message;
+    public void setWarning_message(String warningMessage) {
+        this.warningMessage = warningMessage;
     }
 
     public String getStatus() {
-        return status;
+        return status == null || status.isBlank() ? "Wanted" : status;
     }
 
     public void setStatus(String status) {
@@ -103,11 +141,11 @@ public class WantedPerson {
     }
 
     public String getPlace_of_birth() {
-        return place_of_birth == null ? "" : place_of_birth;
+        return placeOfBirth == null ? "" : placeOfBirth;
     }
 
-    public void setPlace_of_birth(String place_of_birth) {
-        this.place_of_birth = place_of_birth;
+    public void setPlace_of_birth(String placeOfBirth) {
+        this.placeOfBirth = placeOfBirth;
     }
 
     public String getNationality() {
@@ -127,12 +165,14 @@ public class WantedPerson {
     }
 
     public Integer getAgeNow() {
-        return age_now;
+        return ageNow;
     }
 
-    public void setAge_now(Integer age_now) {
-        this.age_now = age_now;
+    public void setAgeNow(Integer ageNow) {
+        this.ageNow = ageNow;
     }
+
+    // ===================== LIST HANDLING =====================
 
     public List<String> getSubjectsList() {
         return subjects;
@@ -143,7 +183,9 @@ public class WantedPerson {
     }
 
     public String getSubjects() {
-        return subjects == null || subjects.isEmpty() ? "" : String.join(", ", subjects);
+        return subjects == null || subjects.isEmpty()
+                ? ""
+                : String.join(", ", subjects);
     }
 
     public List<String> getAliases() {
@@ -155,15 +197,17 @@ public class WantedPerson {
     }
 
     public List<String> getField_offices() {
-        return field_offices;
+        return fieldOffices;
     }
 
-    public void setField_offices(List<String> field_offices) {
-        this.field_offices = field_offices;
+    public void setField_offices(List<String> fieldOffices) {
+        this.fieldOffices = fieldOffices;
     }
 
     public String getFieldOfficesText() {
-        return field_offices == null || field_offices.isEmpty() ? "" : String.join(", ", field_offices);
+        return fieldOffices == null || fieldOffices.isEmpty()
+                ? ""
+                : String.join(", ", fieldOffices);
     }
 
     public List<String> getLocationsList() {
@@ -175,8 +219,11 @@ public class WantedPerson {
     }
 
     public String getLocations() {
-        return locations == null || locations.isEmpty() ? "" : String.join(", ", locations);
+        return locations == null || locations.isEmpty()
+                ? ""
+                : String.join(", ", locations);
     }
+
 
     public List<ImageItem> getImages() {
         return images;
@@ -192,6 +239,7 @@ public class WantedPerson {
         }
         return null;
     }
+
 
     public Double getLatitude() {
         return latitude;
@@ -209,22 +257,23 @@ public class WantedPerson {
         this.longitude = longitude;
     }
 
-    public String getDisplayReward() {
-        return reward_text == null || reward_text.isBlank() ? "No Reward Listed" : reward_text;
-    }
 
-    public String getDisplayStatus() {
-        return status == null || status.isBlank() ? "Wanted" : status;
+    public String getDisplayReward() {
+        return rewardText == null || rewardText.isBlank()
+                ? "No Reward Listed"
+                : rewardText;
     }
 
     public String getDisplayAliases() {
-        return aliases == null || aliases.isEmpty() ? "None listed" : String.join(", ", aliases);
+        return aliases == null || aliases.isEmpty()
+                ? "None listed"
+                : String.join(", ", aliases);
     }
 
     public String getDisplayFieldOffices() {
-        return field_offices == null || field_offices.isEmpty()
+        return fieldOffices == null || fieldOffices.isEmpty()
                 ? "Not available"
-                : String.join(", ", field_offices);
+                : String.join(", ", fieldOffices);
     }
 
     public String getDisplaySubjects() {
