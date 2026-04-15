@@ -12,7 +12,7 @@ public final class UserService {
     public static boolean createAccount(String firstName, String lastName,
                                         String username, String email, String password) {
         try {
-            URL url = new URL("http://137.125.156.161/api/register/");
+            URL url = new URL("http://127.0.0.1:8000/api/register/");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
             conn.setRequestMethod("POST");
@@ -41,7 +41,7 @@ public final class UserService {
 
     public static boolean login(String email, String password) {
         try {
-            URL url = new URL("http://137.125.156.161/api/login/");
+            URL url = new URL("http://127.0.0.1:8000/api/login/");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
             conn.setRequestMethod("POST");
