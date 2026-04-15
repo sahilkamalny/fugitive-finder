@@ -112,7 +112,39 @@
                     </children>
                 </HBox>
 
-                <StackPane fx:id="mapContainer" prefHeight="521.0" prefWidth="1151.0" style="-fx-background-color: #1e293b; -fx-background-radius: 16;" />
+                <VBox spacing="14.0">
+                    <children>
+                        <HBox spacing="12.0" alignment="CENTER_LEFT" style="-fx-background-color: #1e293b; -fx-background-radius: 16; -fx-padding: 14;">
+                            <children>
+                                <ComboBox fx:id="crimeTypeComboBox" prefWidth="180.0" promptText="Crime Type" />
+                                <ComboBox fx:id="sexComboBox" prefWidth="140.0" promptText="Sex" />
+                                <TextField fx:id="cityField" prefWidth="180.0" promptText="City or Location" />
+
+                                <VBox spacing="4.0">
+                                    <children>
+                                        <Label text="Min Age" textFill="WHITE" />
+                                        <Slider fx:id="minAgeSlider" min="0.0" max="100.0" prefWidth="130.0" />
+                                        <Label fx:id="minAgeLabel" text="0" textFill="#cbd5e1" />
+                                    </children>
+                                </VBox>
+
+                                <VBox spacing="4.0">
+                                    <children>
+                                        <Label text="Max Age" textFill="WHITE" />
+                                        <Slider fx:id="maxAgeSlider" min="0.0" max="100.0" prefWidth="130.0" value="100.0" />
+                                        <Label fx:id="maxAgeLabel" text="100" textFill="#cbd5e1" />
+                                    </children>
+                                </VBox>
+
+                                <CheckBox fx:id="rewardOnlyCheckBox" text="Reward Only" textFill="WHITE" />
+                                <CheckBox fx:id="warningOnlyCheckBox" text="Warning Only" textFill="WHITE" />
+                            </children>
+                        </HBox>
+
+                        <StackPane fx:id="mapContainer" prefHeight="521.0" prefWidth="1151.0"
+                                   style="-fx-background-color: #1e293b; -fx-background-radius: 16;" />
+                    </children>
+                </VBox>
 
                 <Label text="Featured Targets" textFill="WHITE">
                     <font>
