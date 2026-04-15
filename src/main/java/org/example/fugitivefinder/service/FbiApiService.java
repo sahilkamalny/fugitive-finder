@@ -13,7 +13,7 @@ import java.util.List;
 
 public final class FbiApiService {
 
-    private static final String BASE_URL = "https://api.fbi.gov/wanted/v1/list";
+    private static final String BASE_URL = "http://127.0.0.1:8000/api/wanted/";
 
     private FbiApiService() {
     }

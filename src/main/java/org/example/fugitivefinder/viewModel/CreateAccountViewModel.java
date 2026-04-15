@@ -51,7 +51,7 @@ public class CreateAccountViewModel {
             return false;
         }
 
-        AppUser user = UserService.createAccount(
+        boolean success = UserService.createAccount(
                 firstName.get(),
                 lastName.get(),
                 username.get(),
@@ -59,11 +59,22 @@ public class CreateAccountViewModel {
                 password.get()
         );
 
-        if (user == null) {
+        if (!success) {
             return false;
         }
 
-        Session.getInstance().setCurrentUser(user);
+        // For now (temporary until we fetch real user object)
+        Session.getInstance().setCurrentUser(
+                new AppUser(
+                        username.get(),
+                        username.get(),
+                        firstName.get(),
+                        lastName.get(),
+                        email.get(),
+                        "",
+                        new java.util.ArrayList<>()
+                )
+        );
         SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/dashboard.fxml", 1440, 900);
         return true;
     }
