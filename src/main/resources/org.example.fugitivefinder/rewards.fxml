@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="900.0" prefWidth="1440.0" style="-fx-background-color: #081120;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.fugitivefinder.controller.RewardsController">
+<BorderPane prefHeight="900.0" prefWidth="1440.0" style="-fx-background-color: #081120;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.fugitivefinder.view.RewardsController">
 
     <left>
         <VBox prefWidth="220.0" spacing="18.0" style="-fx-background-color: #0f172a; -fx-padding: 20;">

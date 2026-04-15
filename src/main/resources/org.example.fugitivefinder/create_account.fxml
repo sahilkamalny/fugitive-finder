@@ -13,7 +13,7 @@
 <AnchorPane prefHeight="900.0" prefWidth="1440.0"
             xmlns="http://javafx.com/javafx/23.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.example.fugitivefinder.controller.CreateAccountPageController">
+            fx:controller="org.example.fugitivefinder.view.CreateAccountPageController">
 
     <children>
         <Pane prefHeight="900.0" prefWidth="1440.0">
