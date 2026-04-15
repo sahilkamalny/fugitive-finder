@@ -52,6 +52,13 @@ public class DashboardController {
 
         renderMap();
         renderCards();
+        viewModel.getFeaturedTargets().addListener((javafx.collections.ListChangeListener<WantedPerson>) change -> {
+            renderCards();
+        });
+
+        new Thread(() -> {
+            viewModel.loadData();
+        }).start();
     }
 
     private void renderMap() {
