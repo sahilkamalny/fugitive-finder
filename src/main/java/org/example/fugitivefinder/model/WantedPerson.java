@@ -15,7 +15,7 @@ public class WantedPerson {
     private String status;
     private List<String> aliases;
     private List<String> field_offices;
-    private List<ImageItem> images;
+    private List<String> images;
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ImageItem {
@@ -94,17 +94,17 @@ public class WantedPerson {
         this.field_offices = field_offices;
     }
 
-    public List<ImageItem> getImages() {
+    public List<String> getImages() {
         return images;
     }
 
-    public void setImages(List<ImageItem> images) {
+    public void setImages(List<String> images) {
         this.images = images;
     }
 
     public String getPrimaryImageUrl() {
-        if (images != null && !images.isEmpty() && images.get(0) != null) {
-            return images.get(0).getOriginal();
+        if (images != null && !images.isEmpty()) {
+            return images.get(0);
         }
         return null;
     }

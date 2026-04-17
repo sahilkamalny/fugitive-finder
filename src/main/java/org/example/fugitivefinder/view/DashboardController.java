@@ -81,6 +81,7 @@ public class DashboardController {
         imageView.setPreserveRatio(false);
 
         String imageUrl = person.getPrimaryImageUrl();
+
         if (imageUrl != null && !imageUrl.isBlank()) {
             imageView.setImage(new Image(imageUrl, true));
         }

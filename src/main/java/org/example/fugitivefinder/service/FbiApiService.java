@@ -24,6 +24,8 @@ public final class FbiApiService {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Accept", "application/json");
+            System.out.println("Calling API: " + BASE_URL);
+            System.out.println("Response Code: " + connection.getResponseCode());
 
             if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 return Collections.emptyList();
@@ -42,9 +44,15 @@ public final class FbiApiService {
 
             reader.close();
 
+            System.out.println("Response: " + response.toString());
             ObjectMapper mapper = new ObjectMapper();
             WantedResponse wantedResponse = mapper.readValue(response.toString(), WantedResponse.class);
 
+            if (wantedResponse != null && wantedResponse.getItems() != null) {
+                System.out.println("Items count: " + wantedResponse.getItems().size());
+            } else {
+                System.out.println("WantedResponse or items is NULL");
+            }
             return wantedResponse != null && wantedResponse.getItems() != null
                     ? wantedResponse.getItems()
                     : Collections.emptyList();
@@ -53,5 +61,6 @@ public final class FbiApiService {
             e.printStackTrace();
             return Collections.emptyList();
         }
+
     }
 }
