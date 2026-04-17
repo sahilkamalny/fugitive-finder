@@ -5,8 +5,6 @@ import com.gluonhq.maps.MapView;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -15,20 +13,11 @@ import org.example.fugitivefinder.viewModel.DashboardViewModel;
 
 public class DashboardController {
 
-    @FXML
-    private Label usernameLabel;
-
-    @FXML
-    private Label totalWantedLabel;
-
-    @FXML
-    private Label rewardCasesLabel;
-
-    @FXML
-    private Label updatesLabel;
-
-    @FXML
-    private FlowPane featuredCardsPane;
+    @FXML private Label usernameLabel;
+    @FXML private Label totalWantedLabel;
+    @FXML private Label rewardCasesLabel;
+    @FXML private Label updatesLabel;
+    @FXML private FlowPane featuredCardsPane;
     @FXML private StackPane mapContainer;
 
     private DashboardViewModel viewModel;
@@ -44,21 +33,19 @@ public class DashboardController {
         updatesLabel.textProperty().bind(viewModel.updatesProperty());
 
         mapView = new MapView();
-        mapView.setCenter(new MapPoint(39.8283,-98.5795));
+        mapView.setCenter(new MapPoint(39.8283, -98.5795));
         mapView.setZoom(3);
         mapContainer.getChildren().add(mapView);
 
-        viewModel.loadData();
-
-        renderMap();
-        renderCards();
         viewModel.getFeaturedTargets().addListener((javafx.collections.ListChangeListener<WantedPerson>) change -> {
             renderCards();
         });
 
-        new Thread(() -> {
-            viewModel.loadData();
-        }).start();
+        viewModel.getFugitiveLocations().addListener((javafx.collections.ListChangeListener<MapPoint>) change -> {
+            renderMap();
+        });
+
+        new Thread(() -> viewModel.loadData()).start();
     }
 
     private void renderMap() {
@@ -66,37 +53,27 @@ public class DashboardController {
             mapView.addLayer(new MapController(point));
         }
     }
+
     private void renderCards() {
         featuredCardsPane.getChildren().clear();
-
         for (WantedPerson person : viewModel.getFeaturedTargets()) {
             featuredCardsPane.getChildren().add(createCard(person));
         }
     }
 
     private VBox createCard(WantedPerson person) {
-        ImageView imageView = new ImageView();
-        imageView.setFitWidth(190);
-        imageView.setFitHeight(150);
-        imageView.setPreserveRatio(false);
-
-        String imageUrl = person.getPrimaryImageUrl();
-        if (imageUrl != null && !imageUrl.isBlank()) {
-            imageView.setImage(new Image(imageUrl, true));
-        }
-
         Label nameLabel = new Label(person.getTitle());
         nameLabel.setStyle("-fx-text-fill: white; -fx-font-size: 18; -fx-font-weight: bold;");
+        nameLabel.setWrapText(true);
 
         Label rewardLabel = new Label(person.getDisplayReward());
         rewardLabel.setStyle("-fx-text-fill: #f59e0b; -fx-font-size: 14;");
+        rewardLabel.setWrapText(true);
 
-        VBox details = new VBox(6, nameLabel, rewardLabel);
-        details.setPadding(new Insets(10));
-
-        VBox card = new VBox(imageView, details);
+        VBox card = new VBox(6, nameLabel, rewardLabel);
+        card.setPadding(new Insets(12));
         card.setPrefWidth(190);
-        card.setPrefHeight(250);
+        card.setPrefHeight(100);
         card.setStyle("-fx-background-color: #111827; -fx-background-radius: 14; -fx-border-color: #334155; -fx-border-radius: 14;");
         card.setOnMouseClicked(event -> viewModel.openCriminalProfile(featuredCardsPane, person));
 
