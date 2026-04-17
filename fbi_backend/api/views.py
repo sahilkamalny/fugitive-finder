@@ -43,30 +43,48 @@ def get_wanted_persons(request):
 
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import json
+from .models import AppUser
+
 @csrf_exempt
 def register(request):
     if request.method == "POST":
-        data = json.loads(request.body)
+        try:
+            data = json.loads(request.body)
 
-        if AppUser.objects.filter(email=data.get("email")).exists():
-            return JsonResponse({"error": "User exists"}, status=400)
+            first_name = data.get("firstName")
+            last_name = data.get("lastName")
+            username = data.get("username")
+            email = data.get("email")
+            password = data.get("password")
 
-        user = AppUser.objects.create(
-            uid=str(uuid.uuid4()),
-            username=data.get("username"),
-            first_name=data.get("firstName"),
-            last_name=data.get("lastName"),
-            email=data.get("email"),
-            password=data.get("password"),
-            avatar="",
-            saved_targets=[]
-        )
+            if not email or not username:
+                return JsonResponse({"error": "Missing fields"}, status=400)
 
-        return JsonResponse({
-            "uid": user.uid,
-            "username": user.username,
-            "email": user.email
-        })
+            if AppUser.objects.filter(email=email).exists():
+                return JsonResponse({"error": "User already exists"}, status=400)
+
+            user = AppUser.objects.create(
+                uid=username,
+                username=username,
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                password=password
+            )
+
+            return JsonResponse({
+                "message": "User created",
+                "username": user.username
+            })
+
+        except Exception as e:
+            print("ERROR:", e)  # 👈 THIS WILL SHOW ERROR IN TERMINAL
+            return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse({"error": "Invalid request method"}, status=400)
 @csrf_exempt
 def login(request):
     if request.method == "POST":
