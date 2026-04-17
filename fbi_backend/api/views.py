@@ -116,7 +116,7 @@ def login(request):
             "firstName": user.first_name,
             "lastName": user.last_name,
             "email": user.email,
-            "savedTargets": user.saved_targets
+            "savedTargetIds": user.saved_targets
         })
 
     except AppUser.DoesNotExist:
