@@ -42,7 +42,7 @@ public class DashboardViewModel {
             updates.set(String.valueOf(Math.min(10, people.size())));
 
             featuredTargets.clear();
-            featuredTargets.addAll(people.subList(0, Math.min(6, people.size())));
+            featuredTargets.addAll(people.subList(0, Math.min(20, people.size())));
 
             fugitiveLocations.clear();
             fugitiveLocations.add(new MapPoint(40.7506, -73.4290));

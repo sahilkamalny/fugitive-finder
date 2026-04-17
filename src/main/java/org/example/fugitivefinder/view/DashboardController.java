@@ -72,7 +72,7 @@ public class DashboardController {
 
         VBox card = new VBox(6, nameLabel, rewardLabel);
         card.setPadding(new Insets(12));
-        card.setPrefWidth(190);
+        card.setPrefWidth(270);
         card.setPrefHeight(100);
         card.setStyle("-fx-background-color: #111827; -fx-background-radius: 14; -fx-border-color: #334155; -fx-border-radius: 14;");
         card.setOnMouseClicked(event -> viewModel.openCriminalProfile(featuredCardsPane, person));

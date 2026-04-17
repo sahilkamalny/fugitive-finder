@@ -112,7 +112,7 @@
                     </children>
                 </HBox>
 
-                <StackPane fx:id="mapContainer" prefHeight="521.0" prefWidth="1151.0" style="-fx-background-color: #1e293b; -fx-background-radius: 16;" />
+                <StackPane fx:id="mapContainer" prefHeight="200.0" prefWidth="1151.0" style="-fx-background-color: #1e293b; -fx-background-radius: 16;" />
 
                 <Label text="Featured Targets" textFill="WHITE">
                     <font>
@@ -120,9 +120,9 @@
                     </font>
                 </Label>
 
-                <ScrollPane fitToWidth="true" prefHeight="520.0" style="-fx-background-color: transparent; -fx-background: transparent;">
+                <ScrollPane hbarPolicy="NEVER" prefHeight="520.0" style="-fx-background-color: transparent; -fx-background: transparent;">
                     <content>
-                        <FlowPane fx:id="featuredCardsPane" hgap="18.0" prefWrapLength="1060.0" style="-fx-background-color: transparent;" vgap="18.0" />
+                        <FlowPane fx:id="featuredCardsPane" hgap="18.0" prefWrapLength="1174.0" style="-fx-background-color: transparent;" vgap="18.0" />
                     </content>
                 </ScrollPane>
             </children>
