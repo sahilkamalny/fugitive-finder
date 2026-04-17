@@ -1,12 +1,15 @@
 import requests
 import json
-import uuid
 from django.views.decorators.csrf import csrf_exempt
-from .models import AppUser
 from django.http import JsonResponse
+from .models import AppUser
 
 FBI_API_URL = "https://api.fbi.gov/wanted/v1/list"
 
+
+# =========================
+# FBI DATA ENDPOINT
+# =========================
 def get_wanted_persons(request):
     page = request.GET.get("page", 1)
 
@@ -43,82 +46,112 @@ def get_wanted_persons(request):
 
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
-import json
-from .models import AppUser
 
+
+# =========================
+# REGISTER
+# =========================
 @csrf_exempt
 def register(request):
-    if request.method == "POST":
-        try:
-            data = json.loads(request.body)
+    if request.method != "POST":
+        return JsonResponse({"error": "POST required"}, status=405)
 
-            first_name = data.get("firstName")
-            last_name = data.get("lastName")
-            username = data.get("username")
-            email = data.get("email")
-            password = data.get("password")
+    try:
+        data = json.loads(request.body)
 
-            if not email or not username:
-                return JsonResponse({"error": "Missing fields"}, status=400)
+        first_name = data.get("firstName")
+        last_name = data.get("lastName")
+        username = data.get("username")
+        email = data.get("email")
+        password = data.get("password")
 
-            if AppUser.objects.filter(email=email).exists():
-                return JsonResponse({"error": "User already exists"}, status=400)
+        if not all([first_name, last_name, username, email, password]):
+            return JsonResponse({"error": "Missing fields"}, status=400)
 
-            user = AppUser.objects.create(
-                uid=username,
-                username=username,
-                first_name=first_name,
-                last_name=last_name,
-                email=email,
-                password=password
-            )
+        if AppUser.objects.filter(email=email).exists():
+            return JsonResponse({"error": "User already exists"}, status=400)
 
-            return JsonResponse({
-                "message": "User created",
-                "username": user.username
-            })
+        user = AppUser.objects.create(
+            uid=username,
+            username=username,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=password
+        )
 
-        except Exception as e:
-            print("ERROR:", e)  # 👈 THIS WILL SHOW ERROR IN TERMINAL
-            return JsonResponse({"error": str(e)}, status=500)
+        return JsonResponse({
+            "uid": user.uid,
+            "username": user.username,
+            "firstName": user.first_name,
+            "lastName": user.last_name,
+            "email": user.email,
+            "savedTargetIds": user.saved_targets
+        }, status=201)
 
-    return JsonResponse({"error": "Invalid request method"}, status=400)
+    except Exception as e:
+        print("REGISTER ERROR:", e)
+        return JsonResponse({"error": str(e)}, status=500)
+
+
+# =========================
+# LOGIN
+# =========================
 @csrf_exempt
 def login(request):
-    if request.method == "POST":
+    if request.method != "POST":
+        return JsonResponse({"error": "POST required"}, status=405)
+
+    try:
         data = json.loads(request.body)
 
-        try:
-            user = AppUser.objects.get(
-                email=data.get("email"),
-                password=data.get("password")
-            )
+        email = data.get("email")
+        password = data.get("password")
 
-            return JsonResponse({
-                "uid": user.uid,
-                "username": user.username,
-                "email": user.email,
-                "savedTargets": user.saved_targets
-            })
+        user = AppUser.objects.get(email=email, password=password)
 
-        except AppUser.DoesNotExist:
-            return JsonResponse({"error": "Invalid login"}, status=401)
+        return JsonResponse({
+            "uid": user.uid,
+            "username": user.username,
+            "firstName": user.first_name,
+            "lastName": user.last_name,
+            "email": user.email,
+            "savedTargets": user.saved_targets
+        })
+
+    except AppUser.DoesNotExist:
+        return JsonResponse({"error": "Invalid credentials"}, status=401)
+
+    except Exception as e:
+        print("LOGIN ERROR:", e)
+        return JsonResponse({"error": str(e)}, status=500)
+
+
+# =========================
+# SAVE TARGET
+# =========================
 @csrf_exempt
 def save_target(request):
-    if request.method == "POST":
+    if request.method != "POST":
+        return JsonResponse({"error": "POST required"}, status=405)
+
+    try:
         data = json.loads(request.body)
 
-        try:
-            user = AppUser.objects.get(uid=data.get("uid"))
-            target_id = data.get("targetId")
+        uid = data.get("uid")
+        target_id = data.get("targetId")
 
-            if target_id not in user.saved_targets:
-                user.saved_targets.append(target_id)
-                user.save()
+        user = AppUser.objects.get(uid=uid)
 
-            return JsonResponse({"message": "Saved"})
+        if target_id and target_id not in user.saved_targets:
+            user.saved_targets.append(target_id)
+            user.save()
 
-        except AppUser.DoesNotExist:
-            return JsonResponse({"error": "User not found"}, status=404)
+        return JsonResponse({"message": "Saved", "savedTargets": user.saved_targets})
+
+    except AppUser.DoesNotExist:
+        return JsonResponse({"error": "User not found"}, status=404)
+
+    except Exception as e:
+        print("SAVE TARGET ERROR:", e)
+        return JsonResponse({"error": str(e)}, status=500)
