@@ -22,24 +22,13 @@ public class LoginViewModel {
     }
 
     public boolean login(Node sourceNode) {
-        boolean success = UserService.login(email.get(), password.get());
+        AppUser user = UserService.login(email.get(), password.get());
 
-        if (!success) {
+        if (user == null) {
             return false;
         }
 
-// TEMP user (until we return real one from backend)
-        Session.getInstance().setCurrentUser(
-                new AppUser(
-                        email.get(),
-                        email.get(),
-                        "",
-                        "",
-                        email.get(),
-                        "",
-                        new java.util.ArrayList<>()
-                )
-        );
+        Session.getInstance().setCurrentUser(user);
         SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/dashboard.fxml", 1440, 900);
         return true;
     }
