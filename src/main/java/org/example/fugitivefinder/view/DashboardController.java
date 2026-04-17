@@ -5,7 +5,6 @@ import com.gluonhq.maps.MapView;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
@@ -15,20 +14,11 @@ import org.example.fugitivefinder.viewModel.DashboardViewModel;
 
 public class DashboardController {
 
-    @FXML
-    private Label usernameLabel;
-
-    @FXML
-    private Label totalWantedLabel;
-
-    @FXML
-    private Label rewardCasesLabel;
-
-    @FXML
-    private Label updatesLabel;
-
-    @FXML
-    private FlowPane featuredCardsPane;
+    @FXML private Label usernameLabel;
+    @FXML private Label totalWantedLabel;
+    @FXML private Label rewardCasesLabel;
+    @FXML private Label updatesLabel;
+    @FXML private FlowPane featuredCardsPane;
     @FXML private StackPane mapContainer;
 
     private DashboardViewModel viewModel;
@@ -44,21 +34,19 @@ public class DashboardController {
         updatesLabel.textProperty().bind(viewModel.updatesProperty());
 
         mapView = new MapView();
-        mapView.setCenter(new MapPoint(39.8283,-98.5795));
+        mapView.setCenter(new MapPoint(39.8283, -98.5795));
         mapView.setZoom(3);
         mapContainer.getChildren().add(mapView);
 
-        viewModel.loadData();
-
-        renderMap();
-        renderCards();
         viewModel.getFeaturedTargets().addListener((javafx.collections.ListChangeListener<WantedPerson>) change -> {
             renderCards();
         });
 
-        new Thread(() -> {
-            viewModel.loadData();
-        }).start();
+        viewModel.getFugitiveLocations().addListener((javafx.collections.ListChangeListener<MapPoint>) change -> {
+            renderMap();
+        });
+
+        new Thread(() -> viewModel.loadData()).start();
     }
 
     private void renderMap() {
@@ -66,6 +54,7 @@ public class DashboardController {
             mapView.addLayer(new MapController(point));
         }
     }
+
     private void renderCards() {
         featuredCardsPane.getChildren().clear();
 
@@ -79,11 +68,6 @@ public class DashboardController {
         imageView.setFitWidth(190);
         imageView.setFitHeight(150);
         imageView.setPreserveRatio(false);
-
-        String imageUrl = person.getPrimaryImageUrl();
-        if (imageUrl != null && !imageUrl.isBlank()) {
-            imageView.setImage(new Image(imageUrl, true));
-        }
 
         Label nameLabel = new Label(person.getTitle());
         nameLabel.setStyle("-fx-text-fill: white; -fx-font-size: 18; -fx-font-weight: bold;");
