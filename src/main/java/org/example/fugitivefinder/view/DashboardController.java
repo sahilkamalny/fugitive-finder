@@ -2,14 +2,19 @@ package org.example.fugitivefinder.view;
 
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.example.fugitivefinder.model.WantedPerson;
 import org.example.fugitivefinder.viewModel.DashboardViewModel;
+
+import java.util.List;
 
 public class DashboardController {
 
@@ -19,9 +24,16 @@ public class DashboardController {
     @FXML private Label updatesLabel;
     @FXML private FlowPane featuredCardsPane;
     @FXML private StackPane mapContainer;
+    @FXML private Button prevButton;
+    @FXML private Button nextButton;
+    @FXML private Label pageLabel;
 
     private DashboardViewModel viewModel;
     private MapView mapView;
+
+    private List<WantedPerson> allPeople;
+    private int currentPage = 1;
+    private static final int PAGE_SIZE = 16;
 
     @FXML
     public void initialize() {
@@ -37,12 +49,13 @@ public class DashboardController {
         mapView.setZoom(3);
         mapContainer.getChildren().add(mapView);
 
-        viewModel.getFeaturedTargets().addListener((javafx.collections.ListChangeListener<WantedPerson>) change -> {
-            renderCards();
-        });
-
         viewModel.getFugitiveLocations().addListener((javafx.collections.ListChangeListener<MapPoint>) change -> {
             renderMap();
+        });
+
+        viewModel.getAllPeople().addListener((javafx.collections.ListChangeListener<WantedPerson>) change -> {
+            allPeople = viewModel.getAllPeople();
+            Platform.runLater(() -> renderPage());
         });
 
         new Thread(() -> viewModel.loadData()).start();
@@ -54,11 +67,26 @@ public class DashboardController {
         }
     }
 
-    private void renderCards() {
+    private void renderPage() {
         featuredCardsPane.getChildren().clear();
-        for (WantedPerson person : viewModel.getFeaturedTargets()) {
+
+        if (allPeople == null || allPeople.isEmpty()) return;
+
+        int totalPages = (int) Math.ceil((double) allPeople.size() / PAGE_SIZE);
+        int fromIndex = (currentPage - 1) * PAGE_SIZE;
+        int toIndex = Math.min(fromIndex + PAGE_SIZE, allPeople.size());
+
+        for (WantedPerson person : allPeople.subList(fromIndex, toIndex)) {
             featuredCardsPane.getChildren().add(createCard(person));
         }
+
+        pageLabel.setText("Page " + currentPage + " of " + totalPages);
+        prevButton.setDisable(currentPage == 1);
+        nextButton.setDisable(currentPage == totalPages);
+    }
+
+    private void renderCards() {
+        renderPage();
     }
 
     private VBox createCard(WantedPerson person) {
@@ -88,5 +116,23 @@ public class DashboardController {
     @FXML
     private void goToUserProfile() {
         viewModel.goToUserProfile(featuredCardsPane);
+    }
+
+    @FXML
+    public void goToPrevPage(ActionEvent actionEvent) {
+        if (currentPage > 1) {
+            currentPage--;
+            renderPage();
+        }
+    }
+
+    @FXML
+    public void goToNextPage(ActionEvent actionEvent) {
+        if (allPeople == null) return;
+        int totalPages = (int) Math.ceil((double) allPeople.size() / PAGE_SIZE);
+        if (currentPage < totalPages) {
+            currentPage++;
+            renderPage();
+        }
     }
 }

@@ -21,6 +21,7 @@ public class DashboardViewModel {
     private final StringProperty rewardCases = new SimpleStringProperty("0");
     private final StringProperty updates = new SimpleStringProperty("0");
     private final ObservableList<WantedPerson> featuredTargets = FXCollections.observableArrayList();
+    private final ObservableList<WantedPerson> allPeople = FXCollections.observableArrayList();
     private final ObservableList<MapPoint> fugitiveLocations = FXCollections.observableArrayList();
 
     public void loadData() {
@@ -41,6 +42,9 @@ public class DashboardViewModel {
             rewardCases.set(String.valueOf(rewardCount));
             updates.set(String.valueOf(Math.min(10, people.size())));
 
+            allPeople.clear();
+            allPeople.addAll(people);
+
             featuredTargets.clear();
             featuredTargets.addAll(people.subList(0, Math.min(20, people.size())));
 
@@ -56,6 +60,7 @@ public class DashboardViewModel {
     public StringProperty rewardCasesProperty() { return rewardCases; }
     public StringProperty updatesProperty() { return updates; }
     public ObservableList<WantedPerson> getFeaturedTargets() { return featuredTargets; }
+    public ObservableList<WantedPerson> getAllPeople() { return allPeople; }
     public ObservableList<MapPoint> getFugitiveLocations() { return fugitiveLocations; }
 
     public void openCriminalProfile(Node sourceNode, WantedPerson person) {
