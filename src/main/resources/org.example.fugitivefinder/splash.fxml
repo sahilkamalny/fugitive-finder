@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="900.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.fugitivefinder.view.SplashController">
+
+    <children>
+        <Pane prefHeight="900.0" prefWidth="1440.0">
+            <children>
+                <Rectangle arcHeight="0.0" arcWidth="0.0" fill="#081120" height="900.0" width="1440.0" />
+
+                <ImageView fitHeight="438.0" fitWidth="424.0" layoutX="508.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@images/logo.png" />
+                    </image>
+                </ImageView>
+
+                <Text fill="WHITE" layoutX="573.0" layoutY="453.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FUGITIVE FINDER">
+                    <font>
+                        <Font name="Devanagari MT" size="34.0" />
+                    </font>
+                </Text>
+
+                <Text fill="#cbd5e1" layoutX="564.0" layoutY="494.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Track cases, rewards, and wanted profiles">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+
+                <ProgressBar fx:id="loadingBar" layoutX="450.0" layoutY="574.0" prefHeight="28.0" prefWidth="540.0" progress="0.35" style="-fx-accent: #4fd1c5; -fx-control-inner-background: #0f172a;" />
+
+                <Button layoutX="608.0" layoutY="660.0" mnemonicParsing="false" onAction="#goToLogin" prefHeight="54.0" prefWidth="225.0" style="-fx-background-color: #0f2d5c; -fx-text-fill: white; -fx-font-size: 22px; -fx-background-radius: 12;" text="Continue">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Button>
+            </children>
+        </Pane>
+    </children>
+</AnchorPane>

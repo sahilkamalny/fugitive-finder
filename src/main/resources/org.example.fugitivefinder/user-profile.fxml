@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="900.0" prefWidth="1440.0"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.fugitivefinder.view.UserProfileController"
+            style="-fx-background-color: #081120;">
+
+    <left>
+        <VBox prefWidth="220.0" spacing="18.0" style="-fx-background-color: #0f172a; -fx-padding: 20;">
+            <children>
+                <HBox spacing="10.0">
+                    <children>
+                        <ImageView fitHeight="48.0" fitWidth="48.0" preserveRatio="true">
+                            <image>
+                                <Image url="@images/logo.png" />
+                            </image>
+                        </ImageView>
+                        <Label text="Fugitive Finder" textFill="WHITE" wrapText="true">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+
+                <Label text="Dashboard" onMouseClicked="#goToDashboard" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Label>
+
+                <Label text="Rewards" onMouseClicked="#goToRewards" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Label>
+
+                <Label text="Profile" style="-fx-background-color: #1e293b; -fx-text-fill: white; -fx-padding: 12 16; -fx-background-radius: 10;" />
+            </children>
+        </VBox>
+    </left>
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="14.0" style="-fx-background-color: #0b1320; -fx-padding: 18 24;">
+            <children>
+                <Label text="User Profile" textFill="WHITE">
+                    <font>
+                        <Font size="30.0" />
+                    </font>
+                </Label>
+                <Region HBox.hgrow="ALWAYS" />
+                <ImageView fitHeight="44.0" fitWidth="44.0" preserveRatio="true">
+                    <image>
+                        <Image url="@images/detective-avatar.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox spacing="22.0" style="-fx-padding: 24;">
+            <children>
+                <HBox spacing="22.0" style="-fx-background-color: #111827; -fx-background-radius: 16; -fx-padding: 20;">
+                    <children>
+                        <ImageView fx:id="avatarImageView" fitHeight="140.0" fitWidth="140.0" preserveRatio="true" />
+                        <VBox spacing="10.0">
+                            <children>
+                                <Label fx:id="usernameLabel" text="Username" textFill="WHITE">
+                                    <font>
+                                        <Font size="30.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="fullNameLabel" text="Full Name" textFill="#e2e8f0">
+                                    <font>
+                                        <Font size="16.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="emailLabel" text="Email" textFill="#e2e8f0">
+                                    <font>
+                                        <Font size="16.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+
+                <Label text="My Saved Targets" textFill="WHITE">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                </Label>
+
+                <FlowPane fx:id="savedTargetsPane" hgap="18.0" prefWrapLength="1060.0" vgap="18.0" />
+            </children>
+        </VBox>
+    </center>
+</BorderPane>
