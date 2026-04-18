@@ -146,4 +146,12 @@ public class DashboardViewModel {
     public void goToUserProfile(Node sourceNode) {
         SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/user-profile.fxml", 1440, 900);
     }
+
+    public Map<String, MapPoint> getOfficeCoordinates() {
+        return this.officeCoordinates;
+    }
+
+    public List<WantedPerson> getWantedPeopleList() {
+        return this.allPeople;
+    }
 }
