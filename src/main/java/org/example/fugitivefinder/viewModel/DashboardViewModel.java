@@ -12,7 +12,13 @@ import org.example.fugitivefinder.model.WantedPerson;
 import org.example.fugitivefinder.service.FbiApiService;
 import org.example.fugitivefinder.session.Session;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DashboardViewModel {
 
@@ -23,6 +29,42 @@ public class DashboardViewModel {
     private final ObservableList<WantedPerson> featuredTargets = FXCollections.observableArrayList();
     private final ObservableList<WantedPerson> allPeople = FXCollections.observableArrayList();
     private final ObservableList<MapPoint> fugitiveLocations = FXCollections.observableArrayList();
+    private final Map<MapPoint, List<WantedPerson>> locationGroups = new HashMap<>();
+    private final Map<String, MapPoint> officeCoordinates = new HashMap<>();
+
+
+    public DashboardViewModel() {
+        loadOfficeCoordinates();
+    }
+
+    private void loadOfficeCoordinates() {
+        String path = "/offices.json";
+        try (InputStream is = getClass().getResourceAsStream(path)) {
+            if (is == null) {
+                System.err.println("CRITICALLLL: Could not find offices.json at " + path);
+                return;
+            }
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    if (line.contains(":") && line.contains("[")) {
+                        String key = line.split(":")[0].replace("\"", "").trim().toLowerCase();
+                        String coords = line.split("\\[")[1].split("\\]")[0];
+                        String[] latLng = coords.split(",");
+
+                        double lat = Double.parseDouble(latLng[0].trim());
+                        double lng = Double.parseDouble(latLng[1].trim());
+
+                        officeCoordinates.put(key, new MapPoint(lat, lng));
+                    }
+                }
+                System.out.println("SUCCESS: Loaded " + officeCoordinates.size() + " office coordinates.");
+            }
+        } catch (Exception e) {
+            System.err.println("ERROR: Failed to parse offices.json");
+            e.printStackTrace();
+        }
+    }
 
     public void loadData() {
         AppUser currentUser = Session.getInstance().getCurrentUser();
@@ -48,11 +90,40 @@ public class DashboardViewModel {
             featuredTargets.clear();
             featuredTargets.addAll(people.subList(0, Math.min(20, people.size())));
 
+            locationGroups.clear();
             fugitiveLocations.clear();
-            fugitiveLocations.add(new MapPoint(40.7506, -73.4290));
-            fugitiveLocations.add(new MapPoint(40.8682, -73.4257));
-            fugitiveLocations.add(new MapPoint(40.6959, -73.3257));
+
+            for (WantedPerson person : people) {
+                MapPoint point = findCoordinates(person.getField_offices());
+                if (point != null) {
+                    locationGroups.computeIfAbsent(point, k -> new ArrayList<>()).add(person);
+                    if (!fugitiveLocations.contains(point)) {
+                        fugitiveLocations.add(point);
+                    }
+                }
+            }
         });
+    }
+    private MapPoint findCoordinates(List<String> offices) {
+        if (offices == null || offices.isEmpty()){
+           // System.out.println("This person has no field offices listed.");
+        return null;
+    }
+        String officeName = offices.get(0).toLowerCase().trim().replace(" ", "");
+        MapPoint point = officeCoordinates.get(officeName);
+       /* if (point == null) {
+            System.out.println("Match Failed");
+            System.out.println("   -> API sent: " + offices.get(0));
+            System.out.println("   -> Search key used: '" + officeName + "'");
+            System.out.println("   -> Total keys in json map: " + officeCoordinates.size());
+
+            if (!officeCoordinates.isEmpty()) {
+                System.out.println("   -> This keys is in map: " + officeCoordinates.keySet().stream().limit(5).toList());
+            }
+        } else {
+            System.out.println("Match Success for " + officeName + " at " + point.getLatitude() + ", " + point.getLongitude());
+        }*/
+        return  point;
     }
 
     public StringProperty usernameProperty() { return username; }

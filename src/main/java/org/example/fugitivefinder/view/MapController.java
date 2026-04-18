@@ -17,13 +17,21 @@ public class MapController extends MapLayer {
         this.circle.setStroke(Color.BLACK);
         this.circle.setStrokeWidth(2);
         this.getChildren().add(circle);
+
+        this.parentProperty().addListener((obs, oldParent, newParent) -> {
+            if (newParent != null) {
+                this.markDirty();
+            }
+        });
     }
 
     @Override
     protected void layoutLayer() {
-        // This converts Latitude/Longitude to X/Y pixels on the screen
+        super.layoutLayer();
         Point2D point2d = getMapPoint(mapPoint.getLatitude(), mapPoint.getLongitude());
-        circle.setTranslateX(point2d.getX());
-        circle.setTranslateY(point2d.getY());
+        if (point2d != null) {
+            circle.setTranslateX(point2d.getX());
+            circle.setTranslateY(point2d.getY());
+        }
     }
 }

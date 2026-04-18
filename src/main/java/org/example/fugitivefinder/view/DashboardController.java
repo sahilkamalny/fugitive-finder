@@ -45,12 +45,12 @@ public class DashboardController {
         updatesLabel.textProperty().bind(viewModel.updatesProperty());
 
         mapView = new MapView();
-        mapView.setCenter(new MapPoint(39.8283, -98.5795));
-        mapView.setZoom(3);
+        mapView.setCenter(new MapPoint(38, -98.5795));
+        mapView.setZoom(4.8);
         mapContainer.getChildren().add(mapView);
 
         viewModel.getFugitiveLocations().addListener((javafx.collections.ListChangeListener<MapPoint>) change -> {
-            renderMap();
+            Platform.runLater(this::renderMap);
         });
 
         viewModel.getAllPeople().addListener((javafx.collections.ListChangeListener<WantedPerson>) change -> {
@@ -62,6 +62,9 @@ public class DashboardController {
     }
 
     private void renderMap() {
+        if (mapView.getWidth() <= 0) {
+            return;
+        }
         for (MapPoint point : viewModel.getFugitiveLocations()) {
             mapView.addLayer(new MapController(point));
         }
