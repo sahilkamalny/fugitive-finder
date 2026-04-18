@@ -36,7 +36,11 @@ def get_wanted_persons(request):
                 "rewardMax": item.get("reward_max"),
                 "subjects": item.get("subjects", []),
                 "fieldOffices": item.get("field_offices", []),
-                "images": [img.get("original") for img in item.get("images", []) if img.get("original")],
+                "images": [
+                img.get("thumb") or img.get("original")
+                for img in item.get("images", [])
+                if img.get("thumb") or img.get("original")
+                ],
                 "publication": item.get("publication")
             })
 
@@ -117,7 +121,7 @@ def login(request):
             "firstName": user.first_name,
             "lastName": user.last_name,
             "email": user.email,
-            "savedTargets": user.saved_targets
+            "savedTargetIds": user.saved_targets
         })
 
     except AppUser.DoesNotExist:
