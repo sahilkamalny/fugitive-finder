@@ -1,7 +1,7 @@
 package org.example.fugitivefinder.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -10,101 +10,84 @@ public class WantedPerson {
     private String uid;
     private String title;
     private String description;
-    private String reward_text;
-    private String warning_message;
     private String status;
-    private List<String> aliases;
+    private String sex;
+    private String race;
+    private String nationality;
+    private String hair;
+    private String eyes;
+    private String publication;
+
+    @JsonProperty("rewardText")
+    private String reward_text;
+
+    @JsonProperty("rewardMin")
+    private Double reward_min;
+
+    @JsonProperty("rewardMax")
+    private Double reward_max;
+
+    @JsonProperty("fieldOffices")
     private List<String> field_offices;
-    private List<ImageItem> images;
 
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static class ImageItem {
-        private String original;
+    private List<String> aliases;
+    private List<String> subjects;
+    private List<String> images;
 
-        public String getOriginal() {
-            return original;
-        }
+    public String getUid() { return uid; }
+    public void setUid(String uid) { this.uid = uid; }
 
-        public void setOriginal(String original) {
-            this.original = original;
-        }
-    }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
-    public String getUid() {
-        return uid;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
-    public String getTitle() {
-        return title;
-    }
+    public String getSex() { return sex; }
+    public void setSex(String sex) { this.sex = sex; }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    public String getRace() { return race; }
+    public void setRace(String race) { this.race = race; }
 
-    public String getDescription() {
-        return description;
-    }
+    public String getNationality() { return nationality; }
+    public void setNationality(String nationality) { this.nationality = nationality; }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public String getHair() { return hair; }
+    public void setHair(String hair) { this.hair = hair; }
 
-    public String getReward_text() {
-        return reward_text;
-    }
+    public String getEyes() { return eyes; }
+    public void setEyes(String eyes) { this.eyes = eyes; }
 
-    public void setReward_text(String reward_text) {
-        this.reward_text = reward_text;
-    }
+    public String getPublication() { return publication; }
+    public void setPublication(String publication) { this.publication = publication; }
 
-    public String getWarning_message() {
-        return warning_message;
-    }
+    public String getReward_text() { return reward_text; }
+    public void setReward_text(String reward_text) { this.reward_text = reward_text; }
 
-    public void setWarning_message(String warning_message) {
-        this.warning_message = warning_message;
-    }
+    public Double getReward_min() { return reward_min; }
+    public void setReward_min(Double reward_min) { this.reward_min = reward_min; }
 
-    public String getStatus() {
-        return status;
-    }
+    public Double getReward_max() { return reward_max; }
+    public void setReward_max(Double reward_max) { this.reward_max = reward_max; }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    public List<String> getField_offices() { return field_offices; }
+    public void setField_offices(List<String> field_offices) { this.field_offices = field_offices; }
 
-    public List<String> getAliases() {
-        return aliases;
-    }
+    public List<String> getAliases() { return aliases; }
+    public void setAliases(List<String> aliases) { this.aliases = aliases; }
 
-    public void setAliases(List<String> aliases) {
-        this.aliases = aliases;
-    }
+    public List<String> getSubjects() { return subjects; }
+    public void setSubjects(List<String> subjects) { this.subjects = subjects; }
 
-    public List<String> getField_offices() {
-        return field_offices;
-    }
-
-    public void setField_offices(List<String> field_offices) {
-        this.field_offices = field_offices;
-    }
-
-    public List<ImageItem> getImages() {
-        return images;
-    }
-
-    public void setImages(List<ImageItem> images) {
-        this.images = images;
-    }
+    public List<String> getImages() { return images; }
+    public void setImages(List<String> images) { this.images = images; }
 
     public String getPrimaryImageUrl() {
-        if (images != null && !images.isEmpty() && images.get(0) != null) {
-            return images.get(0).getOriginal();
+        if (images != null && !images.isEmpty()) {
+            return images.get(0);
         }
         return null;
     }
@@ -126,4 +109,7 @@ public class WantedPerson {
                 ? "Not available"
                 : String.join(", ", field_offices);
     }
+
+    public String getWarning_message() { return null; }
+    public void setWarning_message(String warning_message) { }
 }

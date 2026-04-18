@@ -21,8 +21,9 @@ public class DashboardViewModel {
     private final StringProperty rewardCases = new SimpleStringProperty("0");
     private final StringProperty updates = new SimpleStringProperty("0");
     private final ObservableList<WantedPerson> featuredTargets = FXCollections.observableArrayList();
-
+    private final ObservableList<WantedPerson> allPeople = FXCollections.observableArrayList();
     private final ObservableList<MapPoint> fugitiveLocations = FXCollections.observableArrayList();
+
     public void loadData() {
         AppUser currentUser = Session.getInstance().getCurrentUser();
         if (currentUser != null) {
@@ -41,17 +42,17 @@ public class DashboardViewModel {
             rewardCases.set(String.valueOf(rewardCount));
             updates.set(String.valueOf(Math.min(10, people.size())));
 
+            allPeople.clear();
+            allPeople.addAll(people);
+
             featuredTargets.clear();
-            int limit = Math.min(6, people.size());
-            featuredTargets.addAll(people.subList(0, limit));
+            featuredTargets.addAll(people.subList(0, Math.min(20, people.size())));
+
+            fugitiveLocations.clear();
+            fugitiveLocations.add(new MapPoint(40.7506, -73.4290));
+            fugitiveLocations.add(new MapPoint(40.8682, -73.4257));
+            fugitiveLocations.add(new MapPoint(40.6959, -73.3257));
         });
-        featuredTargets.clear();
-        int limit = Math.min(6, people.size());
-        featuredTargets.addAll(people.subList(0, Math.min(6, people.size())));
-        fugitiveLocations.clear();
-        fugitiveLocations.add(new MapPoint(40.7506, -73.4290));
-        fugitiveLocations.add(new MapPoint(40.8682, -73.4257)); // Huntington
-        fugitiveLocations.add(new MapPoint(40.6959, -73.3257));//Babylon
     }
 
     public StringProperty usernameProperty() { return username; }
@@ -59,7 +60,9 @@ public class DashboardViewModel {
     public StringProperty rewardCasesProperty() { return rewardCases; }
     public StringProperty updatesProperty() { return updates; }
     public ObservableList<WantedPerson> getFeaturedTargets() { return featuredTargets; }
+    public ObservableList<WantedPerson> getAllPeople() { return allPeople; }
     public ObservableList<MapPoint> getFugitiveLocations() { return fugitiveLocations; }
+
     public void openCriminalProfile(Node sourceNode, WantedPerson person) {
         Session.getInstance().setSelectedWantedPerson(person);
         SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/criminal-profile.fxml", 1440, 900);
