@@ -12,9 +12,10 @@ FBI_API_URL = "https://api.fbi.gov/wanted/v1/list"
 # =========================
 def get_wanted_persons(request):
     page = request.GET.get("page", 1)
+    page_size = request.GET.get("pageSize", 50)
 
     try:
-        response = requests.get(FBI_API_URL, params={"page": page})
+        response = requests.get(FBI_API_URL, params={"page": page, "pageSize": page_size})
         data = response.json()
 
         transformed_items = []
@@ -35,7 +36,7 @@ def get_wanted_persons(request):
                 "rewardMax": item.get("reward_max"),
                 "subjects": item.get("subjects", []),
                 "fieldOffices": item.get("field_offices", []),
-                "images": [img.get("original") for img in item.get("images", [])],
+                "images": [img.get("original") for img in item.get("images", []) if img.get("original")],
                 "publication": item.get("publication")
             })
 

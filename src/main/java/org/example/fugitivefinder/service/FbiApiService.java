@@ -13,7 +13,7 @@ import java.util.List;
 
 public final class FbiApiService {
 
-    private static final String BASE_URL = "http://127.0.0.1:8000/api/wanted/";
+    private static final String BASE_URL = "https://fbi-backend-wilt.onrender.com/api/wanted/?pageSize=50";
 
     private FbiApiService() {
     }

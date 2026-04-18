@@ -2,37 +2,38 @@ package org.example.fugitivefinder.view;
 
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.example.fugitivefinder.model.WantedPerson;
 import org.example.fugitivefinder.viewModel.DashboardViewModel;
 
+import java.util.List;
+
 public class DashboardController {
 
-    @FXML
-    private Label usernameLabel;
-
-    @FXML
-    private Label totalWantedLabel;
-
-    @FXML
-    private Label rewardCasesLabel;
-
-    @FXML
-    private Label updatesLabel;
-
-    @FXML
-    private FlowPane featuredCardsPane;
+    @FXML private Label usernameLabel;
+    @FXML private Label totalWantedLabel;
+    @FXML private Label rewardCasesLabel;
+    @FXML private Label updatesLabel;
+    @FXML private FlowPane featuredCardsPane;
     @FXML private StackPane mapContainer;
+    @FXML private Button prevButton;
+    @FXML private Button nextButton;
+    @FXML private Label pageLabel;
 
     private DashboardViewModel viewModel;
     private MapView mapView;
+
+    private List<WantedPerson> allPeople;
+    private int currentPage = 1;
+    private static final int PAGE_SIZE = 16;
 
     @FXML
     public void initialize() {
@@ -44,21 +45,20 @@ public class DashboardController {
         updatesLabel.textProperty().bind(viewModel.updatesProperty());
 
         mapView = new MapView();
-        mapView.setCenter(new MapPoint(39.8283,-98.5795));
+        mapView.setCenter(new MapPoint(39.8283, -98.5795));
         mapView.setZoom(3);
         mapContainer.getChildren().add(mapView);
 
-        viewModel.loadData();
-
-        renderMap();
-        renderCards();
-        viewModel.getFeaturedTargets().addListener((javafx.collections.ListChangeListener<WantedPerson>) change -> {
-            renderCards();
+        viewModel.getFugitiveLocations().addListener((javafx.collections.ListChangeListener<MapPoint>) change -> {
+            renderMap();
         });
 
-        new Thread(() -> {
-            viewModel.loadData();
-        }).start();
+        viewModel.getAllPeople().addListener((javafx.collections.ListChangeListener<WantedPerson>) change -> {
+            allPeople = viewModel.getAllPeople();
+            Platform.runLater(() -> renderPage());
+        });
+
+        new Thread(() -> viewModel.loadData()).start();
     }
 
     private void renderMap() {
@@ -66,37 +66,42 @@ public class DashboardController {
             mapView.addLayer(new MapController(point));
         }
     }
-    private void renderCards() {
+
+    private void renderPage() {
         featuredCardsPane.getChildren().clear();
 
-        for (WantedPerson person : viewModel.getFeaturedTargets()) {
+        if (allPeople == null || allPeople.isEmpty()) return;
+
+        int totalPages = (int) Math.ceil((double) allPeople.size() / PAGE_SIZE);
+        int fromIndex = (currentPage - 1) * PAGE_SIZE;
+        int toIndex = Math.min(fromIndex + PAGE_SIZE, allPeople.size());
+
+        for (WantedPerson person : allPeople.subList(fromIndex, toIndex)) {
             featuredCardsPane.getChildren().add(createCard(person));
         }
+
+        pageLabel.setText("Page " + currentPage + " of " + totalPages);
+        prevButton.setDisable(currentPage == 1);
+        nextButton.setDisable(currentPage == totalPages);
+    }
+
+    private void renderCards() {
+        renderPage();
     }
 
     private VBox createCard(WantedPerson person) {
-        ImageView imageView = new ImageView();
-        imageView.setFitWidth(190);
-        imageView.setFitHeight(150);
-        imageView.setPreserveRatio(false);
-
-        String imageUrl = person.getPrimaryImageUrl();
-        if (imageUrl != null && !imageUrl.isBlank()) {
-            imageView.setImage(new Image(imageUrl, true));
-        }
-
         Label nameLabel = new Label(person.getTitle());
         nameLabel.setStyle("-fx-text-fill: white; -fx-font-size: 18; -fx-font-weight: bold;");
+        nameLabel.setWrapText(true);
 
         Label rewardLabel = new Label(person.getDisplayReward());
         rewardLabel.setStyle("-fx-text-fill: #f59e0b; -fx-font-size: 14;");
+        rewardLabel.setWrapText(true);
 
-        VBox details = new VBox(6, nameLabel, rewardLabel);
-        details.setPadding(new Insets(10));
-
-        VBox card = new VBox(imageView, details);
-        card.setPrefWidth(190);
-        card.setPrefHeight(250);
+        VBox card = new VBox(6, nameLabel, rewardLabel);
+        card.setPadding(new Insets(12));
+        card.setPrefWidth(270);
+        card.setPrefHeight(100);
         card.setStyle("-fx-background-color: #111827; -fx-background-radius: 14; -fx-border-color: #334155; -fx-border-radius: 14;");
         card.setOnMouseClicked(event -> viewModel.openCriminalProfile(featuredCardsPane, person));
 
@@ -111,5 +116,23 @@ public class DashboardController {
     @FXML
     private void goToUserProfile() {
         viewModel.goToUserProfile(featuredCardsPane);
+    }
+
+    @FXML
+    public void goToPrevPage(ActionEvent actionEvent) {
+        if (currentPage > 1) {
+            currentPage--;
+            renderPage();
+        }
+    }
+
+    @FXML
+    public void goToNextPage(ActionEvent actionEvent) {
+        if (allPeople == null) return;
+        int totalPages = (int) Math.ceil((double) allPeople.size() / PAGE_SIZE);
+        if (currentPage < totalPages) {
+            currentPage++;
+            renderPage();
+        }
     }
 }
