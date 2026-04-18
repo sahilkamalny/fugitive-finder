@@ -113,7 +113,7 @@
                             </children>
                         </HBox>
 
-                        <StackPane fx:id="mapContainer" prefHeight="300.0" prefWidth="1151.0" style="-fx-background-color: #1e293b; -fx-background-radius: 16;" />
+                        <StackPane fx:id="mapContainer" prefHeight="610.0" prefWidth="1151.0" style="-fx-background-color: #1e293b; -fx-background-radius: 16;" />
 
                         <Label text="Featured Targets" textFill="WHITE">
                             <font>
