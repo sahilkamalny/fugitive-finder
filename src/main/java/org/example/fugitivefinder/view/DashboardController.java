@@ -13,6 +13,8 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -75,7 +77,13 @@ public class DashboardController {
             Platform.runLater(() -> renderPage());
         });
 
-        new Thread(() -> viewModel.loadData()).start();
+        new Thread(() -> {
+            viewModel.loadData();
+            Platform.runLater(() -> {
+                allPeople = viewModel.getAllPeople();
+                renderPage();   // 🔥 FORCE render
+            });
+        }).start();
     }
 
     @FXML
@@ -254,11 +262,22 @@ public class DashboardController {
         Label rewardLabel = new Label(person.getDisplayReward());
         rewardLabel.setStyle("-fx-text-fill: #f59e0b; -fx-font-size: 14;");
         rewardLabel.setWrapText(true);
+        ImageView imageView = new ImageView();
 
-        VBox card = new VBox(6, nameLabel, rewardLabel);
+        String imageUrl = person.getPrimaryImageUrl();
+
+        if (imageUrl != null && !imageUrl.isBlank()) {
+            imageView.setImage(new Image(imageUrl, false));
+        }
+
+        imageView.setFitWidth(250);
+        imageView.setFitHeight(150);
+        imageView.setPreserveRatio(true);
+
+        VBox card = new VBox(8, imageView, nameLabel, rewardLabel);
         card.setPadding(new Insets(12));
         card.setPrefWidth(270);
-        card.setPrefHeight(100);
+        card.setPrefHeight(220);
         card.setStyle("-fx-background-color: #111827; -fx-background-radius: 14; -fx-border-color: #334155; -fx-border-radius: 14;");
         card.setOnMouseClicked(event -> viewModel.openCriminalProfile(featuredCardsPane, person));
 

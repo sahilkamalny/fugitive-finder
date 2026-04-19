@@ -78,7 +78,7 @@ public class DashboardViewModel {
             totalWanted.set(String.valueOf(people.size()));
 
             long rewardCount = people.stream()
-                    .filter(person -> person.getReward_text() != null && !person.getReward_text().isBlank())
+                    .filter(person -> person.getRewardText() != null && !person.getRewardText().isBlank())
                     .count();
 
             rewardCases.set(String.valueOf(rewardCount));
@@ -103,6 +103,7 @@ public class DashboardViewModel {
                 }
             }
         });
+        System.out.println("People size: " + people.size());
     }
     private MapPoint findCoordinates(List<String> offices) {
         if (offices == null || offices.isEmpty()){

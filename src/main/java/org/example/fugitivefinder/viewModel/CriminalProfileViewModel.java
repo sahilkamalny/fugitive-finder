@@ -68,8 +68,11 @@ public class CriminalProfileViewModel {
                 ? "No warning provided."
                 : selectedPerson.getWarning_message());
 
-        if (selectedPerson.getPrimaryImageUrl() != null) {
-            imageUrl.set(selectedPerson.getPrimaryImageUrl());
+        String url = selectedPerson.getPrimaryImageUrl();
+        if (url != null && !url.isBlank()) {
+            imageUrl.set(url);
+        } else {
+            imageUrl.set("https://via.placeholder.com/150");
         }
     }
 
