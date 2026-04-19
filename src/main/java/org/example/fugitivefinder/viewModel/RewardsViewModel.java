@@ -28,7 +28,7 @@ public class RewardsViewModel {
 
     public void loadData() {
         List<WantedPerson> people = FbiApiService.getWantedPeople().stream()
-                .filter(person -> person.getReward_text() != null && !person.getReward_text().isBlank())
+                .filter(person -> person.getRewardText() != null && !person.getRewardText().isBlank())
                 .collect(Collectors.toList());
 
         rewardCases.setAll(people);

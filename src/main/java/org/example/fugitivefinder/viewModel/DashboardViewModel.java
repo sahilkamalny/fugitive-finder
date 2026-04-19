@@ -36,7 +36,7 @@ public class DashboardViewModel {
             totalWanted.set(String.valueOf(people.size()));
 
             long rewardCount = people.stream()
-                    .filter(person -> person.getReward_text() != null && !person.getReward_text().isBlank())
+                    .filter(person -> person.getRewardText() != null && !person.getRewardText().isBlank())
                     .count();
 
             rewardCases.set(String.valueOf(rewardCount));
@@ -53,6 +53,7 @@ public class DashboardViewModel {
             fugitiveLocations.add(new MapPoint(40.8682, -73.4257));
             fugitiveLocations.add(new MapPoint(40.6959, -73.3257));
         });
+        System.out.println("People size: " + people.size());
     }
 
     public StringProperty usernameProperty() { return username; }
