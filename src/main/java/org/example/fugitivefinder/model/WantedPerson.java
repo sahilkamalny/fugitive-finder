@@ -53,13 +53,10 @@ public class WantedPerson {
     }
 
     public double getRewardAmount() {
-        if (reward_max != null && reward_max > 0) {
-            return reward_max;
-        }
-        if (reward_text != null && !reward_text.isBlank()) {
+        if (rewardText != null && !rewardText.isBlank()) {
             java.util.regex.Matcher matcher = java.util.regex.Pattern
                     .compile("\\$([\\d,]+)")
-                    .matcher(reward_text);
+                    .matcher(rewardText);
             if (matcher.find()) {
                 try {
                     return Long.parseLong(matcher.group(1).replace(",", ""));
@@ -72,20 +69,17 @@ public class WantedPerson {
     }
 
     public String getDisplayReward() {
-        if (reward_max != null && reward_max > 0) {
-            return String.format("$%,.0f", reward_max);
-        }
-        if (reward_text != null && !reward_text.isBlank()) {
+        if (rewardText != null && !rewardText.isBlank()) {
             java.util.regex.Matcher matcher = java.util.regex.Pattern
                     .compile("\\$([\\d,]+)")
-                    .matcher(reward_text);
+                    .matcher(rewardText);
             if (matcher.find()) {
                 String numStr = matcher.group(1).replace(",", "");
                 try {
                     long amount = Long.parseLong(numStr);
                     return String.format("$%,d", amount);
                 } catch (NumberFormatException e) {
-                    return reward_text;
+                    return rewardText;
                 }
             }
         }

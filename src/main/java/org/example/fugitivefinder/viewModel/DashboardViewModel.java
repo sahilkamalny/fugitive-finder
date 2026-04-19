@@ -94,7 +94,7 @@ public class DashboardViewModel {
             fugitiveLocations.clear();
 
             for (WantedPerson person : people) {
-                MapPoint point = findCoordinates(person.getField_offices());
+                MapPoint point = findCoordinates(person.getFieldOffices());
                 if (point != null) {
                     locationGroups.computeIfAbsent(point, k -> new ArrayList<>()).add(person);
                     if (!fugitiveLocations.contains(point)) {
