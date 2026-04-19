@@ -113,13 +113,21 @@
                             </children>
                         </HBox>
 
-                        <StackPane fx:id="mapContainer" prefHeight="300.0" prefWidth="1151.0" style="-fx-background-color: #1e293b; -fx-background-radius: 16;" />
+                        <StackPane fx:id="mapContainer" prefHeight="610.0" prefWidth="1151.0" style="-fx-background-color: #1e293b; -fx-background-radius: 16;" />
 
                         <Label text="Featured Targets" textFill="WHITE">
                             <font>
                                 <Font size="24.0" />
                             </font>
                         </Label>
+
+                        <HBox spacing="12.0" alignment="CENTER_LEFT">
+                            <children>
+                                <Label text="Sort by:" textFill="#cbd5e1" />
+                                <ComboBox fx:id="sortComboBox" onAction="#handleSort"
+                                          style="-fx-background-color: #1e293b; -fx-text-fill: white;" />
+                            </children>
+                        </HBox>
 
                         <FlowPane fx:id="featuredCardsPane" hgap="18.0" vgap="18.0" style="-fx-background-color: transparent;" />
 

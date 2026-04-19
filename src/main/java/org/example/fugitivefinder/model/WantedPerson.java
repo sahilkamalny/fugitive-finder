@@ -52,10 +52,48 @@ public class WantedPerson {
         return null;
     }
 
+    public double getRewardAmount() {
+        if (reward_max != null && reward_max > 0) {
+            return reward_max;
+        }
+        if (reward_text != null && !reward_text.isBlank()) {
+            java.util.regex.Matcher matcher = java.util.regex.Pattern
+                    .compile("\\$([\\d,]+)")
+                    .matcher(reward_text);
+            if (matcher.find()) {
+                try {
+                    return Long.parseLong(matcher.group(1).replace(",", ""));
+                } catch (NumberFormatException e) {
+                    return 0;
+                }
+            }
+        }
+        return 0;
+    }
+
     public String getDisplayReward() {
-        return rewardText == null || rewardText.isBlank()
-                ? "No Reward Listed"
-                : rewardText;
+        if (reward_max != null && reward_max > 0) {
+            return String.format("$%,.0f", reward_max);
+        }
+        if (reward_text != null && !reward_text.isBlank()) {
+            java.util.regex.Matcher matcher = java.util.regex.Pattern
+                    .compile("\\$([\\d,]+)")
+                    .matcher(reward_text);
+            if (matcher.find()) {
+                String numStr = matcher.group(1).replace(",", "");
+                try {
+                    long amount = Long.parseLong(numStr);
+                    return String.format("$%,d", amount);
+                } catch (NumberFormatException e) {
+                    return reward_text;
+                }
+            }
+        }
+        return "No Reward Listed";
+    }
+
+    public String getDisplayStatus() {
+        return status == null || status.isBlank() ? "Wanted" : status;
     }
 
     public String getDisplayAliases() {
