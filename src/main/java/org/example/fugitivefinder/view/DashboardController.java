@@ -1,5 +1,8 @@
 package org.example.fugitivefinder.view;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
@@ -7,17 +10,14 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.example.fugitivefinder.model.WantedPerson;
 import org.example.fugitivefinder.viewModel.DashboardViewModel;
-
-import java.util.List;
-
 
 public class DashboardController {
 
@@ -30,6 +30,7 @@ public class DashboardController {
     @FXML private Button prevButton;
     @FXML private Button nextButton;
     @FXML private Label pageLabel;
+    @FXML private ComboBox<String> sortComboBox;
 
     private DashboardViewModel viewModel;
     private MapView mapView;
@@ -54,16 +55,68 @@ public class DashboardController {
 
         setupMarkerClicks();
 
+        sortComboBox.getItems().addAll(
+                "Default",
+                "Reward: High to Low",
+                "Reward: Low to High",
+                "Name: A to Z",
+                "Name: Z to A"
+        );
+        sortComboBox.setValue("Default");
+        sortComboBox.getStylesheets().add(getClass().getResource(
+                "/org.example.fugitivefinder/styles/combobox.css").toExternalForm());
+
         viewModel.getFugitiveLocations().addListener((javafx.collections.ListChangeListener<MapPoint>) change -> {
             Platform.runLater(this::renderMap);
         });
 
         viewModel.getAllPeople().addListener((javafx.collections.ListChangeListener<WantedPerson>) change -> {
-            allPeople = viewModel.getAllPeople();
+            allPeople = new ArrayList<>(viewModel.getAllPeople());
             Platform.runLater(() -> renderPage());
         });
 
         new Thread(() -> viewModel.loadData()).start();
+    }
+
+    @FXML
+    private void handleSort() {
+        if (allPeople == null || allPeople.isEmpty()) return;
+
+        String selected = sortComboBox.getValue();
+
+        switch (selected) {
+            case "Reward: High to Low" ->
+                    allPeople.sort((a, b) -> {
+                        double rewardA = a.getRewardAmount();
+                        double rewardB = b.getRewardAmount();
+                        if (rewardA == 0 && rewardB == 0) return 0;
+                        if (rewardA == 0) return 1;
+                        if (rewardB == 0) return -1;
+                        return Double.compare(rewardB, rewardA);
+                    });
+            case "Reward: Low to High" ->
+                    allPeople.sort((a, b) -> {
+                        double rewardA = a.getRewardAmount();
+                        double rewardB = b.getRewardAmount();
+                        if (rewardA == 0 && rewardB == 0) return 0;
+                        if (rewardA == 0) return 1;
+                        if (rewardB == 0) return -1;
+                        return Double.compare(rewardA, rewardB);
+                    });
+            case "Name: A to Z" ->
+                    allPeople.sort(Comparator.comparing(p ->
+                            p.getTitle() != null ? p.getTitle() : ""));
+            case "Name: Z to A" ->
+                    allPeople.sort((a, b) -> {
+                        String titleA = a.getTitle() != null ? a.getTitle() : "";
+                        String titleB = b.getTitle() != null ? b.getTitle() : "";
+                        return titleB.compareTo(titleA);
+                    });
+            default -> allPeople = new ArrayList<>(viewModel.getAllPeople());
+        }
+
+        currentPage = 1;
+        renderPage();
     }
 
     private void setupMarkerClicks() {
@@ -92,7 +145,6 @@ public class DashboardController {
                 .filter(f -> f.getField_offices().get(0).toLowerCase().replace(" ", "").equals(officeName))
                 .toList();
         if (localFugitives.isEmpty()) return;
-
 
         VBox infoPane = new VBox(15);
         infoPane.setId("officeInfoPane");
@@ -152,7 +204,6 @@ public class DashboardController {
 
         infoPane.getChildren().add(scroll);
 
-
         mapContainer.getChildren().removeIf(node -> "officeInfoPane".equals(node.getId()));
         mapContainer.getChildren().add(infoPane);
 
@@ -167,9 +218,7 @@ public class DashboardController {
     }
 
     private void renderMap() {
-        if (mapView.getWidth() <= 0) {
-            return;
-        }
+        if (mapView.getWidth() <= 0) return;
         for (MapPoint point : viewModel.getFugitiveLocations()) {
             mapView.addLayer(new MapController(point));
         }
