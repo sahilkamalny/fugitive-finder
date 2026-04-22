@@ -12,7 +12,7 @@ FBI_API_URL = "https://api.fbi.gov/wanted/v1/list"
 # =========================
 def get_wanted_persons(request):
     page = request.GET.get("page", 1)
-    page_size = request.GET.get("pageSize", 50)
+    page_size = request.GET.get("pageSize", 70)
 
     try:
         response = requests.get(FBI_API_URL, params={"page": page, "pageSize": page_size})
