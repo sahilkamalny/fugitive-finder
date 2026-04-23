@@ -14,19 +14,25 @@ def get_wanted_persons(request):
     page_size = int(request.GET.get("pageSize", 100))
 
     all_items = []
+    page = 1
 
-    pages_needed = (page_size // 50) + 1  # FBI max = 50 per page
-
-    for page in range(1, pages_needed + 1):
+    while len(all_items) < page_size:
         response = requests.get(FBI_API_URL, params={"page": page})
         data = response.json()
 
-        for item in data.get("items", []):
+        items = data.get("items", [])
+
+        if not items:
+            break  # no more data from FBI API
+
+        for item in items:
             all_items.append({
                 "uid": item.get("uid"),
                 "title": item.get("title"),
                 "description": item.get("description"),
                 "status": item.get("status"),
+
+                # ✅ correct field mappings
                 "rewardText": item.get("reward_text"),
                 "fieldOffices": item.get("field_offices", []),
                 "subjects": item.get("subjects", []),
@@ -38,11 +44,11 @@ def get_wanted_persons(request):
                 ]
             })
 
+        page += 1  # move to next page
+
     return JsonResponse({
         "items": all_items[:page_size]
     })
-
-
 # =========================
 # REGISTER
 # =========================
