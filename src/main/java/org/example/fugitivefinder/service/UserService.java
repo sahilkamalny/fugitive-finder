@@ -38,19 +38,25 @@ public final class UserService {
                 os.flush();
             }
 
-            if (conn.getResponseCode() != 200 && conn.getResponseCode() != 201) {
-                return null;
-            }
+            int code = conn.getResponseCode();
+            System.out.println("Response Code: " + code);
 
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(conn.getInputStream())
-            );
+            BufferedReader reader;
+
+            if (code >= 200 && code < 300) {
+                reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            } else {
+                reader = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+            }
 
             StringBuilder response = new StringBuilder();
             String line;
+
             while ((line = reader.readLine()) != null) {
                 response.append(line);
             }
+
+            System.out.println("Response Body: " + response);
 
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readValue(response.toString(), AppUser.class);
@@ -82,20 +88,25 @@ public final class UserService {
                 os.flush();
             }
 
-            if (conn.getResponseCode() != 200) {
-                return null;
-            }
+            int code = conn.getResponseCode();
+            System.out.println("Response Code: " + code);
 
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(conn.getInputStream())
-            );
+            BufferedReader reader;
+
+            if (code >= 200 && code < 300) {
+                reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            } else {
+                reader = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+            }
 
             StringBuilder response = new StringBuilder();
             String line;
+
             while ((line = reader.readLine()) != null) {
                 response.append(line);
             }
 
+            System.out.println("Response Body: " + response);
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readValue(response.toString(), AppUser.class);
 

@@ -1,32 +1,54 @@
 package org.example.fugitivefinder.view;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import org.example.fugitivefinder.model.WantedPerson;
 import org.example.fugitivefinder.viewModel.DashboardViewModel;
 
-import java.util.List;
+import static javafx.util.Duration.millis;
 
 public class DashboardController {
 
-    @FXML private Label usernameLabel;
-    @FXML private Label totalWantedLabel;
-    @FXML private Label rewardCasesLabel;
-    @FXML private Label updatesLabel;
-    @FXML private FlowPane featuredCardsPane;
-    @FXML private StackPane mapContainer;
-    @FXML private Button prevButton;
-    @FXML private Button nextButton;
-    @FXML private Label pageLabel;
+    @FXML
+    private Label usernameLabel;
+    @FXML
+    private Label totalWantedLabel;
+    @FXML
+    private Label rewardCasesLabel;
+    @FXML
+    private Label updatesLabel;
+    @FXML
+    private FlowPane featuredCardsPane;
+    @FXML
+    private StackPane mapContainer;
+    @FXML
+    private Button prevButton;
+    @FXML
+    private Button nextButton;
+    @FXML
+    private Label pageLabel;
+    @FXML
+    private ComboBox<String> sortComboBox;
+
 
     private DashboardViewModel viewModel;
     private MapView mapView;
@@ -34,37 +56,92 @@ public class DashboardController {
     private List<WantedPerson> allPeople;
     private int currentPage = 1;
     private static final int PAGE_SIZE = 16;
+    private boolean isHeatMapMode = false;
 
     @FXML
     public void initialize() {
         viewModel = new DashboardViewModel();
+        bindProperties();
+        setupSort();
+        setupListeners();
+        loadInitialData();
 
+    }
+
+    public void bindProperties() {
         usernameLabel.textProperty().bind(viewModel.usernameProperty());
         totalWantedLabel.textProperty().bind(viewModel.totalWantedProperty());
         rewardCasesLabel.textProperty().bind(viewModel.rewardCasesProperty());
         updatesLabel.textProperty().bind(viewModel.updatesProperty());
-
-        mapView = new MapView();
-        mapView.setCenter(new MapPoint(39.8283, -98.5795));
-        mapView.setZoom(3);
-        mapContainer.getChildren().add(mapView);
-
-        viewModel.getFugitiveLocations().addListener((javafx.collections.ListChangeListener<MapPoint>) change -> {
-            renderMap();
-        });
-
-        viewModel.getAllPeople().addListener((javafx.collections.ListChangeListener<WantedPerson>) change -> {
-            allPeople = viewModel.getAllPeople();
-            Platform.runLater(() -> renderPage());
-        });
-
-        new Thread(() -> viewModel.loadData()).start();
     }
 
-    private void renderMap() {
-        for (MapPoint point : viewModel.getFugitiveLocations()) {
-            mapView.addLayer(new MapController(point));
+
+    private void setupSort() {
+        sortComboBox.getItems().addAll(
+                "Default",
+                "Reward: High to Low",
+                "Reward: Low to High",
+                "Name: A to Z",
+                "Name: Z to A"
+        );
+        sortComboBox.setValue("Default");
+        sortComboBox.getStylesheets().add(getClass().getResource(
+                "/org.example.fugitivefinder/styles/combobox.css").toExternalForm());
+    }
+
+    private void setupListeners() {
+        viewModel.getAllPeople().addListener((ListChangeListener<WantedPerson>) change -> {
+            allPeople = new ArrayList<>(viewModel.getAllPeople());
+            Platform.runLater(this::renderPage);
+        });
+    }
+
+    private void loadInitialData() {
+        new Thread(() -> {
+            viewModel.loadData();
+            Platform.runLater(() -> {
+                allPeople = new ArrayList<>(viewModel.getAllPeople());
+                renderPage();
+            });
+        }).start();
+    }
+
+
+    @FXML
+    private void handleSort() {
+        if (allPeople == null || allPeople.isEmpty()) return;
+
+        String selected = sortComboBox.getValue();
+
+        switch (selected) {
+            case "Reward: High to Low" -> allPeople.sort((a, b) -> {
+                double rewardA = a.getRewardAmount();
+                double rewardB = b.getRewardAmount();
+                if (rewardA == 0 && rewardB == 0) return 0;
+                if (rewardA == 0) return 1;
+                if (rewardB == 0) return -1;
+                return Double.compare(rewardB, rewardA);
+            });
+            case "Reward: Low to High" -> allPeople.sort((a, b) -> {
+                double rewardA = a.getRewardAmount();
+                double rewardB = b.getRewardAmount();
+                if (rewardA == 0 && rewardB == 0) return 0;
+                if (rewardA == 0) return 1;
+                if (rewardB == 0) return -1;
+                return Double.compare(rewardA, rewardB);
+            });
+            case "Name: A to Z" -> allPeople.sort(Comparator.comparing(p ->
+                    p.getTitle() != null ? p.getTitle() : ""));
+            case "Name: Z to A" -> allPeople.sort((a, b) -> {
+                String titleA = a.getTitle() != null ? a.getTitle() : "";
+                String titleB = b.getTitle() != null ? b.getTitle() : "";
+                return titleB.compareTo(titleA);
+            });
+            default -> allPeople = new ArrayList<>(viewModel.getAllPeople());
         }
+
+        currentPage = 1;
+        renderPage();
     }
 
     private void renderPage() {
@@ -106,6 +183,16 @@ public class DashboardController {
         card.setOnMouseClicked(event -> viewModel.openCriminalProfile(featuredCardsPane, person));
 
         return card;
+    }
+
+    @FXML
+    private void showMapScreen() {
+        viewModel.goToMap(featuredCardsPane);
+    }
+
+    @FXML
+    private void showChartsScreen() {
+        viewModel.goToCharts(featuredCardsPane);
     }
 
     @FXML

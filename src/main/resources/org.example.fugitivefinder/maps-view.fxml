@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="900.0" prefWidth="1440.0" style="-fx-background-color: #081120;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.fugitivefinder.view.MapsViewController">
+
+    <left>
+        <VBox prefWidth="220.0" spacing="18.0" style="-fx-background-color: #0f172a; -fx-padding: 20;">
+            <children>
+                <HBox spacing="10.0">
+                    <ImageView fitHeight="48.0" fitWidth="48.0" preserveRatio="true">
+                        <Image url="@images/logo.png"/>
+                    </ImageView>
+                    <Label style="-fx-font-size: 16;" text="Fugitive Finder" textFill="WHITE" wrapText="true" />
+                </HBox>
+
+                <Label onMouseClicked="#goToDashboard" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;" text="Dashboard">
+                    <cursor><Cursor fx:constant="HAND" /></cursor>
+                </Label>
+
+                <Label style="-fx-background-color: #1e293b; -fx-text-fill: white; -fx-padding: 12 16; -fx-background-radius: 10;" text="Full Map" />
+
+                <Label onMouseClicked="#goToCharts" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;" text="Analytics">
+                    <cursor><Cursor fx:constant="HAND" /></cursor>
+                </Label>
+
+                <Label onMouseClicked="#goToRewards" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;" text="Rewards">
+                    <cursor><Cursor fx:constant="HAND" /></cursor>
+                </Label>
+
+                <Label onMouseClicked="#goToUserProfile" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;" text="Profile">
+                    <cursor><Cursor fx:constant="HAND" /></cursor>
+                </Label>
+            </children>
+        </VBox>
+    </left>
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="14.0" style="-fx-background-color: #0b1320; -fx-padding: 18 24;">
+            <Label style="-fx-font-size: 30;" text="Global Locator" textFill="WHITE" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="usernameLabel" style="-fx-font-size: 16;" text="DetectiveUser" textFill="WHITE" />
+            <ImageView fitHeight="44.0" fitWidth="44.0" preserveRatio="true">
+                <Image url="@images/detective-avatar.png" />
+            </ImageView>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox spacing="20.0" style="-fx-padding: 24;">
+            <children>
+                <HBox alignment="CENTER_LEFT">
+                    <children>
+                        <VBox spacing="5">
+                            <Label style="-fx-font-size: 24;" text="FBI Field Office Map" textFill="WHITE" />
+                            <Label style="-fx-text-fill: #cbd5e1;" text="Select a marker to view local fugitives" />
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button onAction="#toggleHeatMap" style="-fx-background-color: #ef4444; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 10 20;" text="Toggle Heatmap">
+                            <cursor><Cursor fx:constant="HAND" /></cursor>
+                        </Button>
+                    </children>
+                </HBox>
+
+                <StackPane fx:id="mapContainer" VBox.vgrow="ALWAYS"
+                           style="-fx-background-color: #111827; -fx-background-radius: 16; -fx-border-color: #334155; -fx-border-radius: 16; -fx-border-width: 2;">
+                    <children>
+                    </children>
+                    <padding>
+                        <Insets bottom="2" left="2" right="2" top="2" />
+                    </padding>
+                </StackPane>
+            </children>
+        </VBox>
+    </center>
+</BorderPane>

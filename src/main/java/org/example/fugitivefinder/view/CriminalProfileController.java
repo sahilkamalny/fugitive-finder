@@ -49,6 +49,7 @@ public class CriminalProfileController {
         warningLabel.textProperty().bind(viewModel.warningProperty());
 
         String imageUrl = viewModel.imageUrlProperty().get();
+        System.out.println("PROFILE IMAGE URL: " + imageUrl);
         if (imageUrl != null && !imageUrl.isBlank()) {
             criminalImageView.setImage(new Image(imageUrl, true));
         }
