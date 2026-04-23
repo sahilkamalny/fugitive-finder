@@ -31,10 +31,10 @@ def get_wanted_persons(request):
                 "title": item.get("title"),
                 "description": item.get("description"),
                 "status": item.get("status"),
-
-                # ✅ correct field mappings
                 "rewardText": item.get("reward_text"),
                 "fieldOffices": item.get("field_offices", []),
+                "race": item.get("race"),
+                "sex": item.get("sex"),
                 "subjects": item.get("subjects", []),
 
                 "images": [
