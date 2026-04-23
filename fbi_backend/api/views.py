@@ -11,47 +11,32 @@ FBI_API_URL = "https://api.fbi.gov/wanted/v1/list"
 # FBI DATA ENDPOINT
 # =========================
 def get_wanted_persons(request):
-    page = request.GET.get("page", 1)
-    page_size = request.GET.get("pageSize", 100)
+    page_size = int(request.GET.get("pageSize", 100))
 
-    try:
-        response = requests.get(FBI_API_URL, params={"page": page, "pageSize": page_size})
+    all_items = []
+
+    pages_needed = (page_size // 50) + 1  # FBI max = 50
+
+    for page in range(1, pages_needed + 1):
+        response = requests.get(FBI_API_URL, params={"page": page})
         data = response.json()
 
-        transformed_items = []
-
         for item in data.get("items", []):
-            transformed_items.append({
+            all_items.append({
                 "uid": item.get("uid"),
                 "title": item.get("title"),
                 "description": item.get("description"),
                 "status": item.get("status"),
-                "sex": item.get("sex"),
-                "race": item.get("race"),
-                "nationality": item.get("nationality"),
-                "hair": item.get("hair"),
-                "eyes": item.get("eyes"),
-                "rewardText": item.get("reward_text"),
-                "rewardMin": item.get("reward_min"),
-                "rewardMax": item.get("reward_max"),
-                "subjects": item.get("subjects", []),
-                "fieldOffices": item.get("field_offices", []),
                 "images": [
-                img.get("thumb") or img.get("original")
-                for img in item.get("images", [])
-                if img.get("thumb") or img.get("original")
-                ],
-                "publication": item.get("publication")
+                    img.get("original")
+                    for img in item.get("images", [])
+                    if img.get("original")
+                ]
             })
 
-        return JsonResponse({
-            "total": data.get("total"),
-            "items": transformed_items
-        })
-
-    except Exception as e:
-        return JsonResponse({"error": str(e)}, status=500)
-
+    return JsonResponse({
+        "items": all_items[:page_size]
+    })
 
 # =========================
 # REGISTER
