@@ -29,11 +29,7 @@ def get_wanted_persons(request):
                 "status": item.get("status"),
 
                 # ✅ FIXED: add back missing fields
-                "reward_text": (
-                        item.get("reward_text")
-                        or item.get("reward")
-                        or ""
-                ),
+                "rewardText": item.get("rewardText"),
                 "field_offices": item.get("field_offices", []),
                 "subjects": item.get("subjects", []),
 
