@@ -27,13 +27,10 @@ def get_wanted_persons(request):
                 "title": item.get("title"),
                 "description": item.get("description"),
                 "status": item.get("status"),
-
-                # ✅ FIXED: add back missing fields
-                "rewardText": item.get("rewardText"),
-                "field_offices": item.get("field_offices", []),
+                "rewardText": item.get("reward_text"),
+                "fieldOffices": item.get("field_offices", []),
                 "subjects": item.get("subjects", []),
 
-                # ✅ images (keep clean URLs)
                 "images": [
                     img.get("original")
                     for img in item.get("images", [])
