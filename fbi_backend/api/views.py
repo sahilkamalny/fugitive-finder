@@ -15,7 +15,7 @@ def get_wanted_persons(request):
 
     all_items = []
 
-    pages_needed = (page_size // 50) + 1  # FBI max = 50
+    pages_needed = (page_size // 50) + 1  # FBI max = 50 per page
 
     for page in range(1, pages_needed + 1):
         response = requests.get(FBI_API_URL, params={"page": page})
@@ -27,6 +27,13 @@ def get_wanted_persons(request):
                 "title": item.get("title"),
                 "description": item.get("description"),
                 "status": item.get("status"),
+
+                # ✅ FIXED: add back missing fields
+                "reward_text": item.get("reward_text"),
+                "field_offices": item.get("field_offices", []),
+                "subjects": item.get("subjects", []),
+
+                # ✅ images (keep clean URLs)
                 "images": [
                     img.get("original")
                     for img in item.get("images", [])
@@ -37,6 +44,7 @@ def get_wanted_persons(request):
     return JsonResponse({
         "items": all_items[:page_size]
     })
+
 
 # =========================
 # REGISTER
