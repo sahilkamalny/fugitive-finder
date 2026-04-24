@@ -24,6 +24,9 @@ import java.util.List;
 import java.util.Map;
 
 import static javafx.util.Duration.millis;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
+import javafx.scene.control.CheckBox;
 
 public class MapsViewController {
     @FXML
@@ -34,9 +37,30 @@ public class MapsViewController {
     private final List<MapLayer> activeLayers = new ArrayList<>();
 
     @FXML
+    private ComboBox<String> cityFilterComboBox;
+
+    @FXML
+    private ComboBox<String> crimeFilterComboBox;
+
+    @FXML
+    private ComboBox<String> statusFilterComboBox;
+
+    @FXML
+    private TextField keywordSearchField;
+
+    @FXML
+    private CheckBox rewardOnlyCheckBox;
+    @FXML
     public void initialize() {
         viewModel = new MapsViewModel();
+
+        setupFilterBoxes();
         setUpMap();
+
+        viewModel.getWantedPeopleList().addListener((ListChangeListener<WantedPerson>) change -> {
+            Platform.runLater(this::setupDynamicCityFilter);
+        });
+
         new Thread(viewModel::loadMapData).start();
     }
 
@@ -49,6 +73,73 @@ public class MapsViewController {
         setupMarkerClicks();
     }
 
+    private void setupFilterBoxes() {
+        cityFilterComboBox.getItems().add("All Cities");
+
+        crimeFilterComboBox.getItems().addAll(
+                "All Crimes",
+                "Murder",
+                "Kidnapping",
+                "Robbery",
+                "Fraud",
+                "Cyber",
+                "Terrorism",
+                "Drug",
+                "Assault",
+                "Sexual",
+                "Escape"
+        );
+
+        statusFilterComboBox.getItems().addAll(
+                "All Statuses",
+                "Wanted",
+                "Captured",
+                "Missing",
+                "Unlawful Flight"
+        );
+
+        cityFilterComboBox.setValue("All Cities");
+        crimeFilterComboBox.setValue("All Crimes");
+        statusFilterComboBox.setValue("All Statuses");
+    }
+
+    private void setupDynamicCityFilter() {
+        cityFilterComboBox.getItems().clear();
+        cityFilterComboBox.getItems().add("All Cities");
+
+        viewModel.getWantedPeopleList().stream()
+                .filter(person -> person.getFieldOffices() != null)
+                .flatMap(person -> person.getFieldOffices().stream())
+                .distinct()
+                .sorted()
+                .forEach(cityFilterComboBox.getItems()::add);
+
+        cityFilterComboBox.setValue("All Cities");
+    }
+
+    @FXML
+    private void applyFilters() {
+        String city = cityFilterComboBox.getValue();
+        String crime = crimeFilterComboBox.getValue();
+        String status = statusFilterComboBox.getValue();
+        String keyword = keywordSearchField.getText();
+        boolean rewardOnly = rewardOnlyCheckBox.isSelected();
+
+        viewModel.applyMapFilters(city, crime, status, keyword, rewardOnly);
+        renderMap();
+    }
+
+    @FXML
+    private void clearFilters() {
+        cityFilterComboBox.setValue("All Cities");
+        crimeFilterComboBox.setValue("All Crimes");
+        statusFilterComboBox.setValue("All Statuses");
+        keywordSearchField.clear();
+        rewardOnlyCheckBox.setSelected(false);
+
+        viewModel.applyMapFilters("All Cities", "All Crimes", "All Statuses", "", false);
+        renderMap();
+    }
     private void setupListeners() {
         viewModel.getFugitiveLocations().addListener((ListChangeListener<MapPoint>) change -> {
             Platform.runLater(this::renderMap);

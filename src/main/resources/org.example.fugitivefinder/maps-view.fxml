@@ -67,6 +67,42 @@
                     </children>
                 </HBox>
 
+                <HBox alignment="CENTER_LEFT" spacing="12.0"
+                      style="-fx-background-color: #0f172a; -fx-padding: 14; -fx-background-radius: 14;">
+
+                    <ComboBox fx:id="cityFilterComboBox"
+                              prefWidth="180"
+                              promptText="City / Office"
+                              onAction="#applyFilters"
+                              style="-fx-background-color: #1e293b;" />
+
+                    <ComboBox fx:id="crimeFilterComboBox"
+                              prefWidth="180"
+                              promptText="Crime Type"
+                              onAction="#applyFilters"
+                              style="-fx-background-color: #1e293b;" />
+
+                    <ComboBox fx:id="statusFilterComboBox"
+                              prefWidth="150"
+                              promptText="Status"
+                              onAction="#applyFilters"
+                              style="-fx-background-color: #1e293b;" />
+
+                    <TextField fx:id="keywordSearchField"
+                               prefWidth="240"
+                               promptText="Search name or description"
+                               onKeyReleased="#applyFilters"
+                               style="-fx-background-color: #1e293b; -fx-text-fill: white; -fx-prompt-text-fill: #94a3b8;" />
+
+                    <CheckBox fx:id="rewardOnlyCheckBox"
+                              text="Reward Only"
+                              textFill="WHITE"
+                              onAction="#applyFilters" />
+
+                    <Button text="Clear"
+                            onAction="#clearFilters"
+                            style="-fx-background-color: #ef4444; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8;" />
+                </HBox>
                 <StackPane fx:id="mapContainer" VBox.vgrow="ALWAYS"
                            style="-fx-background-color: #111827; -fx-background-radius: 16; -fx-border-color: #334155; -fx-border-radius: 16; -fx-border-width: 2;">
                     <children>
