@@ -84,7 +84,11 @@ public class DashboardViewModel {
     }
 
     public void goToCharts(Node source) {
-        SceneManager.switchScene(source, "/org.example.fugitivefinder/charts-view.fxml", 1440, 900);
+        SceneManager.switchScene(source, "/org.example.fugitivefinder/analytics.fxml", 1440, 900);
+    }
+
+    public void goToLeaderboard(Node source) {
+        SceneManager.switchScene(source, "/org.example.fugitivefinder/leaderboard.fxml", 1440, 900);
     }
 
     public void goToRewards(Node sourceNode) {
