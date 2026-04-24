@@ -10,7 +10,6 @@ module org.example.fugitivefinder {
     requires static org.json;
 
     exports org.example.fugitivefinder.view;
-    exports org.example.fugitivefinder.controller;
 
     opens org.example.fugitivefinder.model to com.fasterxml.jackson.databind;
     exports org.example.fugitivefinder.model;
@@ -25,5 +24,4 @@ module org.example.fugitivefinder {
     exports org.example.fugitivefinder.service;
 
     opens org.example.fugitivefinder.view to javafx.fxml, javafx.graphics;
-    opens org.example.fugitivefinder.controller to javafx.fxml;
 }
