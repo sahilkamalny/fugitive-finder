@@ -58,7 +58,7 @@ GET https://api.fbi.gov/wanted/v1/list?page=3&pageSize=50&sort_on=modified&sort_
 {
   "total": 1147,
   "page": 1,
-  "items": [ ... ]
+  "items": [ "..." ]
 }
 ```
 
