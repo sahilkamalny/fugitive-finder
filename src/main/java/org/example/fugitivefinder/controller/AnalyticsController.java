@@ -9,6 +9,7 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.example.fugitivefinder.viewModel.AnalyticsViewModel;
+import org.example.fugitivefinder.viewModel.SceneManager;
 
 /**
  * Controller for the Analytics view (analytics.fxml).
@@ -209,22 +210,30 @@ public class AnalyticsController {
         }
     }
 
-    // ---------- Navigation Stubs ----------
-    // These will be connected once the team's SceneManager is
-    // updated and merged to main. For now they are placeholder stubs.
+    // ---------- Navigation ----------
 
     @FXML
     private void goToDashboard() {
-        System.out.println("[Analytics] Navigate to Dashboard — pending SceneManager integration");
+        SceneManager.switchScene(subjectsChart, "/org.example.fugitivefinder/dashboard.fxml", 1440, 900);
+    }
+
+    @FXML
+    private void goToLeaderboard() {
+        SceneManager.switchScene(subjectsChart, "/org.example.fugitivefinder/leaderboard.fxml", 1440, 900);
     }
 
     @FXML
     private void goToRewards() {
-        System.out.println("[Analytics] Navigate to Rewards — pending SceneManager integration");
+        SceneManager.switchScene(subjectsChart, "/org.example.fugitivefinder/rewards.fxml", 1440, 900);
     }
 
     @FXML
     private void goToUserProfile() {
-        System.out.println("[Analytics] Navigate to Profile — pending SceneManager integration");
+        SceneManager.switchScene(subjectsChart, "/org.example.fugitivefinder/user-profile.fxml", 1440, 900);
+    }
+
+    @FXML
+    private void goToMap() {
+        SceneManager.switchScene(subjectsChart, "/org.example.fugitivefinder/maps-view.fxml", 1440, 900);
     }
 }
