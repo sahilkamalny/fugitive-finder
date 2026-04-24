@@ -10,6 +10,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.example.fugitivefinder.service.LeaderboardService.RankedFugitive;
 import org.example.fugitivefinder.viewModel.LeaderboardViewModel;
+import org.example.fugitivefinder.viewModel.SceneManager;
 
 /**
  * Controller for the Leaderboard & Region Stats view.
@@ -155,17 +156,20 @@ public class LeaderboardController {
         }
     }
 
-    // --- Navigation Stubs ---
+    // --- Navigation ---
     @FXML private void goToDashboard() {
-        System.out.println("[Leaderboard] Navigate to Dashboard — pending integration");
+        SceneManager.switchScene(leaderboardTable, "/org.example.fugitivefinder/dashboard.fxml", 1440, 900);
     }
     @FXML private void goToAnalytics() {
-        System.out.println("[Leaderboard] Navigate to Analytics — pending integration");
+        SceneManager.switchScene(leaderboardTable, "/org.example.fugitivefinder/analytics.fxml", 1440, 900);
     }
     @FXML private void goToRewards() {
-        System.out.println("[Leaderboard] Navigate to Rewards — pending integration");
+        SceneManager.switchScene(leaderboardTable, "/org.example.fugitivefinder/rewards.fxml", 1440, 900);
     }
     @FXML private void goToUserProfile() {
-        System.out.println("[Leaderboard] Navigate to Profile — pending integration");
+        SceneManager.switchScene(leaderboardTable, "/org.example.fugitivefinder/user-profile.fxml", 1440, 900);
+    }
+    @FXML private void goToMap() {
+        SceneManager.switchScene(leaderboardTable, "/org.example.fugitivefinder/maps-view.fxml", 1440, 900);
     }
 }
