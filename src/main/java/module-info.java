@@ -3,7 +3,6 @@ module org.example.fugitivefinder {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.graphics;
-    requires javafx.web;
 
     requires com.gluonhq.maps;
     requires com.fasterxml.jackson.databind;
