@@ -1,141 +1,78 @@
-# FugitiveFinder: Agile/Scrum Sprint Plan
+# FugitiveFinder — Sprint Plan
 
-> **Project Manager:** Sahil Kamal  
-> **Last Updated:** April 14, 2026  
-> **Team:** Sahil, Darianne, Derek, Ahmaed, Armaan
-
----
-
-## 📋 Product Backlog (User Stories)
-
-| ID | User Story | Status |
-|---|---|---|
-| US1 | As a user, I can sign up/login so that my data is saved | ✅ Done |
-| US2 | As a user, I can search/filter for targets to find specific fugitives | 🔄 In Progress |
-| US3 | As a user, I can see crime statistics via graphs and heatmaps | 🔄 In Progress |
-| US4 | As a user, I can view detailed info on a criminal to understand their crimes | ✅ Done |
-| US5 | As a user, I can bookmark targets to receive updates on their status | 🔄 In Progress |
+**Project Manager:** Sahil Kamal  
+**Team:** Sahil, Darianne, Derek, Ahmaed, Armaan  
+**Updated:** April 23, 2026
 
 ---
 
-## 🏃 Sprint 1: Foundation & Discovery (Weeks 1-2) ✅ COMPLETE
+## Sprint 1 (Weeks 1-2) — DONE
 
-**Goal:** Establish the technical "Steel Thread" (Frontend → API → Database)
-
-| Task | Assigned To | Status |
-|---|---|---|
-| UX/UI: Finalize Figma & Project FXML Structure | Darianne | ✅ Done |
-| API: FBI API Research & Service Layer Init | Derek | ✅ Done |
-| Backend: Firebase Auth & Firestore Setup | Armaan | ✅ Done |
-| Data: GitHub Repo & Initial Chart Research | Sahil | ✅ Done |
-| Navigation: Scene Manager & Routing Logic | Ahmaed | ✅ Done |
+| Task | Person | Status |
+|------|--------|--------|
+| Figma mockups and FXML project structure | Darianne | Done |
+| FBI API research and service layer | Derek | Done |
+| Firebase Auth and Firestore setup | Armaan | Done |
+| GitHub repo and initial chart research | Sahil | Done |
+| Scene Manager and routing logic | Ahmaed | Done |
 
 ---
 
-## 🏃 Sprint 2: Core Connectivity (Weeks 3-5) ✅ COMPLETE
+## Sprint 2 (Weeks 3-5) — DONE
 
-**Goal:** Build the two biggest features — Dashboard/Charts and Profiles/API integration.
-
-### Feature Group A: Criminal Data & Profiles (US2, US4, US5)
-
-| Task | Assigned To | Status |
-|---|---|---|
-| JSON Parsing for WantedPerson objects and filtering logic | Derek | ✅ Done |
-| CriminalProfile.fxml and Rewards.fxml views | Darianne | ✅ Done |
-| Linking "Bookmark" button to Firestore (Watchlist CRUD) | Armaan | ✅ Done |
-
-### Feature Group B: Data Visuals & Mapping (US3)
-
-| Task | Assigned To | Status |
-|---|---|---|
-| Connecting API data to JavaFX Charts (crimes by category) | Sahil | ✅ Done |
-| Integrating Map library and placing markers | Ahmaed | ✅ Done |
-
-### What merged to `main` during Sprint 2:
-- PR #83: Darianne's ViewModel classes + all FXML screens
-- PR #85: Ahmaed's map + dashboard fixes
-- PR #86: Sahil's chart analytics (ChartDataService, analytics.fxml)
-- PR #87: Ahmaed's MapController + offices integration
+| Task | Person | Status |
+|------|--------|--------|
+| JSON parsing for WantedPerson and filtering | Derek | Done |
+| CriminalProfile and Rewards FXML views | Darianne | Done |
+| Bookmark button linked to Firestore | Armaan | Done |
+| API data connected to JavaFX charts | Sahil | Done |
+| Map library integrated with markers | Ahmaed | Done |
 
 ---
 
-## 🏃 Sprint 3: Advanced Features (Weeks 6-7) — CURRENT
+## Sprint 3 — Week 6 (April 14-20) — DONE
 
-**Goal:** Enhance user experience with interactivity, advanced search, and deeper analytics.
+| Task | Person | Status |
+|------|--------|--------|
+| "Most Dangerous" leaderboard with danger scores | Sahil | Done |
+| Region stats (NE, South, Midwest, West) | Sahil | Done |
+| Map markers linked to offices.json data | Ahmaed | Done |
+| Multi-filter search by field office | Derek | Done |
+| Dashboard filtering bar UI | Darianne | Done |
+| Backend notification endpoint | Armaan | Done |
 
-### Week 6 (April 14-20) — Core Implementation
+## Sprint 3 — Week 7 (April 21-27) — CURRENT
 
-| Task | Assigned To | Type | Status |
-|---|---|---|---|
-| "Most Dangerous" leaderboard — danger score algorithm + ranked table | Sahil | Visuals | ✅ Done |
-| Region stats — crime breakdown by US region (NE/South/MW/West) | Sahil | Visuals | ✅ Done |
-| Map interactivity — link map markers to field office data from offices.json | Ahmaed | Map | 🔄 In Progress |
-| Advanced search — multi-filter by field office | Derek | Logic | 🔄 In Progress |
-| Dashboard filtering bar — category/office filter UI | Darianne | UI | 🔄 In Progress |
-| Status change alerts — backend notification endpoint | Armaan | Backend | 🔄 In Progress |
-
-### Week 7 (April 21-27) — Integration & Polish
-
-| Task | Assigned To | Type | Status |
-|---|---|---|---|
-| Leaderboard integration — connect leaderboard to app navigation/sidebar | Sahil | Visuals | ⬜ To Do |
-| Connect analytics navigation stubs to SceneManager | Sahil | Integration | ⬜ To Do |
-| Map markers → profile view — click marker to open fugitive profile | Ahmaed & Darianne | Collaborative | ⬜ To Do |
-| Advanced search — add crime type and reward range filters | Derek | Logic | ⬜ To Do |
-| Filter results binding — connect Darianne's filter bar to Derek's search logic | Darianne & Derek | Collaborative | ⬜ To Do |
-| Watchlist notifications — connect alerts to JavaFX UI | Armaan | Backend/UI | ⬜ To Do |
+| Task | Person | Status |
+|------|--------|--------|
+| Connect leaderboard + analytics to sidebar nav | Sahil | Done |
+| Fix charts-view.fxml navigation bug | Sahil | Done |
+| Add leaderboard route from dashboard | Sahil | Done |
+| Separated maps into dedicated MapsViewController | Ahmaed | Done |
+| Sort by dropdown for featured targets | Derek | Done |
+| Backend server on Render + 100 records | Armaan | Done |
+| Updated WantedPerson model fields | Darianne | In Progress |
 
 ---
 
-## 🏃 Sprint 4: Hardening & Handover (Weeks 8-9)
+## Sprint 4 — Week 8 (April 28 - May 4)
 
-**Goal:** Bug fixing, performance tuning, final polish, and documentation.
+| Task | Person | Status |
+|------|--------|--------|
+| Loading spinners, error states, empty states | Darianne | To Do |
+| API caching to prevent redundant calls | Derek | To Do |
+| Firestore security rules and validation | Armaan | To Do |
+| Verify all charts against live API data | Sahil | To Do |
+| Optimize map marker rendering and zoom | Ahmaed | To Do |
 
-### Week 8 (April 28 - May 4) — Stability & Testing
+## Sprint 4 — Week 9 (May 5-11)
 
-| Task | Assigned To | Type | Status |
-|---|---|---|---|
-| UI polish — loading spinners, error states, empty state messages | Darianne | UI | ⬜ To Do |
-| API caching — prevent redundant API calls across screens | Derek | Performance | ⬜ To Do |
-| Security rules — Firestore access rules and input validation | Armaan | Backend | ⬜ To Do |
-| Chart verification — validate all chart data against live API | Sahil | Testing | ⬜ To Do |
-| Map performance — optimize marker rendering and pan/zoom | Ahmaed | Performance | ⬜ To Do |
-
-### Week 9 (May 5-11) — Documentation & Final Delivery
-
-| Task | Assigned To | Type | Status |
-|---|---|---|---|
-| Final integration testing — full app walkthrough all screens | Everyone | Testing | ⬜ To Do |
-| UML diagram generation — class diagram + sequence diagrams | Sahil | Docs | ⬜ To Do |
-| README update — setup instructions, screenshots, architecture | Sahil | Docs | ⬜ To Do |
-| Code cleanup — remove dead code, add JavaDoc comments | Derek | Cleanup | ⬜ To Do |
-| Final database indexing and backup | Armaan | Backend | ⬜ To Do |
-| Navigation audit — verify all sidebar links work across screens | Ahmaed | Testing | ⬜ To Do |
-| Final UI review — consistent theming, responsive layout check | Darianne | UI | ⬜ To Do |
-
----
-
-## 🛠 Kanban Board (Current View — Week 6)
-
-| To-Do (Week 7) | In-Progress (Week 6) | Done (Sprint 2) |
-|---|---|---|
-| Map → Profile linking | Map marker ↔ offices.json (Ahmaed) | Chart analytics (Sahil) |
-| Filter bar → search logic | Dashboard filtering bar (Darianne) | MapController (Ahmaed) |
-| Navigation integration | Advanced search filters (Derek) | ViewModel classes (Darianne) |
-| Watchlist alerts UI | Backend notification API (Armaan) | JSON parsing (Derek) |
-| | **Leaderboard + Region Stats (Sahil) ✅** | Splash/Login/Profile screens |
-
----
-
-## 📊 Branch Strategy
-
-| Branch | Owner | Purpose |
-|---|---|---|
-| `main` | Team | Protected — only merged via PR |
-| `sahil-sprint3` | Sahil | Sprint 3: Leaderboard + Region Stats |
-| `Derek's-branch` | Derek | Advanced search + navigation fixes |
-| `darianne_2` | Darianne | Dashboard filtering bar |
-| `Ahmaed's-Branch` | Ahmaed | Map interactivity + offices.json |
-| `Armaan's-Branch` | Armaan | Django backend + notifications |
-
-> ⚠️ **`backend_integration_Armaan`**: This branch deletes the Java project. DO NOT merge to main. Armaan's Django work should stay in the `fbi_backend/` folder only.
+| Task | Person | Status |
+|------|--------|--------|
+| Full app integration testing (all screens) | Everyone | To Do |
+| UML diagrams (class + sequence) | Sahil | To Do |
+| README with setup instructions + screenshots | Sahil | To Do |
+| Code cleanup and JavaDoc comments | Derek | To Do |
+| Final database indexing and backup | Armaan | To Do |
+| Verify all sidebar links work across screens | Ahmaed | To Do |
+| Final UI review — consistent theme + layout | Darianne | To Do |
