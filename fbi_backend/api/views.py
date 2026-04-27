@@ -3,6 +3,7 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse
 from .models import AppUser
+import urllib.parse
 
 FBI_API_URL = "https://api.fbi.gov/wanted/v1/list"
 
@@ -48,13 +49,17 @@ def get_wanted_persons(request):
     })
 
 
-def proxy_image(request):
-    image_url = request.GET.get("url")
 
-    if not image_url:
+def proxy_image(request):
+    encoded_url = request.GET.get("url")
+
+    if not encoded_url:
         return HttpResponse("Missing url parameter", status=400)
 
-    # ✅ allow any FBI domain safely
+    # ✅ DECODE FIRST (THIS IS THE FIX)
+    image_url = urllib.parse.unquote(encoded_url)
+
+    # ✅ safer check
     if "fbi.gov" not in image_url:
         return HttpResponse("Invalid image URL", status=403)
 
