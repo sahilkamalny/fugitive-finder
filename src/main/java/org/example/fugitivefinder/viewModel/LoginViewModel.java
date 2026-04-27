@@ -3,10 +3,10 @@ package org.example.fugitivefinder.viewModel;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
-import org.example.fugitivefinder.model.AppUser;
-import org.example.fugitivefinder.service.UserService;
+
+import org.example.fugitivefinder.model.FirebaseUser;
+import org.example.fugitivefinder.service.FirebaseAuthService;
 import org.example.fugitivefinder.session.Session;
-import org.example.fugitivefinder.viewModel.SceneManager;
 
 public class LoginViewModel {
 
@@ -22,18 +22,34 @@ public class LoginViewModel {
     }
 
     public boolean login(Node sourceNode) {
-        AppUser user = UserService.login(email.get(), password.get());
+
+        FirebaseUser user = FirebaseAuthService.login(email.get(), password.get());
 
         if (user == null) {
             return false;
         }
 
-        Session.getInstance().setCurrentUser(user);
-        SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/dashboard.fxml", 1440, 900);
+        // 🔥 STORE USER SESSION
+        Session.getInstance().setUserId(user.getLocalId());
+        Session.getInstance().setEmail(user.getEmail());
+
+        // 🔥 GO TO DASHBOARD
+        SceneManager.switchScene(
+                sourceNode,
+                "/org.example.fugitivefinder/dashboard.fxml",
+                1440,
+                900
+        );
+
         return true;
     }
 
     public void goToCreateAccount(Node sourceNode) {
-        SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/create_account.fxml", 1440, 900);
+        SceneManager.switchScene(
+                sourceNode,
+                "/org.example.fugitivefinder/create_account.fxml",
+                1440,
+                900
+        );
     }
 }

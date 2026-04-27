@@ -9,6 +9,8 @@ public class Session {
 
     private AppUser currentUser;
     private WantedPerson selectedWantedPerson;
+    private String userId;
+    private String email;
 
     private Session() {
     }
@@ -36,5 +38,21 @@ public class Session {
     public void clear() {
         currentUser = null;
         selectedWantedPerson = null;
+    }
+    
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }
