@@ -36,7 +36,7 @@ public class CreateAccountViewModel {
             return false;
         }
 
-        //FIREBASE REGISTER
+        // 🔐 FIREBASE AUTH REGISTER
         FirebaseUser user = FirebaseAuthService.register(email.get(), password.get());
 
         if (user == null) {
@@ -45,14 +45,15 @@ public class CreateAccountViewModel {
 
         System.out.println("REGISTER SUCCESS UID: " + user.getLocalId());
 
-        //CREATE USER IN FIRESTORE
+        // FIRESTORE SAVE
+        System.out.println("Calling Firestore createUser...");
         FirestoreService.createUser(user.getLocalId(), user.getEmail());
 
-        //STORE SESSION
+        // SESSION STORE
         Session.getInstance().setUserId(user.getLocalId());
         Session.getInstance().setEmail(user.getEmail());
 
-        //GO TO DASHBOARD
+        // NAVIGATE
         SceneManager.switchScene(
                 sourceNode,
                 "/org.example.fugitivefinder/dashboard.fxml",

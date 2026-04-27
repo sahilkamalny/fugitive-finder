@@ -1,5 +1,6 @@
 package org.example.fugitivefinder.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.fugitivefinder.model.FirebaseUser;
 
@@ -13,6 +14,17 @@ public class FirebaseAuthService {
 
     private static final String API_KEY = "AIzaSyCGpapAxj5BVSQmFczkCPlIFSwMSyMB0oI";
     private static final ObjectMapper mapper = new ObjectMapper();
+
+    private static String idToken;
+    private static String localId;
+
+    public static String getIdToken() {
+        return idToken;
+    }
+
+    public static String getLocalId() {
+        return localId;
+    }
 
     // REGISTER
     public static FirebaseUser register(String email, String password) {
@@ -50,9 +62,25 @@ public class FirebaseAuthService {
             os.close();
 
             if (conn.getResponseCode() == 200) {
-                FirebaseUser user = mapper.readValue(conn.getInputStream(), FirebaseUser.class);
-                System.out.println("Firebase Auth Success: " + user.getEmail());
+
+                // 🔥 READ RESPONSE JSON
+                JsonNode response = mapper.readTree(conn.getInputStream());
+
+                // 🔥 STORE TOKENS (CRITICAL)
+                idToken = response.get("idToken").asText();
+                localId = response.get("localId").asText();
+
+                System.out.println("Firebase Auth Success: " + response.get("email").asText());
+                System.out.println("ID TOKEN: " + idToken);
+                System.out.println("UID: " + localId);
+
+                // Convert to your model
+                FirebaseUser user = new FirebaseUser();
+                user.setEmail(response.get("email").asText());
+                user.setLocalId(localId);
+
                 return user;
+
             } else {
                 System.out.println("Firebase Auth Failed: " + conn.getResponseCode());
                 return null;

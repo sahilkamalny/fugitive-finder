@@ -11,7 +11,6 @@ import java.util.Map;
 public class FirestoreService {
 
     private static final String PROJECT_ID = "fugitivefinderproject";
-
     private static final ObjectMapper mapper = new ObjectMapper();
 
     // =========================
@@ -20,13 +19,18 @@ public class FirestoreService {
     public static void createUser(String uid, String email) {
         try {
             String urlStr = "https://firestore.googleapis.com/v1/projects/"
-                    + PROJECT_ID + "/databases/(default)/documents/users?documentId=" + uid;
+                    + PROJECT_ID + "/databases/(default)/documents/users/" + uid;
 
             URL url = new URL(urlStr);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
             conn.setRequestMethod("POST");
+            conn.setRequestProperty("X-HTTP-Method-Override", "PATCH");
             conn.setRequestProperty("Content-Type", "application/json");
+
+            // 🔥 AUTH TOKEN (THIS FIXES YOUR 403)
+            conn.setRequestProperty("Authorization", "Bearer " + FirebaseAuthService.getIdToken());
+
             conn.setDoOutput(true);
 
             Map<String, Object> fields = new HashMap<>();
@@ -49,13 +53,23 @@ public class FirestoreService {
             os.write(json.getBytes());
             os.close();
 
-            System.out.println("User created in Firestore");
+            int responseCode = conn.getResponseCode();
+            System.out.println("Firestore Response Code: " + responseCode);
+
+            if (responseCode == 200) {
+                System.out.println("User created in Firestore ✅");
+            } else {
+                System.out.println("Firestore FAILED ❌");
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    // =========================
+    // SAVE TARGET
+    // =========================
     public static void saveTarget(String uid, String targetId) {
         try {
             String urlStr = "https://firestore.googleapis.com/v1/projects/"
@@ -64,8 +78,13 @@ public class FirestoreService {
             URL url = new URL(urlStr);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-            conn.setRequestMethod("PATCH");
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("X-HTTP-Method-Override", "PATCH");
             conn.setRequestProperty("Content-Type", "application/json");
+
+            // 🔥 AUTH TOKEN AGAIN
+            conn.setRequestProperty("Authorization", "Bearer " + FirebaseAuthService.getIdToken());
+
             conn.setDoOutput(true);
 
             Map<String, Object> value = new HashMap<>();
@@ -89,7 +108,8 @@ public class FirestoreService {
             os.write(json.getBytes());
             os.close();
 
-            System.out.println("Saved target!");
+            int responseCode = conn.getResponseCode();
+            System.out.println("Save Target Response: " + responseCode);
 
         } catch (Exception e) {
             e.printStackTrace();
