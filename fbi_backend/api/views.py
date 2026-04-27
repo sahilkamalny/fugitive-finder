@@ -73,11 +73,10 @@ def proxy_image(request):
             content_type = response.headers.get("Content-Type", "image/jpeg")
             return HttpResponse(response.content, content_type=content_type)
         else:
-            return HttpResponse("Image not found", status=response.status_code)
+            return HttpResponse(f"FBI returned: {response.status_code}", status=response.status_code)
 
     except Exception as e:
         return HttpResponse(str(e), status=500)
-
 
 # REGISTER
 @csrf_exempt
