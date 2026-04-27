@@ -1,13 +1,15 @@
 import requests
 import json
 from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from .models import AppUser
 
 FBI_API_URL = "https://api.fbi.gov/wanted/v1/list"
 
 
+# =========================
 # FBI DATA ENDPOINT
+# =========================
 def get_wanted_persons(request):
     page_size = int(request.GET.get("pageSize", 100))
 
@@ -21,7 +23,7 @@ def get_wanted_persons(request):
         items = data.get("items", [])
 
         if not items:
-            break
+            break  # no more data from FBI API
 
         for item in items:
             all_items.append({
@@ -34,6 +36,7 @@ def get_wanted_persons(request):
                 "race": item.get("race"),
                 "sex": item.get("sex"),
                 "subjects": item.get("subjects", []),
+
                 "images": [
                     img.get("original")
                     for img in item.get("images", [])
@@ -41,45 +44,14 @@ def get_wanted_persons(request):
                 ]
             })
 
-        page += 1
+        page += 1  # move to next page
 
     return JsonResponse({
         "items": all_items[:page_size]
     })
-
-
-# IMAGE PROXY ENDPOINT
-def proxy_image(request):
-    image_url = request.GET.get("url")
-
-    if not image_url:
-        return HttpResponse("Missing url parameter", status=400)
-
-    if not image_url.startswith("https://www.fbi.gov/"):
-        return HttpResponse("Invalid image URL", status=403)
-
-    try:
-        response = requests.get(
-            image_url,
-            headers={
-                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-                "Referer": "https://www.fbi.gov/",
-                "Accept": "image/webp,image/png,image/jpeg,*/*"
-            },
-            timeout=10
-        )
-
-        if response.status_code == 200:
-            content_type = response.headers.get("Content-Type", "image/jpeg")
-            return HttpResponse(response.content, content_type=content_type)
-        else:
-            return HttpResponse("Image not found", status=response.status_code)
-
-    except Exception as e:
-        return HttpResponse(str(e), status=500)
-
-
+# =========================
 # REGISTER
+# =========================
 @csrf_exempt
 def register(request):
     if request.method != "POST":
@@ -123,7 +95,9 @@ def register(request):
         return JsonResponse({"error": str(e)}, status=500)
 
 
+# =========================
 # LOGIN
+# =========================
 @csrf_exempt
 def login(request):
     if request.method != "POST":
@@ -154,7 +128,9 @@ def login(request):
         return JsonResponse({"error": str(e)}, status=500)
 
 
+# =========================
 # SAVE TARGET
+# =========================
 @csrf_exempt
 def save_target(request):
     if request.method != "POST":

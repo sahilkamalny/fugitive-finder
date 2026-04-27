@@ -175,21 +175,10 @@ public class DashboardController {
         rewardLabel.setStyle("-fx-text-fill: #f59e0b; -fx-font-size: 14;");
         rewardLabel.setWrapText(true);
 
-        javafx.scene.image.ImageView imageView = new javafx.scene.image.ImageView();
-        imageView.setFitWidth(270);
-        imageView.setFitHeight(160);
-        imageView.setPreserveRatio(false);
-
-        String imageUrl = person.getPrimaryImageUrl();
-        if (imageUrl != null && !imageUrl.isBlank()) {
-            String proxyUrl = "https://fbi-backend-wilt.onrender.com/api/image/?url=" + imageUrl;
-            imageView.setImage(new javafx.scene.image.Image(proxyUrl, true));
-        }
-
-        VBox card = new VBox(6, imageView, nameLabel, rewardLabel);
+        VBox card = new VBox(6, nameLabel, rewardLabel);
         card.setPadding(new Insets(12));
         card.setPrefWidth(270);
-        card.setPrefHeight(280);
+        card.setPrefHeight(100);
         card.setStyle("-fx-background-color: #111827; -fx-background-radius: 14; -fx-border-color: #334155; -fx-border-radius: 14;");
         card.setOnMouseClicked(event -> viewModel.openCriminalProfile(featuredCardsPane, person));
 
