@@ -6,5 +6,5 @@ urlpatterns = [
     path("register/", register),
     path("login/", login),
     path("save-target/", save_target),
-    path("image/", proxy_image),
+    path("image", proxy_image),
 ]
