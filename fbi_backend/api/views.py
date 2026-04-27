@@ -48,12 +48,15 @@ def get_wanted_persons(request):
     })
 
 
-@csrf_exempt
 def proxy_image(request):
     image_url = request.GET.get("url")
 
     if not image_url:
         return HttpResponse("Missing url parameter", status=400)
+
+    # ✅ allow any FBI domain safely
+    if "fbi.gov" not in image_url:
+        return HttpResponse("Invalid image URL", status=403)
 
     try:
         response = requests.get(
@@ -67,17 +70,18 @@ def proxy_image(request):
         )
 
         if response.status_code == 200:
-            content_type = response.headers.get("Content-Type", "image/jpeg")
-            return HttpResponse(response.content, content_type=content_type)
+            return HttpResponse(
+                response.content,
+                content_type=response.headers.get("Content-Type", "image/jpeg")
+            )
         else:
             return HttpResponse(
-                f"FBI returned: {response.status_code}",
+                f"FBI returned {response.status_code}",
                 status=response.status_code
             )
 
     except Exception as e:
         return HttpResponse(str(e), status=500)
-
 # REGISTER
 @csrf_exempt
 def register(request):

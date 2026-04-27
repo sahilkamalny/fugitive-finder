@@ -3,6 +3,8 @@ package org.example.fugitivefinder.view;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import com.gluonhq.maps.MapPoint;
@@ -182,7 +184,9 @@ public class DashboardController {
 
         String imageUrl = person.getPrimaryImageUrl();
         if (imageUrl != null && !imageUrl.isBlank()) {
-            String proxyUrl = "https://fbi-backend-wilt.onrender.com/api/image/?url=" + imageUrl;
+            String proxyUrl = "https://fbi-backend-wilt.onrender.com/api/image?url="
+                    + URLEncoder.encode(imageUrl, StandardCharsets.UTF_8);
+
             imageView.setImage(new javafx.scene.image.Image(proxyUrl, true));
         }
 
