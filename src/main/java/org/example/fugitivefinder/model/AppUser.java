@@ -80,7 +80,7 @@ public class AppUser {
     }
 
     public void setSavedTargetIds(List<String> savedTargetIds) {
-        this.savedTargetIds = savedTargetIds;
+        this.savedTargetIds = savedTargetIds == null ? new ArrayList<>() : savedTargetIds;
     }
 
     public String getFullName() {

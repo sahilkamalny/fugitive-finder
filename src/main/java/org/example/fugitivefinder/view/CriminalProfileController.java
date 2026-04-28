@@ -56,17 +56,26 @@ public class CriminalProfileController {
     }
 
     @FXML
+    private void saveTarget() {
+        viewModel.saveTarget();
+    }
+    @FXML
     private void goToDashboard() {
         SceneManager.switchScene(criminalImageView, "/org.example.fugitivefinder/dashboard.fxml", 1440, 900);
     }
 
     @FXML
-    private void goToRewards() {
-        SceneManager.switchScene(criminalImageView, "/org.example.fugitivefinder/rewards.fxml", 1440, 900);
+    private void goToMap() {
+        SceneManager.switchScene(criminalImageView, "/org.example.fugitivefinder/maps-view.fxml", 1440, 900);
     }
 
     @FXML
-    private void saveTarget() {
-        viewModel.saveTarget();
+    private void goToAnalytics() {
+        SceneManager.switchScene(criminalImageView, "/org.example.fugitivefinder/analytics.fxml", 1440, 900);
+    }
+
+    @FXML
+    private void goToUserProfile() {
+        SceneManager.switchScene(criminalImageView, "/org.example.fugitivefinder/user-profile.fxml", 1440, 900);
     }
 }

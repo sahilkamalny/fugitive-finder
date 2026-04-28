@@ -23,6 +23,7 @@ public class MapsViewModel {
     private final Map<MapPoint, List<WantedPerson>> locationGroups = new HashMap<>();
     private final Map<String, MapPoint> officeCoordinates = new HashMap<>();
     private final ObservableList<WantedPerson> allPeople = FXCollections.observableArrayList();
+    private final ObservableList<MapPoint> filteredLocations = FXCollections.observableArrayList();
 
     public MapsViewModel() {
         loadOfficeCoordinates();
@@ -70,10 +71,44 @@ public class MapsViewModel {
                     locationGroups.computeIfAbsent(point, k -> new ArrayList<>()).add(person);
                     if (!fugitiveLocations.contains(point)) {
                         fugitiveLocations.add(point);
+                        filteredLocations.setAll(fugitiveLocations);
                     }
                 }
             }
         });
+    }
+    public void filterByName(String name) {
+        filteredLocations.clear();
+
+        String query = name.toLowerCase().trim();
+
+        for (WantedPerson person : allPeople) {
+            if (person.getTitle() != null &&
+                    person.getTitle().toLowerCase().contains(query)) {
+
+                MapPoint point = findCoordinates(person.getFieldOffices());
+
+                if (point != null && !filteredLocations.contains(point)) {
+                    filteredLocations.add(point);
+                }
+            }
+        }
+    }
+    public void filterByOffice(String officeName) {
+        filteredLocations.clear();
+
+        MapPoint point = officeCoordinates.get(officeName);
+
+        if (point != null) {
+            filteredLocations.add(point);
+        }
+    }
+    public void clearNameSearch() {
+        filteredLocations.setAll(fugitiveLocations);
+    }
+
+    public void clearOfficeFilter() {
+        filteredLocations.setAll(fugitiveLocations);
     }
 
     private MapPoint findCoordinates(List<String> offices) {
@@ -98,7 +133,9 @@ public class MapsViewModel {
         return  point;
     }
 
-    public ObservableList<MapPoint> getFugitiveLocations() { return fugitiveLocations; }
+    public ObservableList<MapPoint> getFugitiveLocations() {
+        return filteredLocations;
+    }
     public Map<MapPoint, List<WantedPerson>> getLocationGroups() { return locationGroups; }
     public Map<String, MapPoint> getOfficeCoordinates() { return officeCoordinates; }
     public List<WantedPerson> getWantedPeopleList() { return allPeople; }
@@ -112,11 +149,9 @@ public class MapsViewModel {
         SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/criminal-profile.fxml", 1440, 900);
     }
 
-    public void goToRewards(Node sourceNode) {
-        SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/rewards.fxml", 1440, 900);
-    }
+
     public void goToCharts(Node source) {
-        SceneManager.switchScene(source, "/org.example.fugitivefinder/charts-view.fxml", 1440, 900);
+        SceneManager.switchScene(source, "/org.example.fugitivefinder/analytics.fxml", 1440, 900);
     }
 
     public void goToUserProfile(Node sourceNode) {

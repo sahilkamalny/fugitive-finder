@@ -9,7 +9,7 @@ import org.example.fugitivefinder.model.AppUser;
 import org.example.fugitivefinder.model.WantedPerson;
 import org.example.fugitivefinder.service.FbiApiService;
 import org.example.fugitivefinder.session.Session;
-
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserProfileViewModel {
@@ -42,9 +42,20 @@ public class UserProfileViewModel {
 
     public void loadData() {
         AppUser currentUser = Session.getInstance().getCurrentUser();
+
         if (currentUser == null) {
+            username.set("Guest");
+            fullName.set("No user logged in");
+            email.set("Please log in first");
+            savedTargets.clear();
             return;
         }
+
+        if (currentUser.getSavedTargetIds() == null) {
+            currentUser.setSavedTargetIds(new ArrayList<>());
+        }
+
+        System.out.println("Current saved IDs: " + currentUser.getSavedTargetIds());
 
         username.set(currentUser.getUsername());
         fullName.set(currentUser.getFullName());
@@ -54,6 +65,7 @@ public class UserProfileViewModel {
         List<WantedPerson> allPeople = FbiApiService.getWantedPeople();
 
         savedTargets.clear();
+
         for (WantedPerson person : allPeople) {
             if (person.getUid() != null && currentUser.getSavedTargetIds().contains(person.getUid())) {
                 savedTargets.add(person);
@@ -61,11 +73,18 @@ public class UserProfileViewModel {
         }
     }
 
+
+
     public void goToDashboard(Node sourceNode) {
         SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/dashboard.fxml", 1440, 900);
     }
-
-    public void goToRewards(Node sourceNode) {
-        SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/rewards.fxml", 1440, 900);
+    public void goToMaps(Node sourceNode) {
+        SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/maps-view.fxml", 1440, 900);
     }
+
+    public void goToAnalytics(Node sourceNode) {
+        SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/analytics.fxml", 1440, 900);
+    }
+
+
 }
