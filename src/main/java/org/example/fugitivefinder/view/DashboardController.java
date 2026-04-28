@@ -168,6 +168,7 @@ public class DashboardController {
         nameLabel.setStyle("-fx-text-fill: white; -fx-font-size: 18; -fx-font-weight: bold;");
         nameLabel.setWrapText(true);
 
+
         Label rewardLabel = new Label(person.getDisplayReward());
         rewardLabel.setStyle("-fx-text-fill: #f59e0b; -fx-font-size: 14;");
         rewardLabel.setWrapText(true);
