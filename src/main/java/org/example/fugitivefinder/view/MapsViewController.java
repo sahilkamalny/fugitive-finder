@@ -170,15 +170,18 @@ public class MapsViewController {
         card.setPrefWidth(270);
         card.setPrefHeight(100);
         card.setStyle("-fx-background-color: #111827; -fx-background-radius: 14; -fx-border-color: #334155; -fx-border-radius: 14;");
-        card.setOnMouseClicked(event -> viewModel.openCriminalProfile(mapContainer, person));
-
+        card.setOnMouseClicked(event -> {
+            System.out.println("Clicked map criminal: " + person.getTitle());
+            viewModel.openCriminalProfile(card, person);
+        });
         return card;
     }
 
     private void showFugitivesForOffice(String officeName) {
         List<WantedPerson> localFugitives = viewModel.getWantedPeopleList().stream()
                 .filter(f -> f.getFieldOffices() != null && !f.getFieldOffices().isEmpty())
-                .filter(f -> f.getFieldOffices().get(0).toLowerCase().replace(" ", "").equals(officeName))
+                .filter(f -> f.getFieldOffices().stream()
+                        .anyMatch(office -> office.toLowerCase().replace(" ", "").equals(officeName)))
                 .toList();
         if (localFugitives.isEmpty()) return;
 

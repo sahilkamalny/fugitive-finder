@@ -188,8 +188,10 @@ public class DashboardController {
         card.setPrefWidth(270);
         card.setPrefHeight(280);
         card.setStyle("-fx-background-color: #111827; -fx-background-radius: 14; -fx-border-color: #334155; -fx-border-radius: 14;");
-        card.setOnMouseClicked(event -> viewModel.openCriminalProfile(featuredCardsPane, person));
-
+        card.setOnMouseClicked(event -> {
+            System.out.println("Clicked criminal: " + person.getTitle());
+            viewModel.openCriminalProfile(card, person);
+        });
         return card;
     }
 
