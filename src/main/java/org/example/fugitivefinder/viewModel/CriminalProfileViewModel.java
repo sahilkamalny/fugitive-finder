@@ -78,8 +78,14 @@ public class CriminalProfileViewModel {
 
     public void saveTarget() {
         AppUser currentUser = Session.getInstance().getCurrentUser();
+
         if (currentUser != null && selectedPerson != null && selectedPerson.getUid() != null) {
             UserService.saveTargetForUser(currentUser, selectedPerson.getUid());
+            Session.getInstance().setCurrentUser(currentUser);
+
+            System.out.println("Saved " + selectedPerson.getTitle() + " to profile.");
+        } else {
+            System.out.println("Save failed. User or selected person is null.");
         }
     }
 }
