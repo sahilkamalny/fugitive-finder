@@ -18,10 +18,11 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.example.fugitivefinder.model.WantedPerson;
 import org.example.fugitivefinder.viewModel.MapsViewModel;
-
+import javafx.scene.control.ComboBox;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javafx.scene.control.TextField;
 
 import static javafx.util.Duration.millis;
 
@@ -34,10 +35,17 @@ public class MapsViewController {
     private final List<MapLayer> activeLayers = new ArrayList<>();
 
     @FXML
+    private ComboBox<String> officeFilterComboBox;
+
+    @FXML
+    private TextField nameSearchField;
+    @FXML
     public void initialize() {
         viewModel = new MapsViewModel();
         setUpMap();
+        setupOfficeFilter();
         new Thread(viewModel::loadMapData).start();
+
     }
 
     public void setUpMap() {
@@ -98,6 +106,50 @@ public class MapsViewController {
         }
     }
 
+    private void setupOfficeFilter() {
+        officeFilterComboBox.getItems().add("All Offices");
+        officeFilterComboBox.getItems().addAll(viewModel.getOfficeCoordinates().keySet());
+        officeFilterComboBox.setValue("All Offices");
+    }
+
+    @FXML
+    private void handleOfficeFilter() {
+        String selectedOffice = officeFilterComboBox.getValue();
+
+        if (selectedOffice == null || selectedOffice.equals("All Offices")) {
+            viewModel.clearOfficeFilter();
+        } else {
+            viewModel.filterByOffice(selectedOffice);
+        }
+
+        renderMap();
+    }
+
+    @FXML
+    private void handleNameSearch() {
+        String name = nameSearchField.getText();
+
+        if (name == null || name.isBlank()) {
+            viewModel.clearNameSearch();
+        } else {
+            viewModel.filterByName(name);
+        }
+
+        renderMap();
+    }
+
+    @FXML
+    private void clearNameSearch() {
+        nameSearchField.clear();
+        viewModel.clearNameSearch();
+        renderMap();
+    }
+    @FXML
+    private void clearOfficeFilter() {
+        officeFilterComboBox.setValue("All Offices");
+        viewModel.clearOfficeFilter();
+        renderMap();
+    }
     @FXML
     private void toggleHeatMap() {
         isHeatMapMode = !isHeatMapMode;
@@ -209,9 +261,7 @@ public class MapsViewController {
     private void goToCharts() {
         viewModel.goToCharts(mapContainer);    }
 
-    @FXML
-    private void goToRewards() {
-        viewModel.goToRewards(mapContainer);    }
+
 
     @FXML
     private void goToUserProfile() {

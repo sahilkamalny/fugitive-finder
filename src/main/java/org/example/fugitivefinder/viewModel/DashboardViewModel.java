@@ -25,7 +25,6 @@ public class DashboardViewModel {
     private final StringProperty username = new SimpleStringProperty("User");
     private final StringProperty totalWanted = new SimpleStringProperty("0");
     private final StringProperty rewardCases = new SimpleStringProperty("0");
-    private final StringProperty updates = new SimpleStringProperty("0");
     private final ObservableList<WantedPerson> allPeople = FXCollections.observableArrayList();
 
     public void loadData() {
@@ -44,7 +43,6 @@ public class DashboardViewModel {
                     .count();
 
             rewardCases.set(String.valueOf(rewardCount));
-            updates.set(String.valueOf(Math.min(10, people.size())));
 
             allPeople.clear();
             allPeople.addAll(people);
@@ -65,9 +63,6 @@ public class DashboardViewModel {
         return rewardCases;
     }
 
-    public StringProperty updatesProperty() {
-        return updates;
-    }
 
     public ObservableList<WantedPerson> getAllPeople() {
         return allPeople;
@@ -91,9 +86,7 @@ public class DashboardViewModel {
         SceneManager.switchScene(source, "/org.example.fugitivefinder/leaderboard.fxml", 1440, 900);
     }
 
-    public void goToRewards(Node sourceNode) {
-        SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/rewards.fxml", 1440, 900);
-    }
+
 
     public void goToUserProfile(Node sourceNode) {
         SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/user-profile.fxml", 1440, 900);

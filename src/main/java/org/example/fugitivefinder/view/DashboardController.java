@@ -35,8 +35,6 @@ public class DashboardController {
     @FXML
     private Label rewardCasesLabel;
     @FXML
-    private Label updatesLabel;
-    @FXML
     private FlowPane featuredCardsPane;
     @FXML
     private StackPane mapContainer;
@@ -72,7 +70,6 @@ public class DashboardController {
         usernameLabel.textProperty().bind(viewModel.usernameProperty());
         totalWantedLabel.textProperty().bind(viewModel.totalWantedProperty());
         rewardCasesLabel.textProperty().bind(viewModel.rewardCasesProperty());
-        updatesLabel.textProperty().bind(viewModel.updatesProperty());
     }
 
 
@@ -206,10 +203,6 @@ public class DashboardController {
         viewModel.goToCharts(featuredCardsPane);
     }
 
-    @FXML
-    private void goToRewards() {
-        viewModel.goToRewards(featuredCardsPane);
-    }
 
     @FXML
     private void goToUserProfile() {

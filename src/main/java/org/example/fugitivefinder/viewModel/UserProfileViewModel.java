@@ -64,8 +64,13 @@ public class UserProfileViewModel {
     public void goToDashboard(Node sourceNode) {
         SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/dashboard.fxml", 1440, 900);
     }
-
-    public void goToRewards(Node sourceNode) {
-        SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/rewards.fxml", 1440, 900);
+    public void goToMaps(Node sourceNode) {
+        SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/maps-view.fxml", 1440, 900);
     }
+
+    public void goToAnalytics(Node sourceNode) {
+        SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/analytics.fxml", 1440, 900);
+    }
+
+
 }

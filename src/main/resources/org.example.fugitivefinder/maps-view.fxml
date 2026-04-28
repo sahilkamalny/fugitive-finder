@@ -29,9 +29,6 @@
                     <cursor><Cursor fx:constant="HAND" /></cursor>
                 </Label>
 
-                <Label onMouseClicked="#goToRewards" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;" text="Rewards">
-                    <cursor><Cursor fx:constant="HAND" /></cursor>
-                </Label>
 
                 <Label onMouseClicked="#goToUserProfile" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;" text="Profile">
                     <cursor><Cursor fx:constant="HAND" /></cursor>
@@ -67,6 +64,39 @@
                     </children>
                 </HBox>
 
+                <HBox alignment="CENTER_LEFT" spacing="12.0">
+                    <TextField fx:id="nameSearchField"
+                               promptText="Find by name"
+                               prefWidth="250.0"
+                               onAction="#handleNameSearch"
+                               style="-fx-background-radius: 10;" />
+
+                    <Button text="Search"
+                            onAction="#handleNameSearch"
+                            style="-fx-background-color: #f59e0b; -fx-text-fill: #111827; -fx-font-weight: bold; -fx-background-radius: 8;" />
+
+                    <Button text="Clear"
+                            onAction="#clearNameSearch"
+                            style="-fx-background-color: #334155; -fx-text-fill: white; -fx-background-radius: 8;" />
+                    <children>
+                        <Label text="Filter by Office:" textFill="#cbd5e1" />
+
+                        <ComboBox fx:id="officeFilterComboBox"
+                                  prefWidth="220.0"
+                                  onAction="#handleOfficeFilter"
+                                  style="-fx-background-color: #1e293b; -fx-text-fill: white;" />
+
+                        <Button text="Clear Filter"
+                                onAction="#clearOfficeFilter"
+                                style="-fx-background-color: #334155; -fx-text-fill: white; -fx-background-radius: 8; -fx-padding: 8 16;" />
+
+                        <Region HBox.hgrow="ALWAYS" />
+
+                        <Button onAction="#toggleHeatMap"
+                                style="-fx-background-color: #ef4444; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 10 20;"
+                                text="Toggle Heatmap" />
+                    </children>
+                </HBox>
                 <StackPane fx:id="mapContainer" VBox.vgrow="ALWAYS"
                            style="-fx-background-color: #111827; -fx-background-radius: 16; -fx-border-color: #334155; -fx-border-radius: 16; -fx-border-width: 2;">
                     <children>
