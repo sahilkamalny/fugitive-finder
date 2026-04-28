@@ -36,7 +36,7 @@ public class CreateAccountViewModel {
             return false;
         }
 
-        // 🔐 FIREBASE AUTH REGISTER
+
         FirebaseUser user = FirebaseAuthService.register(email.get(), password.get());
 
         if (user == null) {
@@ -45,15 +45,22 @@ public class CreateAccountViewModel {
 
         System.out.println("REGISTER SUCCESS UID: " + user.getLocalId());
 
-        // FIRESTORE SAVE
         System.out.println("Calling Firestore createUser...");
-        FirestoreService.createUser(user.getLocalId(), user.getEmail());
+        FirestoreService.createUser(
+                user.getLocalId(),
+                user.getEmail(),
+                username.get(),
+                firstName.get(),
+                lastName.get()
+        );
 
-        // SESSION STORE
+
         Session.getInstance().setUserId(user.getLocalId());
         Session.getInstance().setEmail(user.getEmail());
+        Session.getInstance().setUsername(username.get());
+        Session.getInstance().setFullName(firstName.get() + " " + lastName.get());
 
-        // NAVIGATE
+
         SceneManager.switchScene(
                 sourceNode,
                 "/org.example.fugitivefinder/dashboard.fxml",

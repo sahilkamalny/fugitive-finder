@@ -1,11 +1,14 @@
 package org.example.fugitivefinder.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FirestoreService {
@@ -13,10 +16,7 @@ public class FirestoreService {
     private static final String PROJECT_ID = "fugitivefinderproject";
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    // =========================
-    // CREATE USER DOCUMENT
-    // =========================
-    public static void createUser(String uid, String email) {
+    public static void createUser(String uid, String email, String username, String firstName, String lastName) {
         try {
             String urlStr = "https://firestore.googleapis.com/v1/projects/"
                     + PROJECT_ID + "/databases/(default)/documents/users/" + uid;
@@ -27,21 +27,19 @@ public class FirestoreService {
             conn.setRequestMethod("POST");
             conn.setRequestProperty("X-HTTP-Method-Override", "PATCH");
             conn.setRequestProperty("Content-Type", "application/json");
-
-            // 🔥 AUTH TOKEN (THIS FIXES YOUR 403)
             conn.setRequestProperty("Authorization", "Bearer " + FirebaseAuthService.getIdToken());
-
             conn.setDoOutput(true);
 
             Map<String, Object> fields = new HashMap<>();
 
-            Map<String, Object> emailField = new HashMap<>();
-            emailField.put("stringValue", email);
+            fields.put("email", Map.of("stringValue", email));
+            fields.put("username", Map.of("stringValue", username));
+            fields.put("firstName", Map.of("stringValue", firstName));
+            fields.put("lastName", Map.of("stringValue", lastName));
 
             Map<String, Object> savedTargetsField = new HashMap<>();
             savedTargetsField.put("arrayValue", new HashMap<>());
 
-            fields.put("email", emailField);
             fields.put("savedTargets", savedTargetsField);
 
             Map<String, Object> body = new HashMap<>();
@@ -57,7 +55,7 @@ public class FirestoreService {
             System.out.println("Firestore Response Code: " + responseCode);
 
             if (responseCode == 200) {
-                System.out.println("User created in Firestore ✅");
+                System.out.println("User FULL profile stored in Firestore ✅");
             } else {
                 System.out.println("Firestore FAILED ❌");
             }
@@ -67,13 +65,11 @@ public class FirestoreService {
         }
     }
 
-    // =========================
-    // SAVE TARGET
-    // =========================
     public static void saveTarget(String uid, String targetId) {
         try {
             String urlStr = "https://firestore.googleapis.com/v1/projects/"
-                    + PROJECT_ID + "/databases/(default)/documents/users/" + uid;
+                    + PROJECT_ID + "/databases/(default)/documents/users/" + uid
+                    + "?updateMask.fieldPaths=savedTargets";
 
             URL url = new URL(urlStr);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -81,8 +77,6 @@ public class FirestoreService {
             conn.setRequestMethod("POST");
             conn.setRequestProperty("X-HTTP-Method-Override", "PATCH");
             conn.setRequestProperty("Content-Type", "application/json");
-
-            // 🔥 AUTH TOKEN AGAIN
             conn.setRequestProperty("Authorization", "Bearer " + FirebaseAuthService.getIdToken());
 
             conn.setDoOutput(true);
@@ -90,11 +84,11 @@ public class FirestoreService {
             Map<String, Object> value = new HashMap<>();
             value.put("stringValue", targetId);
 
-            Map<String, Object> array = new HashMap<>();
-            array.put("values", new Object[]{value});
+            Map<String, Object> valuesArray = new HashMap<>();
+            valuesArray.put("values", new Object[]{value});
 
             Map<String, Object> arrayValue = new HashMap<>();
-            arrayValue.put("arrayValue", array);
+            arrayValue.put("arrayValue", valuesArray);
 
             Map<String, Object> fields = new HashMap<>();
             fields.put("savedTargets", arrayValue);
@@ -114,5 +108,68 @@ public class FirestoreService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static List<String> getSavedTargets(String uid) {
+        List<String> result = new ArrayList<>();
+
+        try {
+            String urlStr = "https://firestore.googleapis.com/v1/projects/"
+                    + PROJECT_ID + "/databases/(default)/documents/users/" + uid;
+
+            URL url = new URL(urlStr);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Authorization", "Bearer " + FirebaseAuthService.getIdToken());
+
+            if (conn.getResponseCode() == 200) {
+                JsonNode root = mapper.readTree(conn.getInputStream());
+                JsonNode values = root.path("fields").path("savedTargets").path("arrayValue").path("values");
+
+                if (values.isArray()) {
+                    for (JsonNode v : values) {
+                        result.add(v.get("stringValue").asText());
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public static Map<String, String> getUserData(String uid) {
+        try {
+            String urlStr = "https://firestore.googleapis.com/v1/projects/"
+                    + PROJECT_ID + "/databases/(default)/documents/users/" + uid;
+
+            URL url = new URL(urlStr);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Authorization", "Bearer " + FirebaseAuthService.getIdToken());
+
+            if (conn.getResponseCode() == 200) {
+                Map response = mapper.readValue(conn.getInputStream(), Map.class);
+                Map fields = (Map) response.get("fields");
+
+                Map<String, String> userData = new HashMap<>();
+
+                userData.put("email", ((Map) fields.get("email")).get("stringValue").toString());
+                userData.put("username", ((Map) fields.get("username")).get("stringValue").toString());
+                userData.put("firstName", ((Map) fields.get("firstName")).get("stringValue").toString());
+                userData.put("lastName", ((Map) fields.get("lastName")).get("stringValue").toString());
+
+                return userData;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

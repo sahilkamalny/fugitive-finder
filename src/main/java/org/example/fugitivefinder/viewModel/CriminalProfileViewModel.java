@@ -2,10 +2,7 @@ package org.example.fugitivefinder.viewModel;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import org.example.fugitivefinder.model.AppUser;
 import org.example.fugitivefinder.model.WantedPerson;
-import org.example.fugitivefinder.service.UserService;
-import org.example.fugitivefinder.session.Session;
 
 public class CriminalProfileViewModel {
 
@@ -20,40 +17,22 @@ public class CriminalProfileViewModel {
     private final StringProperty warning = new SimpleStringProperty("No warning provided.");
     private final StringProperty imageUrl = new SimpleStringProperty("");
 
-    public StringProperty nameProperty() {
-        return name;
-    }
+    public StringProperty nameProperty() { return name; }
+    public StringProperty aliasesProperty() { return aliases; }
+    public StringProperty statusProperty() { return status; }
+    public StringProperty fieldOfficesProperty() { return fieldOffices; }
+    public StringProperty rewardProperty() { return reward; }
+    public StringProperty descriptionProperty() { return description; }
+    public StringProperty warningProperty() { return warning; }
+    public StringProperty imageUrlProperty() { return imageUrl; }
 
-    public StringProperty aliasesProperty() {
-        return aliases;
-    }
-
-    public StringProperty statusProperty() {
-        return status;
-    }
-
-    public StringProperty fieldOfficesProperty() {
-        return fieldOffices;
-    }
-
-    public StringProperty rewardProperty() {
-        return reward;
-    }
-
-    public StringProperty descriptionProperty() {
-        return description;
-    }
-
-    public StringProperty warningProperty() {
-        return warning;
-    }
-
-    public StringProperty imageUrlProperty() {
-        return imageUrl;
+    public WantedPerson getSelectedPerson() {
+        return selectedPerson;
     }
 
     public void loadSelectedPerson() {
-        selectedPerson = Session.getInstance().getSelectedWantedPerson();
+        selectedPerson = org.example.fugitivefinder.session.Session.getInstance().getSelectedWantedPerson();
+
         if (selectedPerson == null) {
             return;
         }
@@ -69,17 +48,6 @@ public class CriminalProfileViewModel {
                 : selectedPerson.getWarning_message());
 
         String url = selectedPerson.getPrimaryImageUrl();
-        if (url != null && !url.isBlank()) {
-            imageUrl.set(url);
-        } else {
-            imageUrl.set("https://via.placeholder.com/150");
-        }
-    }
-
-    public void saveTarget() {
-        AppUser currentUser = Session.getInstance().getCurrentUser();
-        if (currentUser != null && selectedPerson != null && selectedPerson.getUid() != null) {
-            UserService.saveTargetForUser(currentUser, selectedPerson.getUid());
-        }
+        imageUrl.set(url != null && !url.isBlank() ? url : "https://via.placeholder.com/150");
     }
 }

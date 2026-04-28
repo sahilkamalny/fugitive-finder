@@ -9,11 +9,14 @@ public class Session {
 
     private AppUser currentUser;
     private WantedPerson selectedWantedPerson;
+
     private String userId;
     private String email;
+    
+    private String username;
+    private String fullName;
 
-    private Session() {
-    }
+    private Session() {}
 
     public static Session getInstance() {
         return instance;
@@ -38,8 +41,12 @@ public class Session {
     public void clear() {
         currentUser = null;
         selectedWantedPerson = null;
+        userId = null;
+        email = null;
+        username = null;
+        fullName = null;
     }
-    
+
     public void setUserId(String userId) {
         this.userId = userId;
     }
@@ -54,5 +61,21 @@ public class Session {
 
     public String getEmail() {
         return email;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getFullName() {
+        return fullName;
     }
 }
