@@ -56,6 +56,10 @@ public class CriminalProfileController {
     }
 
     @FXML
+    private void saveTarget() {
+        viewModel.saveTarget();
+    }
+    @FXML
     private void goToDashboard() {
         SceneManager.switchScene(criminalImageView, "/org.example.fugitivefinder/dashboard.fxml", 1440, 900);
     }

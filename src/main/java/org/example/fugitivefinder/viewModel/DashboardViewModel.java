@@ -71,8 +71,16 @@ public class DashboardViewModel {
 
 
     public void openCriminalProfile(Node sourceNode, WantedPerson person) {
+        System.out.println("OPENING PROFILE FOR: " + person.getTitle());
+
         Session.getInstance().setSelectedWantedPerson(person);
-        SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/criminal-profile.fxml", 1440, 900);
+
+        SceneManager.switchScene(
+                sourceNode,
+                "/org.example.fugitivefinder/criminal-profile.fxml",
+                1440,
+                900
+        );
     }
     public void goToMap(Node source) {
         SceneManager.switchScene(source, "/org.example.fugitivefinder/maps-view.fxml", 1440, 900);

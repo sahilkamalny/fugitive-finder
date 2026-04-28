@@ -187,11 +187,19 @@ public class DashboardController {
         card.setPadding(new Insets(12));
         card.setPrefWidth(270);
         card.setPrefHeight(280);
+        card.setPickOnBounds(true);
         card.setStyle("-fx-background-color: #111827; -fx-background-radius: 14; -fx-border-color: #334155; -fx-border-radius: 14;");
+
         card.setOnMouseClicked(event -> {
-            System.out.println("Clicked criminal: " + person.getTitle());
+            System.out.println("DASHBOARD CARD CLICKED: " + person.getTitle());
             viewModel.openCriminalProfile(card, person);
         });
+
+        nameLabel.setOnMouseClicked(event -> {
+            System.out.println("NAME CLICKED: " + person.getTitle());
+            viewModel.openCriminalProfile(nameLabel, person);
+        });
+
         return card;
     }
 
