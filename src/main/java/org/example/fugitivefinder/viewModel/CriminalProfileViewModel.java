@@ -19,7 +19,9 @@ public class CriminalProfileViewModel {
     private final StringProperty description = new SimpleStringProperty("No description available.");
     private final StringProperty warning = new SimpleStringProperty("No warning provided.");
     private final StringProperty imageUrl = new SimpleStringProperty("");
-
+    private final StringProperty sex = new SimpleStringProperty("SEX:");
+    private final StringProperty race = new SimpleStringProperty("RACE:");
+    private final StringProperty subjects = new SimpleStringProperty("SUBJECTS:");
     public StringProperty nameProperty() {
         return name;
     }
@@ -51,6 +53,17 @@ public class CriminalProfileViewModel {
     public StringProperty imageUrlProperty() {
         return imageUrl;
     }
+    public StringProperty sexProperty() {
+        return sex;
+    }
+
+    public StringProperty raceProperty() {
+        return race;
+    }
+
+    public StringProperty subjectsProperty() {
+        return subjects;
+    }
 
     public void loadSelectedPerson() {
         selectedPerson = Session.getInstance().getSelectedWantedPerson();
@@ -58,6 +71,9 @@ public class CriminalProfileViewModel {
             return;
         }
 
+        sex.set("SEX: " + selectedPerson.getDisplaySex());
+        race.set("RACE: " + selectedPerson.getDisplayRace());
+        subjects.set("SUBJECTS: " + selectedPerson.getDisplaySubjects());
         name.set(selectedPerson.getTitle());
         aliases.set("ALIASES: " + selectedPerson.getDisplayAliases());
         status.set("STATUS: " + selectedPerson.getStatus());

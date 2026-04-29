@@ -103,6 +103,23 @@
                                     </font>
                                 </Label>
 
+                                <Label fx:id="sexLabel" text="SEX:" textFill="#e2e8f0">
+                                    <font>
+                                        <Font size="17.0" />
+                                    </font>
+                                </Label>
+
+                                <Label fx:id="raceLabel" text="RACE:" textFill="#e2e8f0">
+                                    <font>
+                                        <Font size="17.0" />
+                                    </font>
+                                </Label>
+
+                                <Label fx:id="subjectsLabel" text="SUBJECTS:" textFill="#e2e8f0" wrapText="true">
+                                    <font>
+                                        <Font size="17.0" />
+                                    </font>
+                                </Label>
                                 <HBox spacing="10.0">
                                     <children>
                                         <Label text="Reward" style="-fx-background-color: #1f2937; -fx-text-fill: white; -fx-padding: 8 12; -fx-background-radius: 8;" />

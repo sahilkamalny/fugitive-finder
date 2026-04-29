@@ -36,10 +36,21 @@ public class CriminalProfileController {
     private CriminalProfileViewModel viewModel;
 
     @FXML
+    private Label sexLabel;
+
+    @FXML
+    private Label raceLabel;
+
+    @FXML
+    private Label subjectsLabel;
+
+    @FXML
     public void initialize() {
         viewModel = new CriminalProfileViewModel();
         viewModel.loadSelectedPerson();
-
+        sexLabel.textProperty().bind(viewModel.sexProperty());
+        raceLabel.textProperty().bind(viewModel.raceProperty());
+        subjectsLabel.textProperty().bind(viewModel.subjectsProperty());
         nameLabel.textProperty().bind(viewModel.nameProperty());
         aliasesLabel.textProperty().bind(viewModel.aliasesProperty());
         statusLabel.textProperty().bind(viewModel.statusProperty());
