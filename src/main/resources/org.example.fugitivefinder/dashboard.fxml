@@ -5,6 +5,8 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ComboBox?>
 
 <BorderPane prefHeight="900.0" prefWidth="1440.0" style="-fx-background-color: #081120;"
             xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
@@ -134,11 +136,35 @@
                         <HBox spacing="12.0" alignment="CENTER_LEFT">
                             <children>
                                 <Label text="Sort by:" textFill="#cbd5e1"/>
-                                <ComboBox fx:id="sortComboBox" onAction="#handleSort"
+
+                                <ComboBox fx:id="sortComboBox"
+                                          onAction="#handleSort"
+                                          prefWidth="180.0"
                                           style="-fx-background-color: #1e293b; -fx-text-fill: white;"/>
+
+                                <Label text="Status:" textFill="#cbd5e1"/>
+
+                                <ComboBox fx:id="statusFilterComboBox"
+                                          onAction="#handleFilters"
+                                          prefWidth="150.0"
+                                          style="-fx-background-color: #1e293b; -fx-text-fill: white;"/>
+
+                                <Label text="Reward:" textFill="#cbd5e1"/>
+
+                                <ComboBox fx:id="rewardFilterComboBox"
+                                          onAction="#handleFilters"
+                                          prefWidth="170.0"
+                                          style="-fx-background-color: #1e293b; -fx-text-fill: white;"/>
+
+                                <Label text="Search:" textFill="#cbd5e1"/>
+
+                                <TextField fx:id="searchField"
+                                           onAction="#handleFilters"
+                                           promptText="Search name"
+                                           prefWidth="200.0"
+                                           style="-fx-background-radius: 8;"/>
                             </children>
                         </HBox>
-
                         <FlowPane fx:id="featuredCardsPane" hgap="18.0" vgap="18.0"
                                   style="-fx-background-color: transparent;"/>
 

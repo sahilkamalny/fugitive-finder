@@ -16,6 +16,47 @@ public class WantedPerson {
     private List<String> aliases;
     private List<String> fieldOffices;
     private List<String> images;
+    private String sex;
+    private String race;
+    private List<String> subjects;
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getRace() {
+        return race;
+    }
+
+    public void setRace(String race) {
+        this.race = race;
+    }
+
+    public List<String> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(List<String> subjects) {
+        this.subjects = subjects;
+    }
+
+    public String getDisplaySex() {
+        return sex == null || sex.isBlank() ? "Not listed" : sex;
+    }
+
+    public String getDisplayRace() {
+        return race == null || race.isBlank() ? "Not listed" : race;
+    }
+
+    public String getDisplaySubjects() {
+        return subjects == null || subjects.isEmpty()
+                ? "Not listed"
+                : String.join(", ", subjects);
+    }
 
     public String getUid() { return uid; }
     public void setUid(String uid) { this.uid = uid; }
