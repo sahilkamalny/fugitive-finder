@@ -3,6 +3,8 @@ package org.example.fugitivefinder.view;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import com.gluonhq.maps.MapPoint;
@@ -180,11 +182,19 @@ public class DashboardController {
 
         String imageUrl = person.getPrimaryImageUrl();
         if (imageUrl != null && !imageUrl.isBlank()) {
-            String proxyUrl = "https://fbi-backend-wilt.onrender.com/api/image/?url=" + imageUrl;
-            imageView.setImage(new javafx.scene.image.Image(proxyUrl, true));
+            imageView.setImage(new javafx.scene.image.Image(imageUrl, true));
         }
 
-        VBox card = new VBox(6, imageView, nameLabel, rewardLabel);
+        Button saveButton = new Button("Save");
+        saveButton.setStyle("-fx-background-color: #22c55e; -fx-text-fill: white;");
+
+        saveButton.setOnAction(e -> {
+            String uid = org.example.fugitivefinder.session.Session.getInstance().getUserId();
+            org.example.fugitivefinder.service.FirestoreService.saveTarget(uid, person.getUid());
+            System.out.println("Saved: " + person.getUid());
+        });
+
+        VBox card = new VBox(6, imageView, nameLabel, rewardLabel, saveButton);
         card.setPadding(new Insets(12));
         card.setPrefWidth(270);
         card.setPrefHeight(280);

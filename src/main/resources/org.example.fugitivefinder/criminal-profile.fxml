@@ -117,7 +117,7 @@
                                     </font>
                                 </Label>
 
-                                <Button mnemonicParsing="false" onAction="#saveTarget"
+                                <Button mnemonicParsing="false" onAction="#handleSaveTarget"
                                         prefHeight="42.0" prefWidth="180.0"
                                         style="-fx-background-color: #dc2626; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 10;"
                                         text="Save Target">

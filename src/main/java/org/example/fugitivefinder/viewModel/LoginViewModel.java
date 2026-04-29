@@ -3,10 +3,13 @@ package org.example.fugitivefinder.viewModel;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
-import org.example.fugitivefinder.model.AppUser;
-import org.example.fugitivefinder.service.UserService;
+
+import org.example.fugitivefinder.model.FirebaseUser;
+import org.example.fugitivefinder.service.FirebaseAuthService;
+import org.example.fugitivefinder.service.FirestoreService;
 import org.example.fugitivefinder.session.Session;
-import org.example.fugitivefinder.viewModel.SceneManager;
+
+import java.util.Map;
 
 public class LoginViewModel {
 
@@ -22,18 +25,46 @@ public class LoginViewModel {
     }
 
     public boolean login(Node sourceNode) {
-        AppUser user = UserService.login(email.get(), password.get());
+
+        FirebaseUser user = FirebaseAuthService.login(email.get(), password.get());
 
         if (user == null) {
             return false;
         }
 
-        Session.getInstance().setCurrentUser(user);
-        SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/dashboard.fxml", 1440, 900);
+        Session.getInstance().setUserId(user.getLocalId());
+        Session.getInstance().setEmail(user.getEmail());
+
+        Map<String, String> userData = FirestoreService.getUserData(user.getLocalId());
+
+        if (userData != null) {
+            Session.getInstance().setUsername(userData.get("username"));
+            Session.getInstance().setFullName(
+                    userData.get("firstName") + " " + userData.get("lastName")
+            );
+        } else {
+            // fallback (just in case)
+            Session.getInstance().setUsername("User");
+            Session.getInstance().setFullName("Logged In User");
+        }
+
+        SceneManager.switchScene(
+                sourceNode,
+                "/org.example.fugitivefinder/dashboard.fxml",
+                1440,
+                900
+        );
+
         return true;
     }
 
     public void goToCreateAccount(Node sourceNode) {
-        SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/create_account.fxml", 1440, 900);
+        SceneManager.switchScene(
+                sourceNode,
+                "/org.example.fugitivefinder/create_account.fxml",
+                1440,
+                900
+        );
     }
+
 }

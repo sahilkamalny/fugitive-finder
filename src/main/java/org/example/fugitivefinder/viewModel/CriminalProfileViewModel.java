@@ -2,10 +2,7 @@ package org.example.fugitivefinder.viewModel;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import org.example.fugitivefinder.model.AppUser;
 import org.example.fugitivefinder.model.WantedPerson;
-import org.example.fugitivefinder.service.UserService;
-import org.example.fugitivefinder.session.Session;
 
 public class CriminalProfileViewModel {
 
@@ -20,40 +17,22 @@ public class CriminalProfileViewModel {
     private final StringProperty warning = new SimpleStringProperty("No warning provided.");
     private final StringProperty imageUrl = new SimpleStringProperty("");
 
-    public StringProperty nameProperty() {
-        return name;
-    }
+    public StringProperty nameProperty() { return name; }
+    public StringProperty aliasesProperty() { return aliases; }
+    public StringProperty statusProperty() { return status; }
+    public StringProperty fieldOfficesProperty() { return fieldOffices; }
+    public StringProperty rewardProperty() { return reward; }
+    public StringProperty descriptionProperty() { return description; }
+    public StringProperty warningProperty() { return warning; }
+    public StringProperty imageUrlProperty() { return imageUrl; }
 
-    public StringProperty aliasesProperty() {
-        return aliases;
-    }
-
-    public StringProperty statusProperty() {
-        return status;
-    }
-
-    public StringProperty fieldOfficesProperty() {
-        return fieldOffices;
-    }
-
-    public StringProperty rewardProperty() {
-        return reward;
-    }
-
-    public StringProperty descriptionProperty() {
-        return description;
-    }
-
-    public StringProperty warningProperty() {
-        return warning;
-    }
-
-    public StringProperty imageUrlProperty() {
-        return imageUrl;
+    public WantedPerson getSelectedPerson() {
+        return selectedPerson;
     }
 
     public void loadSelectedPerson() {
-        selectedPerson = Session.getInstance().getSelectedWantedPerson();
+        selectedPerson = org.example.fugitivefinder.session.Session.getInstance().getSelectedWantedPerson();
+
         if (selectedPerson == null) {
             return;
         }
