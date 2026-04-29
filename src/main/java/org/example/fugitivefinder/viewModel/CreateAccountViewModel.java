@@ -3,10 +3,11 @@ package org.example.fugitivefinder.viewModel;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
-import org.example.fugitivefinder.model.AppUser;
-import org.example.fugitivefinder.service.UserService;
+
+import org.example.fugitivefinder.model.FirebaseUser;
+import org.example.fugitivefinder.service.FirebaseAuthService;
+import org.example.fugitivefinder.service.FirestoreService;
 import org.example.fugitivefinder.session.Session;
-import org.example.fugitivefinder.viewModel.SceneManager;
 
 public class CreateAccountViewModel {
 
@@ -17,31 +18,15 @@ public class CreateAccountViewModel {
     private final StringProperty password = new SimpleStringProperty("");
     private final StringProperty confirmPassword = new SimpleStringProperty("");
 
-    public StringProperty firstNameProperty() {
-        return firstName;
-    }
-
-    public StringProperty lastNameProperty() {
-        return lastName;
-    }
-
-    public StringProperty usernameProperty() {
-        return username;
-    }
-
-    public StringProperty emailProperty() {
-        return email;
-    }
-
-    public StringProperty passwordProperty() {
-        return password;
-    }
-
-    public StringProperty confirmPasswordProperty() {
-        return confirmPassword;
-    }
+    public StringProperty firstNameProperty() { return firstName; }
+    public StringProperty lastNameProperty() { return lastName; }
+    public StringProperty usernameProperty() { return username; }
+    public StringProperty emailProperty() { return email; }
+    public StringProperty passwordProperty() { return password; }
+    public StringProperty confirmPasswordProperty() { return confirmPassword; }
 
     public boolean createAccount(Node sourceNode) {
+
         if (firstName.get().isBlank() || lastName.get().isBlank() || username.get().isBlank()
                 || email.get().isBlank() || password.get().isBlank() || confirmPassword.get().isBlank()) {
             return false;
@@ -51,24 +36,47 @@ public class CreateAccountViewModel {
             return false;
         }
 
-        AppUser user = UserService.createAccount(
-                firstName.get(),
-                lastName.get(),
-                username.get(),
-                email.get(),
-                password.get()
-        );
+
+        FirebaseUser user = FirebaseAuthService.register(email.get(), password.get());
 
         if (user == null) {
             return false;
         }
 
-        Session.getInstance().setCurrentUser(user);
-        SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/dashboard.fxml", 1440, 900);
+        System.out.println("REGISTER SUCCESS UID: " + user.getLocalId());
+
+        System.out.println("Calling Firestore createUser...");
+        FirestoreService.createUser(
+                user.getLocalId(),
+                user.getEmail(),
+                username.get(),
+                firstName.get(),
+                lastName.get()
+        );
+
+
+        Session.getInstance().setUserId(user.getLocalId());
+        Session.getInstance().setEmail(user.getEmail());
+        Session.getInstance().setUsername(username.get());
+        Session.getInstance().setFullName(firstName.get() + " " + lastName.get());
+
+
+        SceneManager.switchScene(
+                sourceNode,
+                "/org.example.fugitivefinder/dashboard.fxml",
+                1440,
+                900
+        );
+
         return true;
     }
 
     public void returnToLogin(Node sourceNode) {
-        SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/login.fxml", 1440, 900);
+        SceneManager.switchScene(
+                sourceNode,
+                "/org.example.fugitivefinder/login.fxml",
+                1440,
+                900
+        );
     }
 }
