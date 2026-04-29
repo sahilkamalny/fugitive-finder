@@ -48,7 +48,7 @@ public class AnalyticsController {
     private VBox chartsContainer;
 
     @FXML
-    private StackPane loadingOverlay;
+    private VBox loadingOverlay;
 
     @FXML
     private Label statusLabel;
