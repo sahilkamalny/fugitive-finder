@@ -92,9 +92,7 @@
 
                         <Region HBox.hgrow="ALWAYS" />
 
-                        <Button onAction="#toggleHeatMap"
-                                style="-fx-background-color: #ef4444; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 10 20;"
-                                text="Toggle Heatmap" />
+                
                     </children>
                 </HBox>
                 <StackPane fx:id="mapContainer" VBox.vgrow="ALWAYS"
