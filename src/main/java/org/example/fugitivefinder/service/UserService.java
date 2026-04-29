@@ -121,8 +121,14 @@ public final class UserService {
             return;
         }
 
+        if (user.getSavedTargetIds() == null) {
+            user.setSavedTargetIds(new ArrayList<>());
+        }
+
         if (!user.getSavedTargetIds().contains(wantedUid)) {
             user.getSavedTargetIds().add(wantedUid);
+            System.out.println("Saved target: " + wantedUid);
+            System.out.println("Saved list now: " + user.getSavedTargetIds());
         }
     }
 

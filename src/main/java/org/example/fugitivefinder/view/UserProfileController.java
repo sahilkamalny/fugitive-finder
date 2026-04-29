@@ -49,8 +49,13 @@ public class UserProfileController {
     }
 
     @FXML
-    private void goToRewards(MouseEvent event) {
-        viewModel.goToRewards((Node) event.getSource());
+    private void goToMaps(MouseEvent event) {
+        viewModel.goToMaps((Node) event.getSource());
+    }
+
+    @FXML
+    private void goToAnalytics(MouseEvent event) {
+        viewModel.goToAnalytics((Node) event.getSource());
     }
 
     private void renderSavedTargets() {

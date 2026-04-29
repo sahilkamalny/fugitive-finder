@@ -10,7 +10,7 @@ import org.example.fugitivefinder.model.WantedPerson;
 import org.example.fugitivefinder.service.FbiApiService;
 import org.example.fugitivefinder.service.FirestoreService;
 import org.example.fugitivefinder.session.Session;
-
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserProfileViewModel {
@@ -43,16 +43,32 @@ public class UserProfileViewModel {
     }
 
     public void loadData() {
-        email.set(Session.getInstance().getEmail());
-        username.set(Session.getInstance().getUsername());
-        fullName.set(Session.getInstance().getFullName());
+        AppUser currentUser = Session.getInstance().getCurrentUser();
 
-        loadSavedTargets(); // already done
+        if (currentUser == null) {
+            username.set("Guest");
+            fullName.set("No user logged in");
+            email.set("Please log in first");
+            savedTargets.clear();
+            return;
+        }
+
+        if (currentUser.getSavedTargetIds() == null) {
+            currentUser.setSavedTargetIds(new ArrayList<>());
+        }
+
+        System.out.println("Current saved IDs: " + currentUser.getSavedTargetIds());
+
+        username.set(currentUser.getUsername());
+        fullName.set(currentUser.getFullName());
+        email.set(currentUser.getEmail());
+        avatarPath.set(currentUser.getProfilePicUrl());
+      
+      loadSavedTargets();
     }
 
 
-    private void loadSavedTargets() {
-
+      private void loadSavedTargets() {
         String uid = Session.getInstance().getUserId();
 
         List<String> savedIds = FirestoreService.getSavedTargets(uid);
@@ -67,6 +83,8 @@ public class UserProfileViewModel {
         }
     }
 
+
+
     public void goToDashboard(Node sourceNode) {
         SceneManager.switchScene(
                 sourceNode,
@@ -74,6 +92,9 @@ public class UserProfileViewModel {
                 1440,
                 900
         );
+    }
+    public void goToMaps(Node sourceNode) {
+        SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/maps-view.fxml", 1440, 900);
     }
 
     public void goToRewards(Node sourceNode) {
@@ -83,5 +104,9 @@ public class UserProfileViewModel {
                 1440,
                 900
         );
+    public void goToAnalytics(Node sourceNode) {
+        SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/analytics.fxml", 1440, 900);
     }
+
+
 }

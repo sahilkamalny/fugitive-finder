@@ -37,8 +37,6 @@ public class DashboardController {
     @FXML
     private Label rewardCasesLabel;
     @FXML
-    private Label updatesLabel;
-    @FXML
     private FlowPane featuredCardsPane;
     @FXML
     private StackPane mapContainer;
@@ -74,7 +72,6 @@ public class DashboardController {
         usernameLabel.textProperty().bind(viewModel.usernameProperty());
         totalWantedLabel.textProperty().bind(viewModel.totalWantedProperty());
         rewardCasesLabel.textProperty().bind(viewModel.rewardCasesProperty());
-        updatesLabel.textProperty().bind(viewModel.updatesProperty());
     }
 
 
@@ -173,6 +170,7 @@ public class DashboardController {
         nameLabel.setStyle("-fx-text-fill: white; -fx-font-size: 18; -fx-font-weight: bold;");
         nameLabel.setWrapText(true);
 
+
         Label rewardLabel = new Label(person.getDisplayReward());
         rewardLabel.setStyle("-fx-text-fill: #f59e0b; -fx-font-size: 14;");
         rewardLabel.setWrapText(true);
@@ -200,8 +198,18 @@ public class DashboardController {
         card.setPadding(new Insets(12));
         card.setPrefWidth(270);
         card.setPrefHeight(280);
+        card.setPickOnBounds(true);
         card.setStyle("-fx-background-color: #111827; -fx-background-radius: 14; -fx-border-color: #334155; -fx-border-radius: 14;");
-        card.setOnMouseClicked(event -> viewModel.openCriminalProfile(featuredCardsPane, person));
+
+        card.setOnMouseClicked(event -> {
+            System.out.println("DASHBOARD CARD CLICKED: " + person.getTitle());
+            viewModel.openCriminalProfile(card, person);
+        });
+
+        nameLabel.setOnMouseClicked(event -> {
+            System.out.println("NAME CLICKED: " + person.getTitle());
+            viewModel.openCriminalProfile(nameLabel, person);
+        });
 
         return card;
     }
@@ -216,10 +224,6 @@ public class DashboardController {
         viewModel.goToCharts(featuredCardsPane);
     }
 
-    @FXML
-    private void goToRewards() {
-        viewModel.goToRewards(featuredCardsPane);
-    }
 
     @FXML
     private void goToUserProfile() {

@@ -35,19 +35,17 @@
                     </children>
                 </HBox>
 
-                <Label text="Dashboard" onMouseClicked="#goToDashboard" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;">
-                    <cursor>
-                        <Cursor fx:constant="HAND" />
-                    </cursor>
-                </Label>
+                <Label text="Dashboard" onMouseClicked="#goToDashboard"
+                       style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16; -fx-cursor: hand;" />
 
-                <Label text="Rewards" onMouseClicked="#goToRewards" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;">
-                    <cursor>
-                        <Cursor fx:constant="HAND" />
-                    </cursor>
-                </Label>
+                <Label text="Full Map" onMouseClicked="#goToMaps"
+                       style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16; -fx-cursor: hand;" />
 
-                <Label text="Profile" style="-fx-background-color: #1e293b; -fx-text-fill: white; -fx-padding: 12 16; -fx-background-radius: 10;" />
+                <Label text="Analytics" onMouseClicked="#goToAnalytics"
+                       style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16; -fx-cursor: hand;" />
+
+                <Label text="Profile"
+                       style="-fx-background-color: #1e293b; -fx-text-fill: white; -fx-padding: 12 16; -fx-background-radius: 10;" />
             </children>
         </VBox>
     </left>
@@ -61,11 +59,6 @@
                     </font>
                 </Label>
                 <Region HBox.hgrow="ALWAYS" />
-                <ImageView fitHeight="44.0" fitWidth="44.0" preserveRatio="true">
-                    <image>
-                        <Image url="@images/detective-avatar.png" />
-                    </image>
-                </ImageView>
             </children>
         </HBox>
     </top>
@@ -75,7 +68,11 @@
             <children>
                 <HBox spacing="22.0" style="-fx-background-color: #111827; -fx-background-radius: 16; -fx-padding: 20;">
                     <children>
-                        <ImageView fx:id="avatarImageView" fitHeight="140.0" fitWidth="140.0" preserveRatio="true" />
+                        <ImageView fitHeight="140.0" fitWidth="140.0" preserveRatio="true">
+                            <image>
+                                <Image url="@images/detective-avatar.png" />
+                            </image>
+                        </ImageView>
                         <VBox spacing="10.0">
                             <children>
                                 <Label fx:id="usernameLabel" text="Username" textFill="WHITE">

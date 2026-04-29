@@ -48,6 +48,23 @@ public class CriminalProfileViewModel {
                 : selectedPerson.getWarning_message());
 
         String url = selectedPerson.getPrimaryImageUrl();
-        imageUrl.set(url != null && !url.isBlank() ? url : "https://via.placeholder.com/150");
+        if (url != null && !url.isBlank()) {
+            imageUrl.set(url);
+        } else {
+            imageUrl.set("https://via.placeholder.com/150");
+        }
+    }
+
+    public void saveTarget() {
+        AppUser currentUser = Session.getInstance().getCurrentUser();
+
+        if (currentUser != null && selectedPerson != null && selectedPerson.getUid() != null) {
+            UserService.saveTargetForUser(currentUser, selectedPerson.getUid());
+            Session.getInstance().setCurrentUser(currentUser);
+
+            System.out.println("Saved " + selectedPerson.getTitle() + " to profile.");
+        } else {
+            System.out.println("Save failed. User or selected person is null.");
+        }
     }
 }

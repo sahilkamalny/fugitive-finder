@@ -32,7 +32,7 @@
                        text="Dashboard"/>
 
                 <Label onMouseClicked="#showMapScreen" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;"
-                       text="Maps">
+                       text="Full Map">
                     <cursor>
                         <Cursor fx:constant="HAND"/>
                     </cursor>
@@ -45,11 +45,7 @@
                     </cursor>
                 </Label>
 
-                <Label onMouseClicked="#goToRewards" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;" text="Rewards">
-                    <cursor>
-                        <Cursor fx:constant="HAND"/>
-                    </cursor>
-                </Label>
+
 
                 <Label onMouseClicked="#goToUserProfile" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;"
                        text="Profile">
@@ -125,19 +121,7 @@
                                     </children>
                                 </AnchorPane>
 
-                                <AnchorPane prefHeight="120.0" prefWidth="260.0"
-                                            style="-fx-background-color: #1e293b; -fx-background-radius: 16;">
-                                    <children>
-                                        <Label layoutX="20.0" layoutY="20.0" text="Recent Updates"
-                                               textFill="#cbd5e1"/>
-                                        <Label fx:id="updatesLabel" layoutX="20.0" layoutY="55.0" text="0"
-                                               textFill="WHITE">
-                                            <font>
-                                                <Font size="34.0"/>
-                                            </font>
-                                        </Label>
-                                    </children>
-                                </AnchorPane>
+
                             </children>
                         </HBox>
 

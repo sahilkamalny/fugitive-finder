@@ -48,7 +48,7 @@ public class AnalyticsController {
     private VBox chartsContainer;
 
     @FXML
-    private StackPane loadingOverlay;
+    private VBox loadingOverlay;
 
     @FXML
     private Label statusLabel;
@@ -222,10 +222,7 @@ public class AnalyticsController {
         SceneManager.switchScene(subjectsChart, "/org.example.fugitivefinder/leaderboard.fxml", 1440, 900);
     }
 
-    @FXML
-    private void goToRewards() {
-        SceneManager.switchScene(subjectsChart, "/org.example.fugitivefinder/rewards.fxml", 1440, 900);
-    }
+
 
     @FXML
     private void goToUserProfile() {
