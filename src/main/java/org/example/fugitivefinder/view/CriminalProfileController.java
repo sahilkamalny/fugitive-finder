@@ -65,6 +65,7 @@ public class CriminalProfileController {
             FirestoreService.saveTarget(uid, person.getUid());
             System.out.println("Saved from RED button: " + person.getUid());
         }
+    }
     private void goToAnalytics() {
         SceneManager.switchScene(criminalImageView, "/org.example.fugitivefinder/analytics.fxml", 1440, 900);
     }
