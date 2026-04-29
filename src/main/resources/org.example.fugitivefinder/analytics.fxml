@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -50,14 +51,25 @@
 
                 <!-- Navigation Items -->
                 <Label text="Dashboard" onMouseClicked="#goToDashboard"
-                       style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16; -fx-cursor: hand;" />
+                       style="-fx-text-fill:#cbd5e1; -fx-padding:12 16;">
+                    <cursor><Cursor fx:constant="HAND"/></cursor>
+                </Label>
+
+                <Label text="Full Map" onMouseClicked="#goToMap"
+                       style="-fx-text-fill:#cbd5e1; -fx-padding:12 16;">
+                    <cursor><Cursor fx:constant="HAND"/></cursor>
+                </Label>
 
                 <Label text="Analytics"
-                       style="-fx-background-color: #1e293b; -fx-text-fill: #4fd1c5; -fx-padding: 12 16; -fx-background-radius: 10; -fx-font-weight: bold;" />
+                       style="-fx-background-color:#1e293b; -fx-text-fill:white; -fx-padding:12 16; -fx-background-radius:10;"/>
 
                 <Label text="Profile" onMouseClicked="#goToUserProfile"
-                       style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16; -fx-cursor: hand;" />
+                       style="-fx-text-fill:#cbd5e1; -fx-padding:12 16;">
+                    <cursor><Cursor fx:constant="HAND"/></cursor>
+                </Label>
+
             </children>
+
         </VBox>
     </left>
 

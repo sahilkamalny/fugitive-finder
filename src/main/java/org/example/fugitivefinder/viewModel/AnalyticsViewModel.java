@@ -12,7 +12,8 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import org.example.fugitivefinder.service.ChartDataService;
 import org.json.JSONObject;
-
+import org.example.fugitivefinder.model.WantedPerson;
+import org.example.fugitivefinder.service.FbiApiService;
 import java.util.List;
 import java.util.Map;
 
@@ -96,7 +97,7 @@ public class AnalyticsViewModel {
      * Updates the observable properties on the JavaFX Application Thread
      * when data is ready.
      */
-    public void loadData() {
+  /**  public void loadData() {
         loading.set(true);
         statusMessage.set("Fetching data from FBI API...");
 
@@ -171,7 +172,83 @@ public class AnalyticsViewModel {
         thread.setDaemon(true);
         thread.start();
     }
+*/
+  public void loadData() {
+      loading.set(true);
+      statusMessage.set("Fetching data from FBI API...");
 
+      Task<Void> fetchTask = new Task<>() {
+          @Override
+          protected Void call() {
+              try {
+                  System.out.println("Analytics loading started...");
+
+                  List<WantedPerson> people = FbiApiService.getWantedPeople();
+                  System.out.println("Analytics people fetched: " + people.size());
+
+                  Map<String, Integer> offices = new java.util.HashMap<>();
+                  Map<String, Integer> rewards = new java.util.HashMap<>();
+                  Map<String, Integer> statuses = new java.util.HashMap<>();
+
+                  for (WantedPerson person : people) {
+                      if (person.getFieldOffices() != null) {
+                          for (String office : person.getFieldOffices()) {
+                              offices.merge(office, 1, Integer::sum);
+                          }
+                      }
+
+                      String rewardType = person.getRewardAmount() > 0 ? "Reward Listed" : "No Reward";
+                      rewards.merge(rewardType, 1, Integer::sum);
+
+                      statuses.merge(person.getDisplayStatus(), 1, Integer::sum);
+                  }
+
+                  Platform.runLater(() -> {
+                      totalRecordsText.set(String.valueOf(people.size()));
+                      recordsAnalyzedText.set(String.valueOf(people.size()));
+
+                      subjectsData.clear();
+                      rewards.forEach((key, value) ->
+                              subjectsData.add(new XYChart.Data<>(key, value))
+                      );
+
+                      fieldOfficeData.clear();
+                      offices.entrySet().stream()
+                              .limit(8)
+                              .forEach(entry ->
+                                      fieldOfficeData.add(new PieChart.Data(entry.getKey(), entry.getValue()))
+                              );
+
+                      raceData.clear();
+                      statuses.forEach((key, value) ->
+                              raceData.add(new XYChart.Data<>(key, value))
+                      );
+
+                      sexData.clear();
+                      rewards.forEach((key, value) ->
+                              sexData.add(new PieChart.Data(key, value))
+                      );
+
+                      loading.set(false);
+                      statusMessage.set("Data loaded successfully");
+                  });
+              } catch (Exception e) {
+                  e.printStackTrace();
+
+                  Platform.runLater(() -> {
+                      loading.set(false);
+                      statusMessage.set("Error loading analytics data.");
+                  });
+              }
+
+              return null;
+          }
+      };
+
+      Thread thread = new Thread(fetchTask);
+      thread.setDaemon(true);
+      thread.start();
+  }
     // ---------- Helpers ----------
 
     /**

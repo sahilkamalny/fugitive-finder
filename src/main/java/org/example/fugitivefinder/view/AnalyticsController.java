@@ -86,15 +86,13 @@ public class AnalyticsController {
         configureRaceChart();
         configureSexChart();
 
-        // Load data from the API
-        viewModel.loadData();
-
-        // Listen for when data finishes loading to populate the charts
         viewModel.loadingProperty().addListener((obs, wasLoading, isLoading) -> {
             if (!isLoading) {
                 populateCharts();
             }
         });
+
+        viewModel.loadData();
     }
 
     // ---------- Chart Configuration ----------

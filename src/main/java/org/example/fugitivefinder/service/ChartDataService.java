@@ -2,7 +2,7 @@ package org.example.fugitivefinder.service;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
+import java.time.Duration;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  */
 public class ChartDataService {
 
-    private static final String BASE_URL = "https://api.fbi.gov/wanted/v1/list";
+    private static final String BASE_URL = "https://fbi-backend-wilt.onrender.com/api/wanted/";
     private static final int PAGE_SIZE = 50;
     private static final int DEFAULT_PAGES = 4; // 200 records by default
 
@@ -43,12 +43,13 @@ public class ChartDataService {
     public List<JSONObject> fetchAllItems(int numPages) {
         List<JSONObject> allItems = new ArrayList<>();
 
-        for (int page = 1; page <= numPages; page++) {
+        for (int page = 1; page <= 1; page++) {
             try {
-                String url = BASE_URL + "?page=" + page + "&pageSize=" + PAGE_SIZE;
+                String url = BASE_URL + "?pageSize=100";
 
                 HttpRequest request = HttpRequest.newBuilder()
                         .uri(URI.create(url))
+                        .timeout(Duration.ofSeconds(10))
                         .GET()
                         .build();
 
