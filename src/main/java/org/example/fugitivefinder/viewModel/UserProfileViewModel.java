@@ -5,7 +5,7 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
-
+import org.example.fugitivefinder.model.AppUser;
 import org.example.fugitivefinder.model.WantedPerson;
 import org.example.fugitivefinder.service.FbiApiService;
 import org.example.fugitivefinder.service.FirestoreService;
@@ -104,6 +104,7 @@ public class UserProfileViewModel {
                 1440,
                 900
         );
+    }
     public void goToAnalytics(Node sourceNode) {
         SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/analytics.fxml", 1440, 900);
     }

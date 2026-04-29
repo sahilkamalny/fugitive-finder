@@ -2,7 +2,10 @@ package org.example.fugitivefinder.viewModel;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import org.example.fugitivefinder.model.AppUser;
 import org.example.fugitivefinder.model.WantedPerson;
+import org.example.fugitivefinder.service.UserService;
+import org.example.fugitivefinder.session.Session;
 
 public class CriminalProfileViewModel {
 
