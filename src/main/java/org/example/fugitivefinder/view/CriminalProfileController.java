@@ -1,5 +1,6 @@
 package org.example.fugitivefinder.view;
 
+import javafx.scene.control.Button;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -11,6 +12,9 @@ public class CriminalProfileController {
 
     @FXML
     private ImageView criminalImageView;
+
+    @FXML
+    private Button saveTargetButton;
 
     @FXML
     private Label nameLabel;
@@ -58,6 +62,7 @@ public class CriminalProfileController {
         rewardLabel.textProperty().bind(viewModel.rewardProperty());
         descriptionLabel.textProperty().bind(viewModel.descriptionProperty());
         warningLabel.textProperty().bind(viewModel.warningProperty());
+        saveTargetButton.textProperty().bind(viewModel.saveButtonTextProperty());
 
         String imageUrl = viewModel.imageUrlProperty().get();
         System.out.println("PROFILE IMAGE URL: " + imageUrl);

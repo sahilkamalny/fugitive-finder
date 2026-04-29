@@ -1,10 +1,11 @@
 package org.example.fugitivefinder.view;
-
+import org.example.fugitivefinder.model.AppUser;
+import org.example.fugitivefinder.session.Session;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-
+import javafx.scene.control.TextField;
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
 import javafx.animation.TranslateTransition;
@@ -46,7 +47,14 @@ public class DashboardController {
     private Label pageLabel;
     @FXML
     private ComboBox<String> sortComboBox;
+    @FXML
+    private ComboBox<String> statusFilterComboBox;
 
+    @FXML
+    private ComboBox<String> rewardFilterComboBox;
+
+    @FXML
+    private TextField searchField;
 
     private DashboardViewModel viewModel;
     private MapView mapView;
@@ -61,6 +69,7 @@ public class DashboardController {
         viewModel = new DashboardViewModel();
         bindProperties();
         setupSort();
+        setupFilters();
         setupListeners();
         loadInitialData();
 
@@ -70,6 +79,26 @@ public class DashboardController {
         usernameLabel.textProperty().bind(viewModel.usernameProperty());
         totalWantedLabel.textProperty().bind(viewModel.totalWantedProperty());
         rewardCasesLabel.textProperty().bind(viewModel.rewardCasesProperty());
+    }
+
+    private void setupFilters() {
+        statusFilterComboBox.getItems().addAll(
+                "All",
+                "Wanted",
+                "Captured",
+                "Missing"
+        );
+        statusFilterComboBox.setValue("All");
+
+        rewardFilterComboBox.getItems().addAll(
+                "All",
+                "Reward Listed",
+                "No Reward",
+                "$10,000+",
+                "$50,000+",
+                "$100,000+"
+        );
+        rewardFilterComboBox.setValue("All");
     }
 
 
@@ -103,8 +132,103 @@ public class DashboardController {
         }).start();
     }
 
-
     @FXML
+    private void handleFilters() {
+        applyFiltersAndSort();
+    }
+    @FXML
+    private void handleSort() {
+        applyFiltersAndSort();
+    }
+    private void applyFiltersAndSort() {
+        if (viewModel.getAllPeople() == null || viewModel.getAllPeople().isEmpty()) {
+            return;
+        }
+
+        String search = searchField.getText() == null ? "" : searchField.getText().trim().toLowerCase();
+        String statusFilter = statusFilterComboBox.getValue();
+        String rewardFilter = rewardFilterComboBox.getValue();
+
+        allPeople = new ArrayList<>(viewModel.getAllPeople());
+
+        allPeople.removeIf(person -> {
+            boolean remove = false;
+
+            if (!search.isBlank()) {
+                String title = person.getTitle() == null ? "" : person.getTitle().toLowerCase();
+                remove = !title.contains(search);
+            }
+
+            if (!remove && statusFilter != null && !statusFilter.equals("All")) {
+                String status = person.getDisplayStatus().toLowerCase();
+                remove = !status.contains(statusFilter.toLowerCase());
+            }
+
+            if (!remove && rewardFilter != null && !rewardFilter.equals("All")) {
+                double reward = person.getRewardAmount();
+
+                switch (rewardFilter) {
+                    case "Reward Listed" -> remove = reward <= 0;
+                    case "No Reward" -> remove = reward > 0;
+                    case "$10,000+" -> remove = reward < 10000;
+                    case "$50,000+" -> remove = reward < 50000;
+                    case "$100,000+" -> remove = reward < 100000;
+                }
+            }
+
+            return remove;
+        });
+
+        applySortOnly();
+
+        currentPage = 1;
+        renderPage();
+    }
+
+    private void applySortOnly() {
+        if (allPeople == null || allPeople.isEmpty()) {
+            return;
+        }
+
+        String selected = sortComboBox.getValue();
+
+        switch (selected) {
+            case "Reward: High to Low" -> allPeople.sort((a, b) -> {
+                double rewardA = a.getRewardAmount();
+                double rewardB = b.getRewardAmount();
+
+                if (rewardA == 0 && rewardB == 0) return 0;
+                if (rewardA == 0) return 1;
+                if (rewardB == 0) return -1;
+
+                return Double.compare(rewardB, rewardA);
+            });
+
+            case "Reward: Low to High" -> allPeople.sort((a, b) -> {
+                double rewardA = a.getRewardAmount();
+                double rewardB = b.getRewardAmount();
+
+                if (rewardA == 0 && rewardB == 0) return 0;
+                if (rewardA == 0) return 1;
+                if (rewardB == 0) return -1;
+
+                return Double.compare(rewardA, rewardB);
+            });
+
+            case "Name: A to Z" -> allPeople.sort(Comparator.comparing(p ->
+                    p.getTitle() != null ? p.getTitle() : ""));
+
+            case "Name: Z to A" -> allPeople.sort((a, b) -> {
+                String titleA = a.getTitle() != null ? a.getTitle() : "";
+                String titleB = b.getTitle() != null ? b.getTitle() : "";
+                return titleB.compareTo(titleA);
+            });
+
+            default -> {
+            }
+        }
+    }
+  /**  @FXML
     private void handleSort() {
         if (allPeople == null || allPeople.isEmpty()) return;
 
@@ -140,6 +264,7 @@ public class DashboardController {
         currentPage = 1;
         renderPage();
     }
+*/
 
     private void renderPage() {
         featuredCardsPane.getChildren().clear();
@@ -173,6 +298,15 @@ public class DashboardController {
         rewardLabel.setStyle("-fx-text-fill: #f59e0b; -fx-font-size: 14;");
         rewardLabel.setWrapText(true);
 
+        AppUser currentUser = Session.getInstance().getCurrentUser();
+
+        Label savedLabel = new Label(
+                currentUser != null && currentUser.hasSavedTarget(person.getUid())
+                        ? "★ Watchlist"
+                        : ""
+        );
+
+        savedLabel.setStyle("-fx-text-fill: #fbbf24; -fx-font-size: 13; -fx-font-weight: bold;");
         javafx.scene.image.ImageView imageView = new javafx.scene.image.ImageView();
         imageView.setFitWidth(270);
         imageView.setFitHeight(160);
@@ -184,7 +318,7 @@ public class DashboardController {
             imageView.setImage(new javafx.scene.image.Image(proxyUrl, true));
         }
 
-        VBox card = new VBox(6, imageView, nameLabel, rewardLabel);
+        VBox card = new VBox(6, imageView, nameLabel, rewardLabel, savedLabel);
         card.setPadding(new Insets(12));
         card.setPrefWidth(270);
         card.setPrefHeight(280);

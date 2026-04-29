@@ -22,6 +22,11 @@ public class CriminalProfileViewModel {
     private final StringProperty sex = new SimpleStringProperty("SEX:");
     private final StringProperty race = new SimpleStringProperty("RACE:");
     private final StringProperty subjects = new SimpleStringProperty("SUBJECTS:");
+    private final StringProperty saveButtonText = new SimpleStringProperty("Save Target");
+
+    public StringProperty saveButtonTextProperty() {
+        return saveButtonText;
+    }
     public StringProperty nameProperty() {
         return name;
     }
@@ -90,18 +95,33 @@ public class CriminalProfileViewModel {
         } else {
             imageUrl.set("https://via.placeholder.com/150");
         }
+        AppUser currentUser = Session.getInstance().getCurrentUser();
+
+        if (currentUser != null && selectedPerson.getUid() != null
+                && currentUser.hasSavedTarget(selectedPerson.getUid())) {
+            saveButtonText.set("Remove from Watchlist");
+        } else {
+            saveButtonText.set("Save Target");
+        }
     }
 
     public void saveTarget() {
         AppUser currentUser = Session.getInstance().getCurrentUser();
 
-        if (currentUser != null && selectedPerson != null && selectedPerson.getUid() != null) {
-            UserService.saveTargetForUser(currentUser, selectedPerson.getUid());
-            Session.getInstance().setCurrentUser(currentUser);
-
-            System.out.println("Saved " + selectedPerson.getTitle() + " to profile.");
-        } else {
+        if (currentUser == null || selectedPerson == null || selectedPerson.getUid() == null) {
             System.out.println("Save failed. User or selected person is null.");
+            return;
         }
+
+        if (currentUser.hasSavedTarget(selectedPerson.getUid())) {
+            UserService.removeTargetForUser(currentUser, selectedPerson.getUid());
+            saveButtonText.set("Save Target");
+        } else {
+            UserService.saveTargetForUser(currentUser, selectedPerson.getUid());
+            saveButtonText.set("Remove from Watchlist");
+        }
+
+        Session.getInstance().setCurrentUser(currentUser);
+
     }
 }

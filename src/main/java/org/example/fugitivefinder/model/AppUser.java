@@ -83,6 +83,10 @@ public class AppUser {
         this.savedTargetIds = savedTargetIds == null ? new ArrayList<>() : savedTargetIds;
     }
 
+    public boolean hasSavedTarget(String uid) {
+        return savedTargetIds != null && savedTargetIds.contains(uid);
+    }
+
     public String getFullName() {
         return (firstName == null ? "" : firstName) + " " + (lastName == null ? "" : lastName);
     }

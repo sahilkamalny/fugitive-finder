@@ -116,7 +116,7 @@ public final class UserService {
         }
     }
 
-    public static void saveTargetForUser(AppUser user, String wantedUid) {
+    /**public static void saveTargetForUser(AppUser user, String wantedUid) {
         if (user == null || wantedUid == null || wantedUid.isBlank()) {
             return;
         }
@@ -137,5 +137,32 @@ public final class UserService {
             return;
         }
         user.getSavedTargetIds().remove(wantedUid);
+    }
+}
+*/
+    public static void saveTargetForUser(AppUser user, String wantedUid) {
+        if (user == null || wantedUid == null || wantedUid.isBlank()) {
+            return;
+        }
+
+        if (user.getSavedTargetIds() == null) {
+            user.setSavedTargetIds(new ArrayList<>());
+        }
+
+        if (!user.getSavedTargetIds().contains(wantedUid)) {
+            user.getSavedTargetIds().add(wantedUid);
+            System.out.println("Saved target: " + wantedUid);
+        }
+    }
+
+    public static void removeTargetForUser(AppUser user, String wantedUid) {
+        if (user == null || wantedUid == null || wantedUid.isBlank()) {
+            return;
+        }
+
+        if (user.getSavedTargetIds() != null) {
+            user.getSavedTargetIds().remove(wantedUid);
+            System.out.println("Removed target: " + wantedUid);
+        }
     }
 }
