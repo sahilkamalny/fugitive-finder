@@ -98,6 +98,25 @@
                 <StackPane fx:id="mapContainer" VBox.vgrow="ALWAYS"
                            style="-fx-background-color: #111827; -fx-background-radius: 16; -fx-border-color: #334155; -fx-border-radius: 16; -fx-border-width: 2;">
                     <children>
+                        <VBox alignment="BOTTOM_RIGHT" pickOnBounds="false" spacing="10">
+                            <padding>
+                                <Insets bottom="30" right="20" />
+                            </padding>
+                            <children>
+                                <Button onAction="#handleResetView" prefHeight="40" prefWidth="80"
+                                        style="-fx-background-color: #334155; -fx-text-fill: white; -fx-background-radius: 8;" text="Reset">
+                                    <cursor><Cursor fx:constant="HAND" /></cursor>
+                                </Button>
+                                <Button onAction="#handleZoomIn" prefHeight="40" prefWidth="40"
+                                        style="-fx-background-color: #1e293b; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx-font-size: 18;" text="+">
+                                    <cursor><Cursor fx:constant="HAND" /></cursor>
+                                </Button>
+                                <Button onAction="#handleZoomOut" prefHeight="40" prefWidth="40"
+                                        style="-fx-background-color: #1e293b; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx-font-size: 18;" text="-">
+                                    <cursor><Cursor fx:constant="HAND" /></cursor>
+                                </Button>
+                            </children>
+                        </VBox>
                     </children>
                     <padding>
                         <Insets bottom="2" left="2" right="2" top="2" />

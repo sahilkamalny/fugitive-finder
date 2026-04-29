@@ -52,7 +52,7 @@ public class MapsViewController {
         mapView = new MapView();
         mapView.setCenter(new MapPoint(38, -98.5795));
         mapView.setZoom(4.8);
-        mapContainer.getChildren().add(mapView);
+        mapContainer.getChildren().add(0,mapView);
         setupListeners();
         setupMarkerClicks();
     }
@@ -78,9 +78,10 @@ public class MapsViewController {
     }
 
     private boolean isNear(MapPoint p1, MapPoint p2) {
-        double threshold = 0.2;
-        return Math.abs(p1.getLatitude() - p2.getLatitude()) < threshold &&
-                Math.abs(p1.getLongitude() - p2.getLongitude()) < threshold;
+        double currentZoom = mapView.getZoom();
+        double dynamicThreshold = 0.4 / Math.pow(2, (currentZoom - 4.8));
+        return Math.abs(p1.getLatitude() - p2.getLatitude()) < dynamicThreshold &&
+                Math.abs(p1.getLongitude() - p2.getLongitude()) < dynamicThreshold;
     }
 
     private void renderMap() {
@@ -154,6 +155,45 @@ public class MapsViewController {
     private void toggleHeatMap() {
         isHeatMapMode = !isHeatMapMode;
         renderMap();
+    }
+    @FXML
+    private void handleZoomIn() {
+        if (mapView != null) {
+            double centerX = mapView.getWidth() / 2;
+            double centerY = mapView.getHeight() / 2;
+            MapPoint currentViewCenter = mapView.getMapPosition(centerX, centerY);
+            if (currentViewCenter != null) {
+                mapView.setZoom(mapView.getZoom() + 0.5);
+                Platform.runLater(() -> {
+                    mapView.setCenter(currentViewCenter);
+                    renderMap();
+                });
+            }
+        }
+    }
+
+    @FXML
+    private void handleZoomOut() {
+        if (mapView != null && mapView.getZoom() > 2) {
+            double centerX = mapView.getWidth() / 2;
+            double centerY = mapView.getHeight() / 2;
+            MapPoint currentViewCenter = mapView.getMapPosition(centerX, centerY);
+            if (currentViewCenter != null) {
+                mapView.setZoom(mapView.getZoom() - 0.5);
+                Platform.runLater(() -> {
+                    mapView.setCenter(currentViewCenter);
+                    renderMap();
+                });
+            }
+        }
+    }
+
+    @FXML
+    private void handleResetView() {
+        if (mapView != null) {
+            mapView.setCenter(new MapPoint(38, -98.5795));
+            mapView.setZoom(4.8);
+        }
     }
 
     private VBox createMapCard(WantedPerson person) {
