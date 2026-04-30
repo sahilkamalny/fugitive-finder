@@ -34,7 +34,7 @@
                        text="Dashboard"/>
 
                 <Label onMouseClicked="#showMapScreen" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;"
-                       text="Full Map">
+                       text="Maps">
                     <cursor>
                         <Cursor fx:constant="HAND"/>
                     </cursor>
