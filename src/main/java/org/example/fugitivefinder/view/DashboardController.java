@@ -247,4 +247,9 @@ public class DashboardController {
             renderPage();
         }
     }
+
+    @FXML
+    private void handleFilters() {
+        System.out.println("Filters clicked");
+    }
 }
