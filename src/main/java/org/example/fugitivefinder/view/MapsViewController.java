@@ -39,6 +39,8 @@ public class MapsViewController {
 
     @FXML
     private TextField nameSearchField;
+    private MapPoint currentViewCenter;
+    private double currentZoomLevel;
     @FXML
     public void initialize() {
         viewModel = new MapsViewModel();
@@ -55,6 +57,7 @@ public class MapsViewController {
         mapContainer.getChildren().add(0,mapView);
         setupListeners();
         setupMarkerClicks();
+        setupInteractionTrackers();
     }
 
     private void setupListeners() {
@@ -74,6 +77,20 @@ public class MapsViewController {
                     break;
                 }
             }
+        });
+    }
+    private void setupInteractionTrackers() {
+        mapView.setOnMouseReleased(event -> {
+            double centerX = mapView.getWidth() / 2;
+            double centerY = mapView.getHeight() / 2;
+            currentViewCenter = mapView.getMapPosition(centerX, centerY);
+        });
+
+        mapView.setOnScroll(event -> {
+           currentZoomLevel = mapView.getZoom();
+            double centerX = mapView.getWidth() / 2;
+            double centerY = mapView.getHeight() / 2;
+            currentViewCenter = mapView.getMapPosition(centerX, centerY);
         });
     }
 
@@ -159,40 +176,35 @@ public class MapsViewController {
     @FXML
     private void handleZoomIn() {
         if (mapView != null) {
-            double centerX = mapView.getWidth() / 2;
-            double centerY = mapView.getHeight() / 2;
-            MapPoint currentViewCenter = mapView.getMapPosition(centerX, centerY);
-            if (currentViewCenter != null) {
-                mapView.setZoom(mapView.getZoom() + 0.5);
+           currentZoomLevel +=0.5;
+                mapView.setZoom(currentZoomLevel);
                 Platform.runLater(() -> {
                     mapView.setCenter(currentViewCenter);
-                    renderMap();
                 });
+                renderMap();
             }
         }
-    }
 
     @FXML
     private void handleZoomOut() {
-        if (mapView != null && mapView.getZoom() > 2) {
-            double centerX = mapView.getWidth() / 2;
-            double centerY = mapView.getHeight() / 2;
-            MapPoint currentViewCenter = mapView.getMapPosition(centerX, centerY);
-            if (currentViewCenter != null) {
-                mapView.setZoom(mapView.getZoom() - 0.5);
+        if (mapView != null && currentZoomLevel > 2) {
+            currentZoomLevel -=0.5;
+                mapView.setZoom(currentZoomLevel);
                 Platform.runLater(() -> {
                     mapView.setCenter(currentViewCenter);
-                    renderMap();
                 });
-            }
+                renderMap();
         }
     }
 
     @FXML
     private void handleResetView() {
         if (mapView != null) {
-            mapView.setCenter(new MapPoint(38, -98.5795));
-            mapView.setZoom(4.8);
+           this.currentViewCenter =new MapPoint(38, -98.5795);
+            this.currentZoomLevel=(4.8);
+            mapView.setZoom(currentZoomLevel);
+            mapView.setCenter(currentViewCenter);
+            renderMap();
         }
     }
 
