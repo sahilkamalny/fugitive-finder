@@ -151,8 +151,15 @@ public class LeaderboardController {
     private void applyPieColors(PieChart chart) {
         String[] colors = {"#4fd1c5", "#f59e0b", "#ef4444", "#8b5cf6"};
         for (int i = 0; i < chart.getData().size(); i++) {
-            chart.getData().get(i).getNode()
-                    .setStyle("-fx-pie-color: " + colors[i % colors.length] + ";");
+            PieChart.Data data = chart.getData().get(i);
+            final int ci = i % colors.length;
+            if (data.getNode() != null) {
+                data.getNode().setStyle("-fx-pie-color: " + colors[ci] + ";");
+            } else {
+                data.nodeProperty().addListener((o, old, n) -> {
+                    if (n != null) n.setStyle("-fx-pie-color: " + colors[ci] + ";");
+                });
+            }
         }
     }
 
