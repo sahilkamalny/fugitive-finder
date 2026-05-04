@@ -6,7 +6,6 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.example.fugitivefinder.viewModel.AnalyticsViewModel;
 import org.example.fugitivefinder.viewModel.SceneManager;
