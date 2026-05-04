@@ -6,7 +6,6 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.example.fugitivefinder.viewModel.AnalyticsViewModel;
 import org.example.fugitivefinder.viewModel.SceneManager;
@@ -86,9 +85,28 @@ public class AnalyticsController {
         configureRaceChart();
         configureSexChart();
 
+        // Set up bar charts with series bound to ViewModel data
+        XYChart.Series<String, Number> subjectsSeries = new XYChart.Series<>();
+        subjectsSeries.setName("Cases");
+        subjectsSeries.setData(viewModel.getSubjectsData());
+        subjectsChart.getData().add(subjectsSeries);
+
+        XYChart.Series<String, Number> raceSeries = new XYChart.Series<>();
+        raceSeries.setName("Persons");
+        raceSeries.setData(viewModel.getRaceData());
+        raceChart.getData().add(raceSeries);
+
+        // Set up pie charts bound to ViewModel data
+        fieldOfficeChart.setData(viewModel.getFieldOfficeData());
+        sexChart.setData(viewModel.getSexData());
+
+        // Apply colors after data loads
         viewModel.loadingProperty().addListener((obs, wasLoading, isLoading) -> {
             if (!isLoading) {
-                populateCharts();
+                applyBarColors(subjectsSeries);
+                applyBarColors(raceSeries);
+                applyPieColors(fieldOfficeChart);
+                applyPieColors(sexChart);
             }
         });
 
@@ -100,7 +118,7 @@ public class AnalyticsController {
     private void configureSubjectsChart() {
         subjectsChart.setTitle("Crimes by Category");
         subjectsChart.setLegendVisible(false);
-        subjectsChart.setAnimated(true);
+        subjectsChart.setAnimated(false);
         subjectsChart.getXAxis().setLabel("Crime Category");
         subjectsChart.getYAxis().setLabel("Number of Cases");
         subjectsChart.setCategoryGap(5);
@@ -110,7 +128,7 @@ public class AnalyticsController {
     private void configureFieldOfficeChart() {
         fieldOfficeChart.setTitle("Cases by Field Office");
         fieldOfficeChart.setLegendVisible(true);
-        fieldOfficeChart.setAnimated(true);
+        fieldOfficeChart.setAnimated(false);
         fieldOfficeChart.setLabelsVisible(true);
         fieldOfficeChart.setStartAngle(90);
     }
@@ -118,7 +136,7 @@ public class AnalyticsController {
     private void configureRaceChart() {
         raceChart.setTitle("Fugitives by Race/Ethnicity");
         raceChart.setLegendVisible(false);
-        raceChart.setAnimated(true);
+        raceChart.setAnimated(false);
         raceChart.getXAxis().setLabel("Race/Ethnicity");
         raceChart.getYAxis().setLabel("Number of Persons");
         raceChart.setCategoryGap(10);
@@ -128,41 +146,9 @@ public class AnalyticsController {
     private void configureSexChart() {
         sexChart.setTitle("Sex Distribution");
         sexChart.setLegendVisible(true);
-        sexChart.setAnimated(true);
+        sexChart.setAnimated(false);
         sexChart.setLabelsVisible(true);
         sexChart.setStartAngle(90);
-    }
-
-    // ---------- Chart Population ----------
-
-    /**
-     * Populates all four charts with data from the ViewModel.
-     * Called after the background data loading completes.
-     */
-    private void populateCharts() {
-        // Populate subjects bar chart
-        XYChart.Series<String, Number> subjectsSeries = new XYChart.Series<>();
-        subjectsSeries.setName("Cases");
-        subjectsSeries.getData().addAll(viewModel.getSubjectsData());
-        subjectsChart.getData().clear();
-        subjectsChart.getData().add(subjectsSeries);
-        applyBarColors(subjectsSeries);
-
-        // Populate field office pie chart
-        fieldOfficeChart.setData(viewModel.getFieldOfficeData());
-        applyPieColors(fieldOfficeChart);
-
-        // Populate race bar chart
-        XYChart.Series<String, Number> raceSeries = new XYChart.Series<>();
-        raceSeries.setName("Persons");
-        raceSeries.getData().addAll(viewModel.getRaceData());
-        raceChart.getData().clear();
-        raceChart.getData().add(raceSeries);
-        applyBarColors(raceSeries);
-
-        // Populate sex pie chart
-        sexChart.setData(viewModel.getSexData());
-        applyPieColors(sexChart);
     }
 
     /**
@@ -219,8 +205,6 @@ public class AnalyticsController {
     private void goToLeaderboard() {
         SceneManager.switchScene(subjectsChart, "/org.example.fugitivefinder/leaderboard.fxml", 1440, 900);
     }
-
-
 
     @FXML
     private void goToUserProfile() {

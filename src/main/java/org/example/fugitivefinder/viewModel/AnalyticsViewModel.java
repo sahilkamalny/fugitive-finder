@@ -10,8 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
-import org.example.fugitivefinder.service.ChartDataService;
-import org.json.JSONObject;
+
 import org.example.fugitivefinder.model.WantedPerson;
 import org.example.fugitivefinder.service.FbiApiService;
 import java.util.List;
@@ -49,11 +48,7 @@ public class AnalyticsViewModel {
     private final ObservableList<PieChart.Data> sexData =
             FXCollections.observableArrayList();
 
-    // --- Service ---
-    private final ChartDataService chartDataService;
-
     public AnalyticsViewModel() {
-        this.chartDataService = new ChartDataService();
     }
 
     // ---------- Property Getters ----------
@@ -97,83 +92,7 @@ public class AnalyticsViewModel {
      * Updates the observable properties on the JavaFX Application Thread
      * when data is ready.
      */
-  /**  public void loadData() {
-        loading.set(true);
-        statusMessage.set("Fetching data from FBI API...");
-
-        Task<Void> fetchTask = new Task<>() {
-            @Override
-            protected Void call() {
-                try {
-                    // Fetch data from the API (200 records across 4 pages)
-                    List<JSONObject> items = chartDataService.fetchAllItems();
-                    int totalCount = chartDataService.getTotalRecordCount();
-
-                    // Compute all distributions
-                    Map<String, Integer> subjects = chartDataService.getSubjectsDistribution(items);
-                    Map<String, Integer> offices = chartDataService.getFieldOfficeDistribution(items, 8);
-                    Map<String, Integer> races = chartDataService.getRaceDistribution(items);
-                    Map<String, Integer> sexes = chartDataService.getSexDistribution(items);
-
-                    // Update UI on the JavaFX Application Thread
-                    Platform.runLater(() -> {
-                        // Update stats
-                        totalRecordsText.set(String.valueOf(totalCount));
-                        recordsAnalyzedText.set(String.valueOf(items.size()));
-
-                        // Populate subjects bar chart (top 10)
-                        subjectsData.clear();
-                        int subjectCount = 0;
-                        for (Map.Entry<String, Integer> entry : subjects.entrySet()) {
-                            if (subjectCount >= 10) break;
-                            subjectsData.add(new XYChart.Data<>(
-                                    shortenLabel(entry.getKey()), entry.getValue()));
-                            subjectCount++;
-                        }
-
-                        // Populate field office pie chart
-                        fieldOfficeData.clear();
-                        for (Map.Entry<String, Integer> entry : offices.entrySet()) {
-                            fieldOfficeData.add(new PieChart.Data(
-                                    entry.getKey() + " (" + entry.getValue() + ")",
-                                    entry.getValue()));
-                        }
-
-                        // Populate race bar chart
-                        raceData.clear();
-                        for (Map.Entry<String, Integer> entry : races.entrySet()) {
-                            raceData.add(new XYChart.Data<>(
-                                    entry.getKey(), entry.getValue()));
-                        }
-
-                        // Populate sex pie chart
-                        sexData.clear();
-                        for (Map.Entry<String, Integer> entry : sexes.entrySet()) {
-                            sexData.add(new PieChart.Data(
-                                    entry.getKey() + " (" + entry.getValue() + ")",
-                                    entry.getValue()));
-                        }
-
-                        loading.set(false);
-                        statusMessage.set("Data loaded successfully");
-                    });
-
-                } catch (Exception e) {
-                    Platform.runLater(() -> {
-                        loading.set(false);
-                        statusMessage.set("Error loading data: " + e.getMessage());
-                    });
-                }
-                return null;
-            }
-        };
-
-        Thread thread = new Thread(fetchTask);
-        thread.setDaemon(true);
-        thread.start();
-    }
-*/
-  public void loadData() {
+    public void loadData() {
       loading.set(true);
       statusMessage.set("Fetching data from FBI API...");
 
@@ -181,60 +100,105 @@ public class AnalyticsViewModel {
           @Override
           protected Void call() {
               try {
-                  System.out.println("Analytics loading started...");
-
                   List<WantedPerson> people = FbiApiService.getWantedPeople();
-                  System.out.println("Analytics people fetched: " + people.size());
 
-                  Map<String, Integer> offices = new java.util.HashMap<>();
-                  Map<String, Integer> rewards = new java.util.HashMap<>();
-                  Map<String, Integer> statuses = new java.util.HashMap<>();
+                  // Crime category distribution from subjects
+                  Map<String, Integer> subjectDist = new java.util.HashMap<>();
+                  // Field office distribution
+                  Map<String, Integer> officeDist = new java.util.HashMap<>();
+                  // Race/ethnicity distribution
+                  Map<String, Integer> raceDist = new java.util.HashMap<>();
+                  // Sex/gender distribution
+                  Map<String, Integer> sexDist = new java.util.HashMap<>();
 
                   for (WantedPerson person : people) {
-                      if (person.getFieldOffices() != null) {
-                          for (String office : person.getFieldOffices()) {
-                              offices.merge(office, 1, Integer::sum);
+                      // Subjects (crime categories)
+                      if (person.getSubjects() != null) {
+                          for (String subject : person.getSubjects()) {
+                              if (subject != null && !subject.isBlank()) {
+                                  subjectDist.merge(subject, 1, Integer::sum);
+                              }
                           }
                       }
 
-                      String rewardType = person.getRewardAmount() > 0 ? "Reward Listed" : "No Reward";
-                      rewards.merge(rewardType, 1, Integer::sum);
+                      // Field offices
+                      if (person.getFieldOffices() != null) {
+                          for (String office : person.getFieldOffices()) {
+                              if (office != null && !office.isBlank()) {
+                                  String display = office.substring(0, 1).toUpperCase()
+                                          + office.substring(1).toLowerCase();
+                                  officeDist.merge(display, 1, Integer::sum);
+                              }
+                          }
+                      }
 
-                      statuses.merge(person.getDisplayStatus(), 1, Integer::sum);
+                      // Race
+                      String race = person.getDisplayRace();
+                      raceDist.merge(race, 1, Integer::sum);
+
+                      // Sex
+                      String sex = person.getDisplaySex();
+                      sexDist.merge(sex, 1, Integer::sum);
                   }
+
+                  // Sort all distributions by value descending
+                  var sortedSubjects = sortDesc(subjectDist);
+                  var sortedOffices = sortDesc(officeDist);
+                  var sortedRaces = sortDesc(raceDist);
+                  var sortedSexes = sortDesc(sexDist);
 
                   Platform.runLater(() -> {
                       totalRecordsText.set(String.valueOf(people.size()));
                       recordsAnalyzedText.set(String.valueOf(people.size()));
 
+                      // Crime categories bar chart (top 10)
                       subjectsData.clear();
-                      rewards.forEach((key, value) ->
-                              subjectsData.add(new XYChart.Data<>(key, value))
-                      );
+                      int count = 0;
+                      for (var entry : sortedSubjects.entrySet()) {
+                          if (count >= 10) break;
+                          subjectsData.add(new XYChart.Data<>(
+                                  shortenLabel(entry.getKey()), entry.getValue()));
+                          count++;
+                      }
 
+                      // Field office pie chart (top 8 + Other)
                       fieldOfficeData.clear();
-                      offices.entrySet().stream()
-                              .limit(8)
-                              .forEach(entry ->
-                                      fieldOfficeData.add(new PieChart.Data(entry.getKey(), entry.getValue()))
-                              );
+                      int officeCount = 0;
+                      int otherCount = 0;
+                      for (var entry : sortedOffices.entrySet()) {
+                          if (officeCount < 8) {
+                              fieldOfficeData.add(new PieChart.Data(
+                                      entry.getKey() + " (" + entry.getValue() + ")",
+                                      entry.getValue()));
+                          } else {
+                              otherCount += entry.getValue();
+                          }
+                          officeCount++;
+                      }
+                      if (otherCount > 0) {
+                          fieldOfficeData.add(new PieChart.Data(
+                                  "Other (" + otherCount + ")", otherCount));
+                      }
 
+                      // Race bar chart
                       raceData.clear();
-                      statuses.forEach((key, value) ->
-                              raceData.add(new XYChart.Data<>(key, value))
-                      );
+                      for (var entry : sortedRaces.entrySet()) {
+                          raceData.add(new XYChart.Data<>(entry.getKey(), entry.getValue()));
+                      }
 
+                      // Sex pie chart
                       sexData.clear();
-                      rewards.forEach((key, value) ->
-                              sexData.add(new PieChart.Data(key, value))
-                      );
+                      for (var entry : sortedSexes.entrySet()) {
+                          sexData.add(new PieChart.Data(
+                                  entry.getKey() + " (" + entry.getValue() + ")",
+                                  entry.getValue()));
+                      }
 
                       loading.set(false);
                       statusMessage.set("Data loaded successfully");
                   });
               } catch (Exception e) {
                   e.printStackTrace();
-
                   Platform.runLater(() -> {
                       loading.set(false);
                       statusMessage.set("Error loading analytics data.");
@@ -249,6 +213,15 @@ public class AnalyticsViewModel {
       thread.setDaemon(true);
       thread.start();
   }
+
+    /** Sorts a map by value descending, preserving insertion order. */
+    private Map<String, Integer> sortDesc(Map<String, Integer> map) {
+        return map.entrySet().stream()
+                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+                .collect(java.util.stream.Collectors.toMap(
+                        Map.Entry::getKey, Map.Entry::getValue,
+                        (a, b) -> a, java.util.LinkedHashMap::new));
+    }
     // ---------- Helpers ----------
 
     /**

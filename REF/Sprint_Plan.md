@@ -2,11 +2,11 @@
 
 **Project Manager:** Sahil Kamal  
 **Team:** Sahil, Darianne, Derek, Ahmaed, Armaan  
-**Updated:** April 23, 2026
+**Updated:** May 3, 2026
 
 ---
 
-## Sprint 1 (Weeks 1-2) — DONE
+## Sprint 1 (Weeks 1-2) — DONE ✅
 
 | Task | Person | Status |
 |------|--------|--------|
@@ -18,7 +18,7 @@
 
 ---
 
-## Sprint 2 (Weeks 3-5) — DONE
+## Sprint 2 (Weeks 3-5) — DONE ✅
 
 | Task | Person | Status |
 |------|--------|--------|
@@ -30,48 +30,50 @@
 
 ---
 
-## Sprint 3 — Week 6 (April 14-20) — DONE
+## Sprint 3 — Week 6 (Apr 14-20) — DONE ✅
 
 | Task | Person | Status |
 |------|--------|--------|
 | "Most Dangerous" leaderboard with danger scores | Sahil | Done |
 | Region stats (NE, South, Midwest, West) | Sahil | Done |
 | Map markers linked to offices.json data | Ahmaed | Done |
-| Multi-filter search by field office | Derek | Done |
-| Dashboard filtering bar UI | Darianne | Done |
-| Backend notification endpoint | Armaan | Done |
+| Dashboard data loading fixes + navigation | Derek | Done |
+| Image proxy endpoint for dashboard cards | Derek | Done |
+| Backend API expansion (race, sex, 100 records) | Armaan | Done |
 
-## Sprint 3 — Week 7 (April 21-27) — CURRENT
+## Sprint 3 — Week 7 (Apr 21-27) — DONE ✅
 
 | Task | Person | Status |
 |------|--------|--------|
 | Connect leaderboard + analytics to sidebar nav | Sahil | Done |
 | Fix charts-view.fxml navigation bug | Sahil | Done |
-| Add leaderboard route from dashboard | Sahil | Done |
-| Separated maps into dedicated MapsViewController | Ahmaed | Done |
-| Sort by dropdown for featured targets | Derek | Done |
-| Backend server on Render + 100 records | Armaan | Done |
-| Updated WantedPerson model fields | Darianne | In Progress |
+| Controller refactor (controller → view package) | Sahil | Done |
+| Separated maps into MapsViewController | Ahmaed | Done |
+| Firebase login/auth + save targets to Firestore | Armaan | Done |
+| Criminal profile fixes + dashboard filters | Darianne | Done |
+| Image loading + API pageSize tuning | Derek | Done |
 
 ---
 
-## Sprint 4 — Week 8 (April 28 - May 4)
+## Sprint 4 — Week 8 (Apr 28 - May 4) — CURRENT
 
 | Task | Person | Status |
 |------|--------|--------|
-| Loading spinners, error states, empty states | Darianne | To Do |
-| API caching to prevent redundant calls | Derek | To Do |
-| Firestore security rules and validation | Armaan | To Do |
-| Verify all charts against live API data | Sahil | To Do |
-| Optimize map marker rendering and zoom | Ahmaed | To Do |
+| Fix analytics charts (correct data mapping) | Sahil | Done |
+| Verify chart data against live API | Sahil | Done |
+| Create README.md with architecture docs | Sahil | Done |
+| Zoom in/out/reset buttons for map | Ahmaed | Done |
+| Dashboard filters + analytics page wiring | Darianne | Done |
+| Criminal profile sex/race/subject display | Darianne | Done |
+| Syntax error fixes + #handleFilter fix | Armaan | Done |
 
-## Sprint 4 — Week 9 (May 5-11)
+## Sprint 4 — Week 9 (May 5-11) — UPCOMING
 
 | Task | Person | Status |
 |------|--------|--------|
 | Full app integration testing (all screens) | Everyone | To Do |
 | UML diagrams (class + sequence) | Sahil | To Do |
-| README with setup instructions + screenshots | Sahil | To Do |
+| Add screenshots to README | Sahil | To Do |
 | Code cleanup and JavaDoc comments | Derek | To Do |
 | Final database indexing and backup | Armaan | To Do |
 | Verify all sidebar links work across screens | Ahmaed | To Do |
