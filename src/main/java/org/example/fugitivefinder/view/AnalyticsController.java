@@ -152,37 +152,8 @@ public class AnalyticsController {
         sexChart.setStartAngle(90);
     }
 
-    // ---------- Chart Population ----------
 
-    /**
-     * Populates all four charts with data from the ViewModel.
-     * Called after the background data loading completes.
-     */
-    private void populateCharts() {
-        // Populate subjects bar chart
-        XYChart.Series<String, Number> subjectsSeries = new XYChart.Series<>();
-        subjectsSeries.setName("Cases");
-        subjectsSeries.getData().addAll(viewModel.getSubjectsData());
-        subjectsChart.getData().clear();
-        subjectsChart.getData().add(subjectsSeries);
-        applyBarColors(subjectsSeries);
 
-        // Populate field office pie chart
-        fieldOfficeChart.setData(viewModel.getFieldOfficeData());
-        applyPieColors(fieldOfficeChart);
-
-        // Populate race bar chart
-        XYChart.Series<String, Number> raceSeries = new XYChart.Series<>();
-        raceSeries.setName("Persons");
-        raceSeries.getData().addAll(viewModel.getRaceData());
-        raceChart.getData().clear();
-        raceChart.getData().add(raceSeries);
-        applyBarColors(raceSeries);
-
-        // Populate sex pie chart
-        sexChart.setData(viewModel.getSexData());
-        applyPieColors(sexChart);
-    }
 
     /**
      * Applies a consistent color palette to bar chart data points.

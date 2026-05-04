@@ -15,8 +15,6 @@ A JavaFX desktop application for tracking and analyzing FBI Most Wanted fugitive
 
 ## Screenshots
 
-> Replace these placeholders with actual screenshots of the running app.
-
 | Screen | Screenshot |
 |--------|------------|
 | Dashboard | `[screenshot]` |
@@ -134,4 +132,4 @@ The app fetches live data from the FBI Most Wanted API through a Django backend 
 
 ## License
 
-This project was developed as part of a university Software Engineering course.
+This project was developed for the Software Engineering Course at Farmingdale State College.
