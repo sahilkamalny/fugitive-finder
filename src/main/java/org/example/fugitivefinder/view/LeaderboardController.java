@@ -33,7 +33,7 @@ public class LeaderboardController {
 
     @FXML private ProgressIndicator loadingSpinner;
     @FXML private VBox contentContainer;
-    @FXML private StackPane loadingOverlay;
+    @FXML private VBox loadingOverlay;
     @FXML private Label statusLabel;
 
     @FXML private Label highestRewardLabel;
