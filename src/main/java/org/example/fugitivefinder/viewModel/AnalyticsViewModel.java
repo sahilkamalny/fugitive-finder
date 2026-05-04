@@ -10,8 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
-import org.example.fugitivefinder.service.ChartDataService;
-import org.json.JSONObject;
+
 import org.example.fugitivefinder.model.WantedPerson;
 import org.example.fugitivefinder.service.FbiApiService;
 import java.util.List;
@@ -49,11 +48,7 @@ public class AnalyticsViewModel {
     private final ObservableList<PieChart.Data> sexData =
             FXCollections.observableArrayList();
 
-    // --- Service ---
-    private final ChartDataService chartDataService;
-
     public AnalyticsViewModel() {
-        this.chartDataService = new ChartDataService();
     }
 
     // ---------- Property Getters ----------
@@ -97,83 +92,7 @@ public class AnalyticsViewModel {
      * Updates the observable properties on the JavaFX Application Thread
      * when data is ready.
      */
-  /**  public void loadData() {
-        loading.set(true);
-        statusMessage.set("Fetching data from FBI API...");
-
-        Task<Void> fetchTask = new Task<>() {
-            @Override
-            protected Void call() {
-                try {
-                    // Fetch data from the API (200 records across 4 pages)
-                    List<JSONObject> items = chartDataService.fetchAllItems();
-                    int totalCount = chartDataService.getTotalRecordCount();
-
-                    // Compute all distributions
-                    Map<String, Integer> subjects = chartDataService.getSubjectsDistribution(items);
-                    Map<String, Integer> offices = chartDataService.getFieldOfficeDistribution(items, 8);
-                    Map<String, Integer> races = chartDataService.getRaceDistribution(items);
-                    Map<String, Integer> sexes = chartDataService.getSexDistribution(items);
-
-                    // Update UI on the JavaFX Application Thread
-                    Platform.runLater(() -> {
-                        // Update stats
-                        totalRecordsText.set(String.valueOf(totalCount));
-                        recordsAnalyzedText.set(String.valueOf(items.size()));
-
-                        // Populate subjects bar chart (top 10)
-                        subjectsData.clear();
-                        int subjectCount = 0;
-                        for (Map.Entry<String, Integer> entry : subjects.entrySet()) {
-                            if (subjectCount >= 10) break;
-                            subjectsData.add(new XYChart.Data<>(
-                                    shortenLabel(entry.getKey()), entry.getValue()));
-                            subjectCount++;
-                        }
-
-                        // Populate field office pie chart
-                        fieldOfficeData.clear();
-                        for (Map.Entry<String, Integer> entry : offices.entrySet()) {
-                            fieldOfficeData.add(new PieChart.Data(
-                                    entry.getKey() + " (" + entry.getValue() + ")",
-                                    entry.getValue()));
-                        }
-
-                        // Populate race bar chart
-                        raceData.clear();
-                        for (Map.Entry<String, Integer> entry : races.entrySet()) {
-                            raceData.add(new XYChart.Data<>(
-                                    entry.getKey(), entry.getValue()));
-                        }
-
-                        // Populate sex pie chart
-                        sexData.clear();
-                        for (Map.Entry<String, Integer> entry : sexes.entrySet()) {
-                            sexData.add(new PieChart.Data(
-                                    entry.getKey() + " (" + entry.getValue() + ")",
-                                    entry.getValue()));
-                        }
-
-                        loading.set(false);
-                        statusMessage.set("Data loaded successfully");
-                    });
-
-                } catch (Exception e) {
-                    Platform.runLater(() -> {
-                        loading.set(false);
-                        statusMessage.set("Error loading data: " + e.getMessage());
-                    });
-                }
-                return null;
-            }
-        };
-
-        Thread thread = new Thread(fetchTask);
-        thread.setDaemon(true);
-        thread.start();
-    }
-*/
-  public void loadData() {
+    public void loadData() {
       loading.set(true);
       statusMessage.set("Fetching data from FBI API...");
 

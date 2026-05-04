@@ -152,9 +152,6 @@ public class AnalyticsController {
         sexChart.setStartAngle(90);
     }
 
-
-
-
     /**
      * Applies a consistent color palette to bar chart data points.
      */
@@ -209,8 +206,6 @@ public class AnalyticsController {
     private void goToLeaderboard() {
         SceneManager.switchScene(subjectsChart, "/org.example.fugitivefinder/leaderboard.fxml", 1440, 900);
     }
-
-
 
     @FXML
     private void goToUserProfile() {
