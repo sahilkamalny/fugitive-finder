@@ -188,13 +188,19 @@ src/main/java/org/example/fugitivefinder/
 
 ## 📸 Application Screenshots
 
+### Dashboard
+![Dashboard](docs/screenshots/dashboard.png)
+
+### Crime Analytics
+![Crime Analytics](docs/screenshots/analytics.png)
+
+### Interactive Map
+![Interactive Map](docs/screenshots/map.png)
+
+### Additional Screens
 | Screen | Screenshot |
 |--------|------------|
-| **Dashboard** | `[INSERT SCREENSHOT]` |
-| **Crime Analytics** | `[INSERT SCREENSHOT]` |
-| **Danger Leaderboard** | `[INSERT SCREENSHOT]` |
 | **Criminal Profile** | `[INSERT SCREENSHOT]` |
-| **Interactive Map** | `[INSERT SCREENSHOT]` |
 | **User Profile** | `[INSERT SCREENSHOT]` |
 
 ---
