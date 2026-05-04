@@ -100,10 +100,7 @@ public class AnalyticsViewModel {
           @Override
           protected Void call() {
               try {
-                  System.out.println("Analytics loading started...");
-
                   List<WantedPerson> people = FbiApiService.getWantedPeople();
-                  System.out.println("Analytics people fetched: " + people.size());
 
                   // Crime category distribution from subjects
                   Map<String, Integer> subjectDist = new java.util.HashMap<>();
