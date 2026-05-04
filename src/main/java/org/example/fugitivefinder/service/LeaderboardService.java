@@ -183,7 +183,12 @@ public class LeaderboardService {
     private String getFirstImageUrl(JSONObject item) {
         JSONArray images = item.optJSONArray("images");
         if (images != null && images.length() > 0) {
-            return images.getJSONObject(0).optString("original", "");
+            Object first = images.opt(0);
+            if (first instanceof JSONObject) {
+                return ((JSONObject) first).optString("original", "");
+            } else if (first instanceof String) {
+                return (String) first;
+            }
         }
         return "";
     }
