@@ -86,9 +86,28 @@ public class AnalyticsController {
         configureRaceChart();
         configureSexChart();
 
+        // Set up bar charts with series bound to ViewModel data
+        XYChart.Series<String, Number> subjectsSeries = new XYChart.Series<>();
+        subjectsSeries.setName("Cases");
+        subjectsSeries.setData(viewModel.getSubjectsData());
+        subjectsChart.getData().add(subjectsSeries);
+
+        XYChart.Series<String, Number> raceSeries = new XYChart.Series<>();
+        raceSeries.setName("Persons");
+        raceSeries.setData(viewModel.getRaceData());
+        raceChart.getData().add(raceSeries);
+
+        // Set up pie charts bound to ViewModel data
+        fieldOfficeChart.setData(viewModel.getFieldOfficeData());
+        sexChart.setData(viewModel.getSexData());
+
+        // Apply colors after data loads
         viewModel.loadingProperty().addListener((obs, wasLoading, isLoading) -> {
             if (!isLoading) {
-                populateCharts();
+                applyBarColors(subjectsSeries);
+                applyBarColors(raceSeries);
+                applyPieColors(fieldOfficeChart);
+                applyPieColors(sexChart);
             }
         });
 
