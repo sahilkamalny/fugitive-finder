@@ -226,6 +226,11 @@ public class DashboardController {
 
 
     @FXML
+    private void goToLeaderboard() {
+        viewModel.goToLeaderboard(featuredCardsPane);
+    }
+
+    @FXML
     private void goToUserProfile() {
         viewModel.goToUserProfile(featuredCardsPane);
     }

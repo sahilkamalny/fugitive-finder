@@ -29,6 +29,9 @@
                     <cursor><Cursor fx:constant="HAND" /></cursor>
                 </Label>
 
+                <Label onMouseClicked="#goToLeaderboard" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;" text="Leaderboard">
+                    <cursor><Cursor fx:constant="HAND" /></cursor>
+                </Label>
 
                 <Label onMouseClicked="#goToUserProfile" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;" text="Profile">
                     <cursor><Cursor fx:constant="HAND" /></cursor>

@@ -93,15 +93,15 @@ public class LeaderboardController {
         // Configure charts
         regionCasesChart.setTitle("Cases by Region");
         regionCasesChart.setLegendVisible(false);
-        regionCasesChart.setAnimated(true);
+        regionCasesChart.setAnimated(false);
 
         regionPieChart.setTitle("Regional Distribution");
         regionPieChart.setLegendVisible(true);
-        regionPieChart.setAnimated(true);
+        regionPieChart.setAnimated(false);
 
         regionRewardChart.setTitle("Avg Reward by Region ($)");
         regionRewardChart.setLegendVisible(false);
-        regionRewardChart.setAnimated(true);
+        regionRewardChart.setAnimated(false);
 
         // Listen for data load
         viewModel.loadingProperty().addListener((obs, was, is) -> {

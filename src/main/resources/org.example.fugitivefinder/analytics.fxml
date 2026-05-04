@@ -63,6 +63,11 @@
                 <Label text="Analytics"
                        style="-fx-background-color:#1e293b; -fx-text-fill:white; -fx-padding:12 16; -fx-background-radius:10;"/>
 
+                <Label text="Leaderboard" onMouseClicked="#goToLeaderboard"
+                       style="-fx-text-fill:#cbd5e1; -fx-padding:12 16;">
+                    <cursor><Cursor fx:constant="HAND"/></cursor>
+                </Label>
+
                 <Label text="Profile" onMouseClicked="#goToUserProfile"
                        style="-fx-text-fill:#cbd5e1; -fx-padding:12 16;">
                     <cursor><Cursor fx:constant="HAND"/></cursor>

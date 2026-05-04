@@ -18,6 +18,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.example.fugitivefinder.model.WantedPerson;
 import org.example.fugitivefinder.viewModel.MapsViewModel;
+import org.example.fugitivefinder.viewModel.SceneManager;
 import javafx.scene.control.ComboBox;
 import java.util.ArrayList;
 import java.util.List;
@@ -316,7 +317,10 @@ public class MapsViewController {
     private void goToCharts() {
         viewModel.goToCharts(mapContainer);    }
 
-
+    @FXML
+    private void goToLeaderboard() {
+        SceneManager.switchScene(mapContainer, "/org.example.fugitivefinder/leaderboard.fxml", 1440, 900);
+    }
 
     @FXML
     private void goToUserProfile() {
