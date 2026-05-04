@@ -118,7 +118,7 @@ public class AnalyticsController {
     private void configureSubjectsChart() {
         subjectsChart.setTitle("Crimes by Category");
         subjectsChart.setLegendVisible(false);
-        subjectsChart.setAnimated(true);
+        subjectsChart.setAnimated(false);
         subjectsChart.getXAxis().setLabel("Crime Category");
         subjectsChart.getYAxis().setLabel("Number of Cases");
         subjectsChart.setCategoryGap(5);
@@ -128,7 +128,7 @@ public class AnalyticsController {
     private void configureFieldOfficeChart() {
         fieldOfficeChart.setTitle("Cases by Field Office");
         fieldOfficeChart.setLegendVisible(true);
-        fieldOfficeChart.setAnimated(true);
+        fieldOfficeChart.setAnimated(false);
         fieldOfficeChart.setLabelsVisible(true);
         fieldOfficeChart.setStartAngle(90);
     }
@@ -136,7 +136,7 @@ public class AnalyticsController {
     private void configureRaceChart() {
         raceChart.setTitle("Fugitives by Race/Ethnicity");
         raceChart.setLegendVisible(false);
-        raceChart.setAnimated(true);
+        raceChart.setAnimated(false);
         raceChart.getXAxis().setLabel("Race/Ethnicity");
         raceChart.getYAxis().setLabel("Number of Persons");
         raceChart.setCategoryGap(10);
@@ -146,7 +146,7 @@ public class AnalyticsController {
     private void configureSexChart() {
         sexChart.setTitle("Sex Distribution");
         sexChart.setLegendVisible(true);
-        sexChart.setAnimated(true);
+        sexChart.setAnimated(false);
         sexChart.setLabelsVisible(true);
         sexChart.setStartAngle(90);
     }
