@@ -1,3 +1,4 @@
+<img width="1378" height="786" alt="Screenshot 2026-05-05 at 4 57 54 PM" src="https://github.com/user-attachments/assets/bd52d6b2-8b78-4aad-ac51-8eedec5bc7e2" />
 <div align="center">
   <img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Seal_of_the_Federal_Bureau_of_Investigation.svg" alt="FBI Seal" width="120"/>
   <h1>Fugitive Finder</h1>
