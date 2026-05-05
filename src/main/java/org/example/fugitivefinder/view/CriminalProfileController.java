@@ -66,6 +66,8 @@ public class CriminalProfileController {
             System.out.println("Saved from RED button: " + person.getUid());
         }
     }
+
+    @FXML
     private void goToAnalytics() {
         SceneManager.switchScene(criminalImageView, "/org.example.fugitivefinder/analytics.fxml", 1440, 900);
     }
