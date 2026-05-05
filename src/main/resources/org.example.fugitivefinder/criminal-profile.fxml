@@ -18,42 +18,37 @@
             style="-fx-background-color: #081120;">
 
     <left>
-        <VBox prefWidth="220.0" spacing="18.0" style="-fx-background-color: #0f172a; -fx-padding: 20;">
+        <VBox prefWidth="220.0" spacing="12.0"
+              style="-fx-background-color: #0f172a; -fx-padding: 20;">
             <children>
-                <HBox spacing="10.0">
+                <HBox spacing="10.0" alignment="CENTER_LEFT">
                     <children>
                         <ImageView fitHeight="48.0" fitWidth="48.0" preserveRatio="true">
-                            <image>
-                                <Image url="@images/logo.png" />
-                            </image>
+                            <image><Image url="@images/logo.png" /></image>
                         </ImageView>
                         <Label text="Fugitive Finder" textFill="WHITE" wrapText="true">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
+                            <font><Font size="16.0" /></font>
                         </Label>
                     </children>
                 </HBox>
 
+                <Region prefHeight="10.0" />
+
                 <Label text="Dashboard" onMouseClicked="#goToDashboard"
                        style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16; -fx-cursor: hand;" />
-
                 <Label text="Maps" onMouseClicked="#goToMap"
                        style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16; -fx-cursor: hand;" />
-
                 <Label text="Analytics" onMouseClicked="#goToAnalytics"
                        style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16; -fx-cursor: hand;" />
-
+                <Label text="Leaderboard" onMouseClicked="#goToLeaderboard"
+                       style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16; -fx-cursor: hand;" />
                 <Label text="Profile" onMouseClicked="#goToUserProfile"
                        style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16; -fx-cursor: hand;" />
-
-                <Label text="Criminal Profile"
-                       style="-fx-background-color: #1e293b; -fx-text-fill: white; -fx-padding: 12 16; -fx-background-radius: 10;" />
             </children>
         </VBox>
     </left>
     <top>
-        <HBox alignment="CENTER_LEFT" spacing="14.0" style="-fx-background-color: #0b1320; -fx-padding: 18 24;">
+        <HBox alignment="CENTER_LEFT" spacing="14.0" prefHeight="90.0" minHeight="90.0" maxHeight="90.0" style="-fx-background-color: #0b1320; -fx-padding: 18 24;">
             <children>
                 <Label text="Criminal Profile" textFill="WHITE">
                     <font>

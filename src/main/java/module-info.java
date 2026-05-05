@@ -7,7 +7,7 @@ module org.example.fugitivefinder {
     requires com.gluonhq.maps;
     requires com.fasterxml.jackson.databind;
     requires java.net.http;
-    requires static org.json;
+    requires org.json;
 
     exports org.example.fugitivefinder.view;
 
@@ -20,7 +20,7 @@ module org.example.fugitivefinder {
     opens org.example.fugitivefinder.session to javafx.fxml;
     exports org.example.fugitivefinder.session;
 
-    opens org.example.fugitivefinder.service to javafx.fxml;
+    opens org.example.fugitivefinder.service to javafx.fxml, javafx.base;
     exports org.example.fugitivefinder.service;
 
     opens org.example.fugitivefinder.view to javafx.fxml, javafx.graphics;

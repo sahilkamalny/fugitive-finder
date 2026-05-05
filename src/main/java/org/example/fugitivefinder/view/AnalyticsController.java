@@ -105,8 +105,6 @@ public class AnalyticsController {
             if (!isLoading) {
                 applyBarColors(subjectsSeries);
                 applyBarColors(raceSeries);
-                applyPieColors(fieldOfficeChart);
-                applyPieColors(sexChart);
             }
         });
 
@@ -177,22 +175,7 @@ public class AnalyticsController {
         }
     }
 
-    /**
-     * Applies a consistent color palette to pie chart slices.
-     */
-    private void applyPieColors(PieChart chart) {
-        String[] colors = {
-                "#4fd1c5", "#f59e0b", "#ef4444", "#8b5cf6",
-                "#3b82f6", "#10b981", "#f97316", "#ec4899",
-                "#06b6d4", "#a855f7", "#14b8a6"
-        };
 
-        for (int i = 0; i < chart.getData().size(); i++) {
-            PieChart.Data data = chart.getData().get(i);
-            String color = colors[i % colors.length];
-            data.getNode().setStyle("-fx-pie-color: " + color + ";");
-        }
-    }
 
     // ---------- Navigation ----------
 

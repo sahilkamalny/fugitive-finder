@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 
 import org.example.fugitivefinder.model.WantedPerson;
+import org.example.fugitivefinder.viewModel.SceneManager;
 import org.example.fugitivefinder.viewModel.UserProfileViewModel;
 
 public class UserProfileController {
@@ -56,6 +57,11 @@ public class UserProfileController {
     @FXML
     private void goToAnalytics(MouseEvent event) {
         viewModel.goToAnalytics((Node) event.getSource());
+    }
+
+    @FXML
+    private void goToLeaderboard(MouseEvent event) {
+        SceneManager.switchScene((Node) event.getSource(), "/org.example.fugitivefinder/leaderboard.fxml", 1440, 900);
     }
 
     private void renderSavedTargets() {

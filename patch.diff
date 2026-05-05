@@ -1,0 +1,32 @@
+--- src/main/java/org/example/fugitivefinder/viewModel/LeaderboardViewModel.java
++++ src/main/java/org/example/fugitivefinder/viewModel/LeaderboardViewModel.java
+@@ -84,14 +84,20 @@
+             protected Void call() {
+                 try {
++                    System.out.println("LeaderboardViewModel: Fetching top fugitives...");
+                     // Fetch leaderboard (top 20)
+                     List<RankedFugitive> topFugitives = leaderboardService.getMostDangerous(20);
++                    System.out.println("LeaderboardViewModel: Fetched " + topFugitives.size() + " fugitives.");
+ 
++                    System.out.println("LeaderboardViewModel: Fetching region stats...");
+                     // Fetch region stats
+                     Map<String, RegionStat> regionStats = regionStatsService.getRegionStats();
++                    System.out.println("LeaderboardViewModel: Fetched region stats.");
+ 
+                     Platform.runLater(() -> {
++                        System.out.println("LeaderboardViewModel: Updating UI inside runLater...");
+                         // Populate leaderboard
+                         leaderboardData.setAll(topFugitives);
+@@ -137,10 +143,12 @@
+                         mostDangerousRegion.set(topRegion);
+                         loading.set(false);
+                         statusMessage.set("Data loaded successfully");
++                        System.out.println("LeaderboardViewModel: UI update complete, loading set to false.");
+                     });
+ 
+                 } catch (Exception e) {
++                    System.err.println("LeaderboardViewModel: Exception caught! " + e);
++                    e.printStackTrace();
+                     Platform.runLater(() -> {
+                         loading.set(false);
+                         statusMessage.set("Error: " + e.getMessage());

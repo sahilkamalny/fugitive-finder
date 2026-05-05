@@ -35,18 +35,14 @@ public class LeaderboardViewModel {
     private final StringProperty criticalThreatCount = new SimpleStringProperty("--");
 
     // --- Leaderboard Table Data ---
-    private final ObservableList<RankedFugitive> leaderboardData =
-            FXCollections.observableArrayList();
+    private final ObservableList<RankedFugitive> leaderboardData = FXCollections.observableArrayList();
 
     // --- Region Chart Data ---
-    private final ObservableList<XYChart.Data<String, Number>> regionCasesData =
-            FXCollections.observableArrayList();
+    private final ObservableList<XYChart.Data<String, Number>> regionCasesData = FXCollections.observableArrayList();
 
-    private final ObservableList<PieChart.Data> regionDistributionData =
-            FXCollections.observableArrayList();
+    private final ObservableList<PieChart.Data> regionDistributionData = FXCollections.observableArrayList();
 
-    private final ObservableList<XYChart.Data<String, Number>> regionRewardData =
-            FXCollections.observableArrayList();
+    private final ObservableList<XYChart.Data<String, Number>> regionRewardData = FXCollections.observableArrayList();
 
     // --- Services ---
     private final LeaderboardService leaderboardService;
@@ -59,16 +55,45 @@ public class LeaderboardViewModel {
 
     // --- Property Getters ---
 
-    public BooleanProperty loadingProperty() { return loading; }
-    public StringProperty statusMessageProperty() { return statusMessage; }
-    public StringProperty highestRewardTextProperty() { return highestRewardText; }
-    public StringProperty mostDangerousRegionProperty() { return mostDangerousRegion; }
-    public StringProperty totalFugitivesAnalyzedProperty() { return totalFugitivesAnalyzed; }
-    public StringProperty criticalThreatCountProperty() { return criticalThreatCount; }
-    public ObservableList<RankedFugitive> getLeaderboardData() { return leaderboardData; }
-    public ObservableList<XYChart.Data<String, Number>> getRegionCasesData() { return regionCasesData; }
-    public ObservableList<PieChart.Data> getRegionDistributionData() { return regionDistributionData; }
-    public ObservableList<XYChart.Data<String, Number>> getRegionRewardData() { return regionRewardData; }
+    public BooleanProperty loadingProperty() {
+        return loading;
+    }
+
+    public StringProperty statusMessageProperty() {
+        return statusMessage;
+    }
+
+    public StringProperty highestRewardTextProperty() {
+        return highestRewardText;
+    }
+
+    public StringProperty mostDangerousRegionProperty() {
+        return mostDangerousRegion;
+    }
+
+    public StringProperty totalFugitivesAnalyzedProperty() {
+        return totalFugitivesAnalyzed;
+    }
+
+    public StringProperty criticalThreatCountProperty() {
+        return criticalThreatCount;
+    }
+
+    public ObservableList<RankedFugitive> getLeaderboardData() {
+        return leaderboardData;
+    }
+
+    public ObservableList<XYChart.Data<String, Number>> getRegionCasesData() {
+        return regionCasesData;
+    }
+
+    public ObservableList<PieChart.Data> getRegionDistributionData() {
+        return regionDistributionData;
+    }
+
+    public ObservableList<XYChart.Data<String, Number>> getRegionRewardData() {
+        return regionRewardData;
+    }
 
     // --- Data Loading ---
 
@@ -139,7 +164,8 @@ public class LeaderboardViewModel {
                         statusMessage.set("Data loaded successfully");
                     });
 
-                } catch (Exception e) {
+                } catch (Throwable e) {
+                    e.printStackTrace();
                     Platform.runLater(() -> {
                         loading.set(false);
                         statusMessage.set("Error: " + e.getMessage());

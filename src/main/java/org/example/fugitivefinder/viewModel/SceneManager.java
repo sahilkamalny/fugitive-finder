@@ -3,7 +3,6 @@ package org.example.fugitivefinder.viewModel;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 public final class SceneManager {
 
@@ -11,8 +10,10 @@ public final class SceneManager {
     }
 
     public static void switchScene(Node sourceNode, String fxmlPath, double width, double height) {
+        System.out.println("====== SCENEMANAGER TRIGGERED ======");
+        System.out.println("Attempting to load: " + fxmlPath);
+        System.out.println("Source Node: " + sourceNode);
         try {
-            System.out.println("Switching to: " + fxmlPath);
 
             FXMLLoader loader = new FXMLLoader(
                     SceneManager.class.getResource(fxmlPath)
@@ -23,10 +24,12 @@ public final class SceneManager {
                 return;
             }
 
-            Scene scene = new Scene(loader.load(), width, height);
-            Stage stage = (Stage) sourceNode.getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
+            javafx.scene.Parent root = loader.load();
+            Scene currentScene = sourceNode.getScene();
+            
+            // Preserve window dimensions and fullscreen state by swapping the root node
+            // instead of replacing the entire Scene object
+            currentScene.setRoot(root);
 
         } catch (Exception e) {
             System.out.println("SCENE SWITCH FAILED");

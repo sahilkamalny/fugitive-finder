@@ -73,6 +73,11 @@ public class CriminalProfileController {
     }
 
     @FXML
+    private void goToLeaderboard() {
+        SceneManager.switchScene(criminalImageView, "/org.example.fugitivefinder/leaderboard.fxml", 1440, 900);
+    }
+
+    @FXML
     private void goToUserProfile() {
         SceneManager.switchScene(criminalImageView, "/org.example.fugitivefinder/user-profile.fxml", 1440, 900);
     }

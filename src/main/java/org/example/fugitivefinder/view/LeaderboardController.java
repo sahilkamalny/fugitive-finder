@@ -33,7 +33,7 @@ public class LeaderboardController {
 
     @FXML private ProgressIndicator loadingSpinner;
     @FXML private VBox contentContainer;
-    @FXML private StackPane loadingOverlay;
+    @FXML private VBox loadingOverlay;
     @FXML private Label statusLabel;
 
     @FXML private Label highestRewardLabel;
@@ -77,10 +77,10 @@ public class LeaderboardController {
                 } else {
                     setText(level);
                     String color = switch (level) {
-                        case "CRITICAL" -> "#ef4444";
-                        case "HIGH" -> "#f59e0b";
-                        case "MODERATE" -> "#3b82f6";
-                        case "LOW" -> "#10b981";
+                        case "CRITICAL" -> "#dc2626"; // Darker red
+                        case "HIGH" -> "#ef4444"; // Red
+                        case "MODERATE" -> "#f59e0b"; // Orange
+                        case "LOW" -> "#3b82f6"; // Blue
                         default -> "#94a3b8";
                     };
                     setStyle("-fx-text-fill: " + color + "; -fx-font-weight: bold;");
@@ -93,15 +93,15 @@ public class LeaderboardController {
         // Configure charts
         regionCasesChart.setTitle("Cases by Region");
         regionCasesChart.setLegendVisible(false);
-        regionCasesChart.setAnimated(true);
+        regionCasesChart.setAnimated(false);
 
         regionPieChart.setTitle("Regional Distribution");
         regionPieChart.setLegendVisible(true);
-        regionPieChart.setAnimated(true);
+        regionPieChart.setAnimated(false);
 
         regionRewardChart.setTitle("Avg Reward by Region ($)");
         regionRewardChart.setLegendVisible(false);
-        regionRewardChart.setAnimated(true);
+        regionRewardChart.setAnimated(false);
 
         // Listen for data load
         viewModel.loadingProperty().addListener((obs, was, is) -> {
@@ -122,7 +122,6 @@ public class LeaderboardController {
 
         // Region pie chart
         regionPieChart.setData(viewModel.getRegionDistributionData());
-        applyPieColors(regionPieChart);
 
         // Region reward bar chart
         XYChart.Series<String, Number> rewardSeries = new XYChart.Series<>();
@@ -148,13 +147,6 @@ public class LeaderboardController {
         }
     }
 
-    private void applyPieColors(PieChart chart) {
-        String[] colors = {"#4fd1c5", "#f59e0b", "#ef4444", "#8b5cf6"};
-        for (int i = 0; i < chart.getData().size(); i++) {
-            chart.getData().get(i).getNode()
-                    .setStyle("-fx-pie-color: " + colors[i % colors.length] + ";");
-        }
-    }
 
     // --- Navigation ---
     @FXML private void goToDashboard() {
@@ -162,9 +154,6 @@ public class LeaderboardController {
     }
     @FXML private void goToAnalytics() {
         SceneManager.switchScene(leaderboardTable, "/org.example.fugitivefinder/analytics.fxml", 1440, 900);
-    }
-    @FXML private void goToRewards() {
-        SceneManager.switchScene(leaderboardTable, "/org.example.fugitivefinder/rewards.fxml", 1440, 900);
     }
     @FXML private void goToUserProfile() {
         SceneManager.switchScene(leaderboardTable, "/org.example.fugitivefinder/user-profile.fxml", 1440, 900);
