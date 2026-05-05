@@ -227,6 +227,7 @@ public class DashboardController {
 
     @FXML
     private void goToLeaderboard() {
+        System.out.println("====== DASHBOARD CONTROLLER goToLeaderboard CLICKED ======");
         viewModel.goToLeaderboard(featuredCardsPane);
     }
 

@@ -7,7 +7,7 @@ module org.example.fugitivefinder {
     requires com.gluonhq.maps;
     requires com.fasterxml.jackson.databind;
     requires java.net.http;
-    requires static org.json;
+    requires org.json;
 
     exports org.example.fugitivefinder.view;
 

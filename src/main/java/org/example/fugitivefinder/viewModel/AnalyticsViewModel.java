@@ -197,7 +197,7 @@ public class AnalyticsViewModel {
                       loading.set(false);
                       statusMessage.set("Data loaded successfully");
                   });
-              } catch (Exception e) {
+              } catch (Throwable e) {
                   e.printStackTrace();
                   Platform.runLater(() -> {
                       loading.set(false);

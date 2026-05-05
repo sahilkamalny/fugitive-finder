@@ -92,12 +92,13 @@ public class LeaderboardService {
             int score = scored.get(i).score;
 
             String name = item.optString("title", "Unknown");
-            String rewardText = item.optString("reward_text", "No reward");
-            int rewardMax = item.optInt("reward_max", 0);
+            String rewardText = item.optString("rewardText", "No reward");
+            if (rewardText.equals("null")) rewardText = "No reward";
+            int rewardMax = extractRewardAmount(rewardText);
             String dangerLevel = classifyDangerLevel(score);
             String fieldOffice = getFirstFieldOffice(item);
             String imageUrl = getFirstImageUrl(item);
-            String warning = item.optString("warning_message", "");
+            String warning = ""; // No warning message provided by this backend
 
             results.add(new RankedFugitive(
                     i + 1, name, rewardText, rewardMax,
@@ -118,7 +119,8 @@ public class LeaderboardService {
         int score = 0;
 
         // Reward component (0-40 points)
-        int rewardMax = item.optInt("reward_max", 0);
+        String rewardText = item.optString("rewardText", "");
+        int rewardMax = extractRewardAmount(rewardText);
         if (rewardMax >= 1000000) score += 40;
         else if (rewardMax >= 250000) score += 30;
         else if (rewardMax >= 100000) score += 25;
@@ -127,18 +129,18 @@ public class LeaderboardService {
         else if (rewardMax > 0) score += 5;
 
         // Warning message component (0-25 points)
-        String warning = item.optString("warning_message", "").toUpperCase();
-        if (warning.contains("ARMED") && warning.contains("DANGEROUS")) score += 25;
-        else if (warning.contains("ARMED")) score += 20;
-        else if (warning.contains("DANGEROUS")) score += 20;
-        else if (warning.contains("EXTREME")) score += 20;
-        else if (warning.contains("CAUTION")) score += 10;
-        else if (!warning.isEmpty()) score += 5;
+        String description = item.optString("description", "").toUpperCase();
+        String subjectsStrText = item.optJSONArray("subjects") != null ? item.optJSONArray("subjects").toString().toUpperCase() : "";
+        String warningContext = description + " " + subjectsStrText;
+        
+        if (warningContext.contains("ARMED") && warningContext.contains("DANGEROUS")) score += 25;
+        else if (warningContext.contains("ARMED")) score += 20;
+        else if (warningContext.contains("DANGEROUS")) score += 20;
+        else if (warningContext.contains("EXTREME")) score += 20;
+        else if (warningContext.contains("CAUTION")) score += 10;
 
-        // Poster classification component (0-20 points)
-        String classification = item.optString("poster_classification", "");
-        if (classification.equals("ten")) score += 20;
-        else if (classification.equals("default")) score += 5;
+        // Poster classification component is not available from this API
+
 
         // Subject categories component (0-15 points)
         JSONArray subjects = item.optJSONArray("subjects");
@@ -170,11 +172,29 @@ public class LeaderboardService {
      * Gets the first field office name from a record, or "N/A".
      */
     private String getFirstFieldOffice(JSONObject item) {
-        JSONArray offices = item.optJSONArray("field_offices");
+        JSONArray offices = item.optJSONArray("fieldOffices");
         if (offices != null && offices.length() > 0) {
             return offices.getString(0);
         }
         return "N/A";
+    }
+
+    /**
+     * Extracts a numeric reward amount from the reward text.
+     */
+    private int extractRewardAmount(String rewardText) {
+        if (rewardText == null || rewardText.isEmpty() || rewardText.equals("null")) {
+            return 0;
+        }
+        java.util.regex.Matcher m = java.util.regex.Pattern.compile("\\$([0-9,]+)").matcher(rewardText);
+        if (m.find()) {
+            try {
+                return Integer.parseInt(m.group(1).replace(",", ""));
+            } catch (NumberFormatException e) {
+                return 0;
+            }
+        }
+        return 0;
     }
 
     /**

@@ -10,38 +10,38 @@
 <BorderPane prefHeight="900.0" prefWidth="1440.0" style="-fx-background-color: #081120;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.fugitivefinder.view.MapsViewController">
 
     <left>
-        <VBox prefWidth="220.0" spacing="18.0" style="-fx-background-color: #0f172a; -fx-padding: 20;">
+        <VBox prefWidth="220.0" spacing="12.0"
+              style="-fx-background-color: #0f172a; -fx-padding: 20;">
             <children>
-                <HBox spacing="10.0">
-                    <ImageView fitHeight="48.0" fitWidth="48.0" preserveRatio="true">
-                        <Image url="@images/logo.png"/>
-                    </ImageView>
-                    <Label style="-fx-font-size: 16;" text="Fugitive Finder" textFill="WHITE" wrapText="true" />
+                <HBox spacing="10.0" alignment="CENTER_LEFT">
+                    <children>
+                        <ImageView fitHeight="48.0" fitWidth="48.0" preserveRatio="true">
+                            <image><Image url="@images/logo.png" /></image>
+                        </ImageView>
+                        <Label text="Fugitive Finder" textFill="WHITE" wrapText="true">
+                            <font><Font size="16.0" /></font>
+                        </Label>
+                    </children>
                 </HBox>
 
-                <Label onMouseClicked="#goToDashboard" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;" text="Dashboard">
-                    <cursor><Cursor fx:constant="HAND" /></cursor>
-                </Label>
+                <Region prefHeight="10.0" />
 
-                <Label style="-fx-background-color: #1e293b; -fx-text-fill: white; -fx-padding: 12 16; -fx-background-radius: 10;" text="Full Map" />
-
-                <Label onMouseClicked="#goToCharts" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;" text="Analytics">
-                    <cursor><Cursor fx:constant="HAND" /></cursor>
-                </Label>
-
-                <Label onMouseClicked="#goToLeaderboard" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;" text="Leaderboard">
-                    <cursor><Cursor fx:constant="HAND" /></cursor>
-                </Label>
-
-                <Label onMouseClicked="#goToUserProfile" style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16;" text="Profile">
-                    <cursor><Cursor fx:constant="HAND" /></cursor>
-                </Label>
+                <Label text="Dashboard" onMouseClicked="#goToDashboard"
+                       style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16; -fx-cursor: hand;" />
+                <Label text="Maps"
+                       style="-fx-background-color: #1e293b; -fx-text-fill: white; -fx-padding: 12 16; -fx-background-radius: 10; -fx-font-weight: bold;" />
+                <Label text="Analytics" onMouseClicked="#goToCharts"
+                       style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16; -fx-cursor: hand;" />
+                <Label text="Leaderboard" onMouseClicked="#goToLeaderboard"
+                       style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16; -fx-cursor: hand;" />
+                <Label text="Profile" onMouseClicked="#goToUserProfile"
+                       style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16; -fx-cursor: hand;" />
             </children>
         </VBox>
     </left>
 
     <top>
-        <HBox alignment="CENTER_LEFT" spacing="14.0" style="-fx-background-color: #0b1320; -fx-padding: 18 24;">
+        <HBox alignment="CENTER_LEFT" spacing="14.0" prefHeight="90.0" minHeight="90.0" maxHeight="90.0" style="-fx-background-color: #0b1320; -fx-padding: 18 24;">
             <children>
                 <VBox spacing="5">
                     <Label style="-fx-font-size: 30;" text="Maps" textFill="WHITE" />

@@ -88,7 +88,7 @@ public class RegionStatsService {
         }
 
         for (JSONObject item : items) {
-            JSONArray offices = item.optJSONArray("field_offices");
+            JSONArray offices = item.optJSONArray("fieldOffices");
             if (offices == null) continue;
 
             for (int i = 0; i < offices.length(); i++) {
@@ -159,7 +159,7 @@ public class RegionStatsService {
         List<String> regionOfficeList = REGION_OFFICES.getOrDefault(regionName, List.of());
 
         for (JSONObject item : items) {
-            JSONArray offices = item.optJSONArray("field_offices");
+            JSONArray offices = item.optJSONArray("fieldOffices");
             if (offices != null) {
                 for (int i = 0; i < offices.length(); i++) {
                     String office = offices.getString(i).toLowerCase().trim();
@@ -180,7 +180,7 @@ public class RegionStatsService {
         List<String> regionOfficeList = REGION_OFFICES.getOrDefault(regionName, List.of());
 
         for (JSONObject item : items) {
-            JSONArray offices = item.optJSONArray("field_offices");
+            JSONArray offices = item.optJSONArray("fieldOffices");
             if (offices != null) {
                 for (int i = 0; i < offices.length(); i++) {
                     String office = offices.getString(i).toLowerCase().trim();
@@ -194,14 +194,15 @@ public class RegionStatsService {
     }
 
     /**
-     * Computes average reward_max across items that have a reward.
+     * Computes average reward across items that have a reward.
      */
     private double computeAverageReward(List<JSONObject> items) {
         long totalReward = 0;
         int rewardCount = 0;
 
         for (JSONObject item : items) {
-            int reward = item.optInt("reward_max", 0);
+            String rewardText = item.optString("rewardText", "");
+            int reward = extractRewardAmount(rewardText);
             if (reward > 0) {
                 totalReward += reward;
                 rewardCount++;
@@ -209,5 +210,23 @@ public class RegionStatsService {
         }
 
         return rewardCount > 0 ? (double) totalReward / rewardCount : 0;
+    }
+
+    /**
+     * Extracts a numeric reward amount from the reward text.
+     */
+    private int extractRewardAmount(String rewardText) {
+        if (rewardText == null || rewardText.isEmpty() || rewardText.equals("null")) {
+            return 0;
+        }
+        java.util.regex.Matcher m = java.util.regex.Pattern.compile("\\$([0-9,]+)").matcher(rewardText);
+        if (m.find()) {
+            try {
+                return Integer.parseInt(m.group(1).replace(",", ""));
+            } catch (NumberFormatException e) {
+                return 0;
+            }
+        }
+        return 0;
     }
 }
