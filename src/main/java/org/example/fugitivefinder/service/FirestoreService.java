@@ -68,33 +68,38 @@ public class FirestoreService {
     public static void saveTarget(String uid, String targetId) {
         try {
             String urlStr = "https://firestore.googleapis.com/v1/projects/"
-                    + PROJECT_ID + "/databases/(default)/documents/users/" + uid
-                    + "?updateMask.fieldPaths=savedTargets";
+                    + PROJECT_ID + "/databases/(default)/documents:commit";
 
             URL url = new URL(urlStr);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
             conn.setRequestMethod("POST");
-            conn.setRequestProperty("X-HTTP-Method-Override", "PATCH");
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestProperty("Authorization", "Bearer " + FirebaseAuthService.getIdToken());
-
             conn.setDoOutput(true);
+
+            String documentPath = "projects/" + PROJECT_ID
+                    + "/databases/(default)/documents/users/" + uid;
 
             Map<String, Object> value = new HashMap<>();
             value.put("stringValue", targetId);
 
-            Map<String, Object> valuesArray = new HashMap<>();
-            valuesArray.put("values", new Object[]{value});
+            Map<String, Object> appendMissingElements = new HashMap<>();
+            appendMissingElements.put("values", new Object[]{value});
 
-            Map<String, Object> arrayValue = new HashMap<>();
-            arrayValue.put("arrayValue", valuesArray);
+            Map<String, Object> fieldTransform = new HashMap<>();
+            fieldTransform.put("fieldPath", "savedTargets");
+            fieldTransform.put("appendMissingElements", appendMissingElements);
 
-            Map<String, Object> fields = new HashMap<>();
-            fields.put("savedTargets", arrayValue);
+            Map<String, Object> transform = new HashMap<>();
+            transform.put("document", documentPath);
+            transform.put("fieldTransforms", new Object[]{fieldTransform});
+
+            Map<String, Object> write = new HashMap<>();
+            write.put("transform", transform);
 
             Map<String, Object> body = new HashMap<>();
-            body.put("fields", fields);
+            body.put("writes", new Object[]{write});
 
             String json = mapper.writeValueAsString(body);
 
@@ -104,6 +109,62 @@ public class FirestoreService {
 
             int responseCode = conn.getResponseCode();
             System.out.println("Save Target Response: " + responseCode);
+
+            if (responseCode == 200) {
+                System.out.println("Target added without overwriting ");
+            } else {
+                System.out.println("Save target failed ");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void removeTarget(String uid, String targetId) {
+        try {
+            String urlStr = "https://firestore.googleapis.com/v1/projects/"
+                    + PROJECT_ID + "/databases/(default)/documents:commit";
+
+            URL url = new URL(urlStr);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Authorization", "Bearer " + FirebaseAuthService.getIdToken());
+            conn.setDoOutput(true);
+
+            String documentPath = "projects/" + PROJECT_ID
+                    + "/databases/(default)/documents/users/" + uid;
+
+            Map<String, Object> value = new HashMap<>();
+            value.put("stringValue", targetId);
+
+            Map<String, Object> removeAllFromArray = new HashMap<>();
+            removeAllFromArray.put("values", new Object[]{value});
+
+            Map<String, Object> fieldTransform = new HashMap<>();
+            fieldTransform.put("fieldPath", "savedTargets");
+            fieldTransform.put("removeAllFromArray", removeAllFromArray);
+
+            Map<String, Object> transform = new HashMap<>();
+            transform.put("document", documentPath);
+            transform.put("fieldTransforms", new Object[]{fieldTransform});
+
+            Map<String, Object> write = new HashMap<>();
+            write.put("transform", transform);
+
+            Map<String, Object> body = new HashMap<>();
+            body.put("writes", new Object[]{write});
+
+            String json = mapper.writeValueAsString(body);
+
+            OutputStream os = conn.getOutputStream();
+            os.write(json.getBytes());
+            os.close();
+
+            int responseCode = conn.getResponseCode();
+            System.out.println("Remove Target Response: " + responseCode);
 
         } catch (Exception e) {
             e.printStackTrace();
