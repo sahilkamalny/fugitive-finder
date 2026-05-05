@@ -60,7 +60,7 @@ Our UI/UX design followed a structured evolution from low-fidelity concepts to t
 
 Our design lead (Darianne) created all wireframes and high-fidelity mockups in Figma before any FXML code was written. This allowed the team to review, iterate, and approve screen layouts before development began — saving significant rework time.
 
-> 🔗 **Figma Project:** `(https://www.figma.com/proto/qlJXVoaGMKlFwUUZfTIQVL/Most-Wanted-Tracker?node-id=1-2&t=pveoo4opSEP8qbwi-1)`
+> 🔗 **Figma Project:** (https://www.figma.com/proto/qlJXVoaGMKlFwUUZfTIQVL/Most-Wanted-Tracker?node-id=1-2&t=pveoo4opSEP8qbwi-1)
 
 ### Design Evolution
 
