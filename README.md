@@ -196,12 +196,13 @@ src/main/java/org/example/fugitivefinder/
 
 ### Interactive Map
 ![Interactive Map](docs/screenshots/map.png)
+### Leaderboard
+![Leaderboard](docs/screenshots/leaderboard.png)
 
 ### Additional Screens
 | Screen | Screenshot |
 |--------|------------|
-| **Criminal Profile** | `[INSERT SCREENSHOT]` |
-| **User Profile** | `[INSERT SCREENSHOT]` |
+| **User Profile** | ![User Profile](docs/screenshots/profile.png) |
 
 ---
 
