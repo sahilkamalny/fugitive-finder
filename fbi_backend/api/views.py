@@ -25,6 +25,18 @@ def get_wanted_persons(request):
             break
 
         for item in items:
+
+            images = []
+
+            for img in item.get("images", []):
+                original = img.get("original")
+                thumb = img.get("thumb")
+
+                if original and original.lower().endswith((".jpg", ".jpeg", ".png")):
+                    images.append(original)
+                elif thumb and thumb.lower().endswith((".jpg", ".jpeg", ".png")):
+                    images.append(thumb)
+
             all_items.append({
                 "uid": item.get("uid"),
                 "title": item.get("title"),
@@ -35,11 +47,7 @@ def get_wanted_persons(request):
                 "race": item.get("race"),
                 "sex": item.get("sex"),
                 "subjects": item.get("subjects", []),
-                "images": [
-                    img.get("original")
-                    for img in item.get("images", [])
-                    if img.get("original")
-                ]
+                "images": images
             })
 
         page += 1
@@ -56,10 +64,8 @@ def proxy_image(request):
     if not encoded_url:
         return HttpResponse("Missing url parameter", status=400)
 
-    # ✅ DECODE FIRST (THIS IS THE FIX)
     image_url = urllib.parse.unquote(encoded_url)
 
-    # ✅ safer check
     if "fbi.gov" not in image_url:
         return HttpResponse("Invalid image URL", status=403)
 
@@ -87,7 +93,8 @@ def proxy_image(request):
 
     except Exception as e:
         return HttpResponse(str(e), status=500)
-# REGISTER
+
+#REGISTER
 @csrf_exempt
 def register(request):
     if request.method != "POST":
