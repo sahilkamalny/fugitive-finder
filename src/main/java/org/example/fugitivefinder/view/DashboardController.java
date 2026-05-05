@@ -16,10 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -48,7 +45,9 @@ public class DashboardController {
     private Label pageLabel;
     @FXML
     private ComboBox<String> sortComboBox;
-
+    @FXML private ComboBox<String> statusFilterComboBox;
+    @FXML private ComboBox<String> rewardFilterComboBox;
+    @FXML private TextField searchField;
 
     private DashboardViewModel viewModel;
     private MapView mapView;
@@ -63,6 +62,7 @@ public class DashboardController {
         viewModel = new DashboardViewModel();
         bindProperties();
         setupSort();
+        setupFilters();
         setupListeners();
         loadInitialData();
 
@@ -74,6 +74,15 @@ public class DashboardController {
         rewardCasesLabel.textProperty().bind(viewModel.rewardCasesProperty());
     }
 
+    private void setupFilters() {
+        statusFilterComboBox.getItems().addAll("All", "Wanted", "Captured", "Missing");
+        statusFilterComboBox.setValue("All");
+
+        rewardFilterComboBox.getItems().addAll(
+                "All", "Reward Listed", "No Reward", "$10,000+", "$50,000+", "$100,000+"
+        );
+        rewardFilterComboBox.setValue("All");
+    }
 
     private void setupSort() {
         sortComboBox.getItems().addAll(

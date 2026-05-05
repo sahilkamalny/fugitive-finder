@@ -24,10 +24,14 @@
                 <HBox spacing="10.0" alignment="CENTER_LEFT">
                     <children>
                         <ImageView fitHeight="48.0" fitWidth="48.0" preserveRatio="true">
-                            <image><Image url="@images/logo.png" /></image>
+                            <image>
+                                <Image url="@images/logo.png" />
+                            </image>
                         </ImageView>
                         <Label text="Fugitive Finder" textFill="WHITE" wrapText="true">
-                            <font><Font size="16.0" /></font>
+                            <font>
+                                <Font size="16.0" />
+                            </font>
                         </Label>
                     </children>
                 </HBox>
@@ -36,19 +40,29 @@
 
                 <Label text="Dashboard" onMouseClicked="#goToDashboard"
                        style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16; -fx-cursor: hand;" />
+
                 <Label text="Maps" onMouseClicked="#goToMap"
                        style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16; -fx-cursor: hand;" />
+
                 <Label text="Analytics" onMouseClicked="#goToAnalytics"
                        style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16; -fx-cursor: hand;" />
+
                 <Label text="Leaderboard" onMouseClicked="#goToLeaderboard"
                        style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16; -fx-cursor: hand;" />
+
                 <Label text="Profile" onMouseClicked="#goToUserProfile"
                        style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16; -fx-cursor: hand;" />
+
+                <Label text="Criminal Profile"
+                       style="-fx-background-color: #1e293b; -fx-text-fill: white; -fx-padding: 12 16; -fx-background-radius: 10;" />
             </children>
         </VBox>
     </left>
+
     <top>
-        <HBox alignment="CENTER_LEFT" spacing="14.0" prefHeight="90.0" minHeight="90.0" maxHeight="90.0" style="-fx-background-color: #0b1320; -fx-padding: 18 24;">
+        <HBox alignment="CENTER_LEFT" spacing="14.0"
+              prefHeight="90.0" minHeight="90.0" maxHeight="90.0"
+              style="-fx-background-color: #0b1320; -fx-padding: 18 24;">
             <children>
                 <Label text="Criminal Profile" textFill="WHITE">
                     <font>
@@ -68,9 +82,13 @@
     <center>
         <VBox spacing="22.0" style="-fx-padding: 24;">
             <children>
-                <HBox spacing="22.0" style="-fx-background-color: #111827; -fx-background-radius: 16; -fx-padding: 20;">
+                <HBox spacing="22.0"
+                      style="-fx-background-color: #111827; -fx-background-radius: 16; -fx-padding: 20;">
                     <children>
-                        <ImageView fx:id="criminalImageView" fitHeight="320.0" fitWidth="270.0" preserveRatio="false" />
+                        <ImageView fx:id="criminalImageView"
+                                   fitHeight="320.0"
+                                   fitWidth="270.0"
+                                   preserveRatio="false" />
 
                         <VBox spacing="14.0">
                             <children>
@@ -98,22 +116,49 @@
                                     </font>
                                 </Label>
 
+                                <Label fx:id="sexLabel" text="SEX:" textFill="#e2e8f0">
+                                    <font>
+                                        <Font size="17.0" />
+                                    </font>
+                                </Label>
+
+                                <Label fx:id="raceLabel" text="RACE:" textFill="#e2e8f0">
+                                    <font>
+                                        <Font size="17.0" />
+                                    </font>
+                                </Label>
+
+                                <Label fx:id="subjectsLabel" text="SUBJECTS:" textFill="#e2e8f0" wrapText="true">
+                                    <font>
+                                        <Font size="17.0" />
+                                    </font>
+                                </Label>
+
                                 <HBox spacing="10.0">
                                     <children>
-                                        <Label text="Reward" style="-fx-background-color: #1f2937; -fx-text-fill: white; -fx-padding: 8 12; -fx-background-radius: 8;" />
-                                        <Label fx:id="rewardLabel" text="No Reward Listed"
+                                        <Label text="Reward"
+                                               style="-fx-background-color: #1f2937; -fx-text-fill: white; -fx-padding: 8 12; -fx-background-radius: 8;" />
+
+                                        <Label fx:id="rewardLabel"
+                                               text="No Reward Listed"
                                                style="-fx-background-color: #f59e0b; -fx-text-fill: #111827; -fx-padding: 8 12; -fx-background-radius: 8; -fx-font-weight: bold;" />
                                     </children>
                                 </HBox>
 
-                                <Label fx:id="warningLabel" text="No warning provided." textFill="#fca5a5" wrapText="true">
+                                <Label fx:id="warningLabel"
+                                       text="No warning provided."
+                                       textFill="#fca5a5"
+                                       wrapText="true">
                                     <font>
                                         <Font size="16.0" />
                                     </font>
                                 </Label>
 
-                                <Button mnemonicParsing="false" onAction="#handleSaveTarget"
-                                        prefHeight="42.0" prefWidth="180.0"
+                                <Button fx:id="saveTargetButton"
+                                        mnemonicParsing="false"
+                                        onAction="#saveTarget"
+                                        prefHeight="42.0"
+                                        prefWidth="220.0"
                                         style="-fx-background-color: #dc2626; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 10;"
                                         text="Save Target">
                                     <cursor>
@@ -125,14 +170,19 @@
                     </children>
                 </HBox>
 
-                <VBox spacing="14.0" style="-fx-background-color: #111827; -fx-background-radius: 16; -fx-padding: 20;">
+                <VBox spacing="14.0"
+                      style="-fx-background-color: #111827; -fx-background-radius: 16; -fx-padding: 20;">
                     <children>
                         <Label text="Description" textFill="WHITE">
                             <font>
                                 <Font size="22.0" />
                             </font>
                         </Label>
-                        <Label fx:id="descriptionLabel" text="No description available." textFill="#cbd5e1" wrapText="true">
+
+                        <Label fx:id="descriptionLabel"
+                               text="No description available."
+                               textFill="#cbd5e1"
+                               wrapText="true">
                             <font>
                                 <Font size="16.0" />
                             </font>

@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.control.Button;
 import org.example.fugitivefinder.model.WantedPerson;
 import org.example.fugitivefinder.service.FirestoreService;
 import org.example.fugitivefinder.session.Session;
@@ -20,6 +21,10 @@ public class CriminalProfileController {
     @FXML private Label rewardLabel;
     @FXML private Label descriptionLabel;
     @FXML private Label warningLabel;
+    @FXML private Label sexLabel;
+    @FXML private Label raceLabel;
+    @FXML private Label subjectsLabel;
+    @FXML private Button saveTargetButton;
 
     private CriminalProfileViewModel viewModel;
 
@@ -28,6 +33,10 @@ public class CriminalProfileController {
         viewModel = new CriminalProfileViewModel();
         viewModel.loadSelectedPerson();
 
+        sexLabel.textProperty().bind(viewModel.sexProperty());
+        raceLabel.textProperty().bind(viewModel.raceProperty());
+        subjectsLabel.textProperty().bind(viewModel.subjectsProperty());
+        saveTargetButton.textProperty().bind(viewModel.saveButtonTextProperty());
         nameLabel.textProperty().bind(viewModel.nameProperty());
         aliasesLabel.textProperty().bind(viewModel.aliasesProperty());
         statusLabel.textProperty().bind(viewModel.statusProperty());

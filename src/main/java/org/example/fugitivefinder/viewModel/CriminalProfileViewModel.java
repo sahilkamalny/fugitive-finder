@@ -19,7 +19,15 @@ public class CriminalProfileViewModel {
     private final StringProperty description = new SimpleStringProperty("No description available.");
     private final StringProperty warning = new SimpleStringProperty("No warning provided.");
     private final StringProperty imageUrl = new SimpleStringProperty("");
+    private final StringProperty sex = new SimpleStringProperty("SEX:");
+    private final StringProperty race = new SimpleStringProperty("RACE:");
+    private final StringProperty subjects = new SimpleStringProperty("SUBJECTS:");
+    private final StringProperty saveButtonText = new SimpleStringProperty("Save Target");
 
+    public StringProperty sexProperty() { return sex; }
+    public StringProperty raceProperty() { return race; }
+    public StringProperty subjectsProperty() { return subjects; }
+    public StringProperty saveButtonTextProperty() { return saveButtonText; }
     public StringProperty nameProperty() { return name; }
     public StringProperty aliasesProperty() { return aliases; }
     public StringProperty statusProperty() { return status; }
@@ -46,6 +54,9 @@ public class CriminalProfileViewModel {
         fieldOffices.set("FIELD OFFICES: " + selectedPerson.getDisplayFieldOffices());
         reward.set(selectedPerson.getDisplayReward());
         description.set(selectedPerson.getDescription());
+        sex.set("SEX: " + selectedPerson.getDisplaySex());
+        race.set("RACE: " + selectedPerson.getDisplayRace());
+        subjects.set("SUBJECTS: " + selectedPerson.getDisplaySubjects());
         warning.set(selectedPerson.getWarning_message() == null || selectedPerson.getWarning_message().isBlank()
                 ? "No warning provided."
                 : selectedPerson.getWarning_message());
@@ -61,13 +72,11 @@ public class CriminalProfileViewModel {
     public void saveTarget() {
         AppUser currentUser = Session.getInstance().getCurrentUser();
 
-        if (currentUser != null && selectedPerson != null && selectedPerson.getUid() != null) {
-            UserService.saveTargetForUser(currentUser, selectedPerson.getUid());
-            Session.getInstance().setCurrentUser(currentUser);
-
-            System.out.println("Saved " + selectedPerson.getTitle() + " to profile.");
+        if (currentUser != null && selectedPerson.getUid() != null
+                && currentUser.hasSavedTarget(selectedPerson.getUid())) {
+            saveButtonText.set("Remove from Watchlist");
         } else {
-            System.out.println("Save failed. User or selected person is null.");
+            saveButtonText.set("Save Target");
+        }
         }
     }
-}
