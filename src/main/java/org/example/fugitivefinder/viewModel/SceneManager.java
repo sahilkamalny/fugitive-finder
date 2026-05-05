@@ -3,7 +3,6 @@ package org.example.fugitivefinder.viewModel;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 public final class SceneManager {
 
@@ -27,7 +26,6 @@ public final class SceneManager {
 
             javafx.scene.Parent root = loader.load();
             Scene currentScene = sourceNode.getScene();
-            Stage stage = (Stage) currentScene.getWindow();
             
             // Preserve window dimensions and fullscreen state by swapping the root node
             // instead of replacing the entire Scene object
