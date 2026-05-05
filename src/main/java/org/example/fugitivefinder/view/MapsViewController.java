@@ -19,6 +19,7 @@ import javafx.scene.paint.Color;
 import org.example.fugitivefinder.model.WantedPerson;
 import org.example.fugitivefinder.viewModel.MapsViewModel;
 import org.example.fugitivefinder.viewModel.SceneManager;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ComboBox;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,15 +41,32 @@ public class MapsViewController {
 
     @FXML
     private TextField nameSearchField;
+
+    @FXML
+    private VBox loadingOverlay;
+
+    @FXML
+    private ProgressIndicator loadingSpinner;
+
+    @FXML
+    private Label statusLabel;
+
     private MapPoint currentViewCenter;
     private double currentZoomLevel;
     @FXML
     public void initialize() {
         viewModel = new MapsViewModel();
+
+        // Bind loading state
+        loadingOverlay.visibleProperty().bind(viewModel.loadingProperty());
+        loadingOverlay.managedProperty().bind(viewModel.loadingProperty());
+
+        // Bind status text
+        statusLabel.textProperty().bind(viewModel.statusMessageProperty());
+
         setUpMap();
         setupOfficeFilter();
         new Thread(viewModel::loadMapData).start();
-
     }
 
     public void setUpMap() {

@@ -1,6 +1,10 @@
 package org.example.fugitivefinder.viewModel;
 
 import com.gluonhq.maps.MapPoint;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,6 +28,9 @@ public class MapsViewModel {
     private final Map<String, MapPoint> officeCoordinates = new HashMap<>();
     private final ObservableList<WantedPerson> allPeople = FXCollections.observableArrayList();
     private final ObservableList<MapPoint> filteredLocations = FXCollections.observableArrayList();
+
+    private final BooleanProperty loading = new SimpleBooleanProperty(false);
+    private final StringProperty statusMessage = new SimpleStringProperty("Initializing map...");
 
     public MapsViewModel() {
         loadOfficeCoordinates();
@@ -59,8 +66,14 @@ public class MapsViewModel {
     }
 
     public void loadMapData() {
+        Platform.runLater(() -> {
+            loading.set(true);
+            statusMessage.set("Fetching fugitive data from FBI API...");
+        });
+
         List<WantedPerson> people = FbiApiService.getWantedPeople();
         Platform.runLater(() -> {
+            statusMessage.set("Processing coordinates...");
             allPeople.setAll(people);
             locationGroups.clear();
             fugitiveLocations.clear();
@@ -71,11 +84,25 @@ public class MapsViewModel {
                     locationGroups.computeIfAbsent(point, k -> new ArrayList<>()).add(person);
                     if (!fugitiveLocations.contains(point)) {
                         fugitiveLocations.add(point);
-                        filteredLocations.setAll(fugitiveLocations);
                     }
                 }
             }
+            filteredLocations.setAll(fugitiveLocations);
+            loading.set(false);
+            statusMessage.set("Ready");
         });
+    }
+
+    public BooleanProperty loadingProperty() {
+        return loading;
+    }
+
+    public StringProperty statusMessageProperty() {
+        return statusMessage;
+    }
+
+    public boolean isLoading() {
+        return loading.get();
     }
     public void filterByName(String name) {
         filteredLocations.clear();

@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+<?import javafx.scene.control.ProgressIndicator?>
 <BorderPane prefHeight="900.0" prefWidth="1440.0" style="-fx-background-color: #081120;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.fugitivefinder.view.MapsViewController">
 
     <left>
@@ -105,6 +106,20 @@
                 <StackPane fx:id="mapContainer" VBox.vgrow="ALWAYS"
                            style="-fx-background-color: #111827; -fx-background-radius: 16; -fx-border-color: #334155; -fx-border-radius: 16; -fx-border-width: 2;">
                     <children>
+                        <!-- Loading Overlay -->
+                        <VBox fx:id="loadingOverlay" alignment="CENTER" spacing="20.0"
+                              style="-fx-background-color: #081120; -fx-background-radius: 14;">
+                            <children>
+                                <ProgressIndicator fx:id="loadingSpinner"
+                                                   prefWidth="80.0" prefHeight="80.0"
+                                                   style="-fx-progress-color: #4fd1c5;" />
+                                <Label fx:id="statusLabel" text="Loading map data..."
+                                       textFill="WHITE">
+                                    <font><Font size="18.0" /></font>
+                                </Label>
+                            </children>
+                        </VBox>
+
                         <VBox alignment="BOTTOM_RIGHT" pickOnBounds="false" spacing="10">
                             <padding>
                                 <Insets bottom="30" right="20" />
