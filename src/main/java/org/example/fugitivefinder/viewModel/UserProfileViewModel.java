@@ -43,9 +43,10 @@ public class UserProfileViewModel {
     }
 
     public void loadData() {
-        AppUser currentUser = Session.getInstance().getCurrentUser();
 
-        if (currentUser == null) {
+        String uid = Session.getInstance().getUserId();
+
+        if (uid == null || uid.isBlank()) {
             username.set("Guest");
             fullName.set("No user logged in");
             email.set("Please log in first");
@@ -53,22 +54,16 @@ public class UserProfileViewModel {
             return;
         }
 
-        if (currentUser.getSavedTargetIds() == null) {
-            currentUser.setSavedTargetIds(new ArrayList<>());
-        }
+        username.set(Session.getInstance().getUsername());
+        fullName.set(Session.getInstance().getFullName());
+        email.set(Session.getInstance().getEmail());
 
-        System.out.println("Current saved IDs: " + currentUser.getSavedTargetIds());
-
-        username.set(currentUser.getUsername());
-        fullName.set(currentUser.getFullName());
-        email.set(currentUser.getEmail());
-        avatarPath.set(currentUser.getProfilePicUrl());
-      
-      loadSavedTargets();
+        loadSavedTargets();
     }
 
 
-      private void loadSavedTargets() {
+    private void loadSavedTargets() {
+
         String uid = Session.getInstance().getUserId();
 
         List<String> savedIds = FirestoreService.getSavedTargets(uid);
@@ -77,10 +72,12 @@ public class UserProfileViewModel {
         savedTargets.clear();
 
         for (WantedPerson person : allPeople) {
-            if (savedIds.contains(person.getUid())) {
+            if (person.getUid() != null && savedIds.contains(person.getUid())) {
                 savedTargets.add(person);
             }
         }
+
+        System.out.println("Loaded saved targets: " + savedTargets.size());
     }
 
 

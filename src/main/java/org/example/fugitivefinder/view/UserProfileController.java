@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.Button;
 
 import org.example.fugitivefinder.model.WantedPerson;
 import org.example.fugitivefinder.viewModel.SceneManager;
@@ -30,17 +31,16 @@ public class UserProfileController {
 
         viewModel = new UserProfileViewModel();
 
-        // ✅ BIND UI TO VIEWMODEL
         usernameLabel.textProperty().bind(viewModel.usernameProperty());
         fullNameLabel.textProperty().bind(viewModel.fullNameProperty());
         emailLabel.textProperty().bind(viewModel.emailProperty());
 
-        // ✅ LISTENER → AUTO UI UPDATE
+
         viewModel.getSavedTargets().addListener(
                 (ListChangeListener<WantedPerson>) change -> renderSavedTargets()
         );
 
-        // 🔥 LOAD DATA AFTER BINDING
+
         viewModel.loadData();
     }
 
@@ -86,22 +86,51 @@ public class UserProfileController {
 
         Label nameLabel = new Label(person.getTitle());
         nameLabel.setStyle("-fx-text-fill: white; -fx-font-size: 18; -fx-font-weight: bold;");
+        nameLabel.setWrapText(true);
 
         Label statusLabel = new Label(person.getStatus());
         statusLabel.setStyle("-fx-text-fill: #cbd5e1;");
 
-        VBox details = new VBox(5, nameLabel, statusLabel);
+        Button removeButton = new Button("Remove");
+        removeButton.setStyle("-fx-background-color: #dc2626; -fx-text-fill: white; -fx-background-radius: 8;");
+
+        removeButton.setOnAction(e -> {
+            String uid = org.example.fugitivefinder.session.Session.getInstance().getUserId();
+
+            org.example.fugitivefinder.service.FirestoreService.removeTarget(uid, person.getUid());
+
+            viewModel.getSavedTargets().remove(person);
+            savedTargetsPane.getChildren().removeIf(node -> node.getUserData() == person);
+
+            System.out.println("Removed saved target: " + person.getUid());
+
+            e.consume();
+        });
+
+        VBox details = new VBox(8, nameLabel, statusLabel, removeButton);
         details.setPadding(new Insets(10));
 
         VBox card = new VBox(imageView, details);
+        card.setUserData(person);
         card.setPrefWidth(230);
-        card.setPrefHeight(250);
+        card.setPrefHeight(290);
         card.setStyle(
                 "-fx-background-color: #111827;" +
                         "-fx-background-radius: 14;" +
                         "-fx-border-color: #334155;" +
                         "-fx-border-radius: 14;"
         );
+
+        card.setOnMouseClicked(e -> {
+            org.example.fugitivefinder.session.Session.getInstance().setSelectedWantedPerson(person);
+
+            org.example.fugitivefinder.viewModel.SceneManager.switchScene(
+                    card,
+                    "/org.example.fugitivefinder/criminal-profile.fxml",
+                    1440,
+                    900
+            );
+        });
 
         return card;
     }

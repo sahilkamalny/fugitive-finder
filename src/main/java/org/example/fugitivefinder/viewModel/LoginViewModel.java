@@ -42,10 +42,7 @@ public class LoginViewModel {
             Session.getInstance().setFullName(
                     userData.get("firstName") + " " + userData.get("lastName")
             );
-        } else {
-            // fallback (just in case)
-            Session.getInstance().setUsername("User");
-            Session.getInstance().setFullName("Logged In User");
+            Session.getInstance().setEmail(userData.get("email"));
         }
 
         SceneManager.switchScene(
