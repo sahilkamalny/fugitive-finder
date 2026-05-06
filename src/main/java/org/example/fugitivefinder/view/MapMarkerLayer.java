@@ -8,12 +8,12 @@ import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 
-public class MapController extends MapLayer {
+public class MapMarkerLayer extends MapLayer {
 
     private final MapPoint mapPoint;
     private final Circle circle;
 
-    public MapController(MapPoint mapPoint, boolean isHeatMap, int count) {
+    public MapMarkerLayer(MapPoint mapPoint, boolean isHeatMap, int count) {
         this.mapPoint = mapPoint;
         if (isHeatMap) {
             // Heat Map Style: Glowing Radial Gradient

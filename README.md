@@ -120,7 +120,7 @@ src/main/java/org/example/fugitivefinder/
 │   ├── LeaderboardController.java
 │   ├── CriminalProfileController.java
 │   ├── MapsViewController.java
-│   ├── MapController.java
+│   ├── MapMarkerLayer.java
 │   └── UserProfileController.java
 │
 └── viewModel/              # ViewModels (Logic layer)
@@ -263,7 +263,7 @@ This project was a collaborative effort by our agile development team. Each memb
 | Member | Role & Key Contributions |
 |--------|--------------------------|
 | **Sahil Kamal** | **Project Manager & Analytics Lead**<br>Sprint planning & SCRUM facilitation, MVVM architecture design, `ChartDataService`, `LeaderboardService`, Danger Score algorithm, `RegionStatsService`, `AnalyticsViewModel` & `AnalyticsController`, `LeaderboardViewModel` & `LeaderboardController`, navigation sidebar integration, dependency conflict resolution (`javafx-base` version fix), code cleanup & dead code removal, `README.md` documentation, Sprint Plan. |
-| **Ahmaed Thomas** | **Map & Navigation Lead**<br>`MapController`, `MapsViewController`, `MapsViewModel`, `offices.json` coordinate data integration, Gluon Maps marker plotting, zoom in/out/reset controls, `SceneManager` scene routing, and sidebar navigation wiring. |
+| **Ahmaed Thomas** | **Map & Navigation Lead**<br>`MapMarkerLayer`, `MapsViewController`, `MapsViewModel`, `offices.json` coordinate data integration, Gluon Maps marker plotting, zoom in/out/reset controls, `SceneManager` scene routing, and sidebar navigation wiring. |
 | **Derek Mendez** | **API & Data Lead**<br>`FbiApiService` HTTP client, raw JSON parsing & deserialization, `WantedPerson` data model (25+ fields), `WantedResponse` wrapper, sort/filter logic for dashboard, image loading proxy, and API `pageSize` tuning. |
 | **Armaan Arora** | **Backend & Cloud Lead**<br>Django REST Framework backend deployed on Render, FBI API proxy endpoint, Firebase Authentication integration (`FirebaseAuthService`), Cloud Firestore CRUD operations (`FirestoreService`), `UserService` session management, saved target persistence, and backend field expansion (race, sex, 100-record support). |
 | **Darianne Ramos** | **UI/UX Lead**<br>Figma LoFi wireframes & HiFi mockups, all FXML layout files, custom CSS dark theme styling, `CriminalProfileController` & view, `DashboardController` card layout, dashboard filter dropdowns, and UI consistency reviews. |

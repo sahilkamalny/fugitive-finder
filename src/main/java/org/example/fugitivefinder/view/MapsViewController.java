@@ -130,13 +130,13 @@ public class MapsViewController {
 
         if (isHeatMapMode) {
             viewModel.getLocationGroups().forEach((point, people) -> {
-                MapController layer=(new MapController(point, true, people.size()));
+                MapMarkerLayer layer=(new MapMarkerLayer(point, true, people.size()));
                 activeLayers.add(layer);
                 mapView.addLayer(layer);
             });
         } else {
             for (MapPoint point : viewModel.getFugitiveLocations()) {
-                MapController layer = new MapController(point, false, 0);
+                MapMarkerLayer layer = new MapMarkerLayer(point, false, 0);
                 activeLayers.add(layer);
                 mapView.addLayer(layer);
             }
