@@ -12,7 +12,7 @@
 
 ## 🎯 Project Overview
 
-**Fugitive Finder** is a JavaFX desktop application that pulls, processes, and analyzes live data from the Federal Bureau of Investigation's Most Wanted API. The application provides a comprehensive intelligence platform featuring interactive dashboards, real-time crime analytics, geographic mapping, a custom danger-scoring algorithm, and secure cloud-synced user accounts.
+Our project is **Fugitive Finder**. The problem we’re solving is the lack of a centralized, interactive geographical interface for tracking high-profile fugitives. While the FBI provides a public API, the data is dense and hard to visualize. **Fugitive Finder** is a JavaFX desktop application that pulls, processes, and analyzes live data from the Federal Bureau of Investigation's Most Wanted API. The application provides a comprehensive intelligence platform featuring interactive dashboards, real-time crime analytics, geographic mapping, a custom danger-scoring algorithm, and secure cloud-synced user accounts.
 
 Our objective was to apply modern software engineering practices — including the MVVM design pattern, Agile/SCRUM methodology, and full-stack cloud integration — to build a professional, production-quality desktop application as a team of five developers over the course of a semester.
 
