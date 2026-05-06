@@ -140,13 +140,25 @@
                                           prefWidth="170.0"
                                           style="-fx-background-color: #1e293b; -fx-text-fill: white;"/>
 
+                                <Button text="Clear All Filters"
+                                        onAction="#clearAllFilters"
+                                        style="-fx-background-color: #dc2626; -fx-text-fill: white; -fx-background-radius: 8; -fx-font-weight: bold;"/>
+
                                 <Label text="Search:" textFill="#cbd5e1"/>
 
                                 <TextField fx:id="searchField"
                                            onAction="#handleFilters"
                                            promptText="Search name"
-                                           prefWidth="200.0"
+                                           prefWidth="180.0"
                                            style="-fx-background-radius: 8;"/>
+
+                                <Button text="Search"
+                                        onAction="#handleFilters"
+                                        style="-fx-background-color: #f59e0b; -fx-text-fill: black; -fx-background-radius: 8; -fx-font-weight: bold;"/>
+
+                                <Button text="Clear"
+                                        onAction="#clearSearch"
+                                        style="-fx-background-color: #334155; -fx-text-fill: white; -fx-background-radius: 8;"/>
                             </children>
                         </HBox>
                         <FlowPane fx:id="featuredCardsPane" hgap="18.0" vgap="18.0"

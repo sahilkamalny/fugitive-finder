@@ -79,8 +79,6 @@ public class DashboardController {
             masterPeopleList = new ArrayList<>(viewModel.getAllPeople());
             applyFiltersAndSort();
         });
-
-        searchField.textProperty().addListener((obs, oldVal, newVal) -> applyFiltersAndSort());
     }
 
     private void loadInitialData() {
@@ -100,6 +98,21 @@ public class DashboardController {
 
     @FXML
     private void handleFilters() {
+        applyFiltersAndSort();
+    }
+
+    @FXML
+    private void clearSearch() {
+        searchField.clear();
+        applyFiltersAndSort();
+    }
+
+    @FXML
+    private void clearAllFilters() {
+        searchField.clear();
+        statusFilterComboBox.setValue("All");
+        rewardFilterComboBox.setValue("All");
+        sortComboBox.setValue("Default");
         applyFiltersAndSort();
     }
 
