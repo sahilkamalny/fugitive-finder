@@ -90,8 +90,8 @@ public class UserProfileController {
         nameLabel.setStyle("-fx-text-fill: white; -fx-font-size: 18; -fx-font-weight: bold;");
         nameLabel.setWrapText(true);
 
-        Label statusLabel = new Label(person.getStatus());
-        statusLabel.setStyle("-fx-text-fill: #cbd5e1;");
+        Label statusLabel = new Label(person.getDisplayReward());
+        statusLabel.setStyle("-fx-text-fill: #f59e0b;");
 
         Button removeButton = new Button("Remove");
         removeButton.setStyle("-fx-background-color: #dc2626; -fx-text-fill: white; -fx-background-radius: 8;");

@@ -53,30 +53,28 @@ public class CriminalProfileController {
 
     @FXML
     private void saveTarget() {
-        System.out.println("DEBUG: Save Target button clicked!");
         String uid = Session.getInstance().getUserId();
         WantedPerson person = viewModel.getSelectedPerson();
 
         if (uid != null && person != null && person.getUid() != null) {
             org.example.fugitivefinder.model.AppUser currentUser = Session.getInstance().getCurrentUser();
-            
+
             if (currentUser != null && currentUser.hasSavedTarget(person.getUid())) {
-                System.out.println("DEBUG: Removing target " + person.getUid());
                 FirestoreService.removeTarget(uid, person.getUid());
                 currentUser.getSavedTargetIds().remove(person.getUid());
                 viewModel.saveButtonTextProperty().set("Save Target");
+                saveTargetButton.setStyle("-fx-background-color: #dc2626; -fx-text-fill: white; -fx-background-radius: 8; -fx-font-weight: bold;");
             } else {
-                System.out.println("DEBUG: Saving target " + person.getUid());
                 FirestoreService.saveTarget(uid, person.getUid());
                 if (currentUser != null) {
                     currentUser.getSavedTargetIds().add(person.getUid());
                 }
-                viewModel.saveButtonTextProperty().set("Remove from Watchlist");
+                viewModel.saveButtonTextProperty().set("Saved ✓");
+                saveTargetButton.setStyle("-fx-background-color: #166534; -fx-text-fill: #86efac; -fx-background-radius: 8; -fx-font-weight: bold;");
             }
-        } else {
-            System.out.println("DEBUG: Save failed - UID or Person is null! UID: " + uid + ", Person: " + (person != null ? person.getUid() : "null"));
         }
     }
+
     @FXML
     private void goToDashboard() {
         SceneManager.switchScene(criminalImageView, "/org.example.fugitivefinder/dashboard.fxml", 1440, 900);

@@ -220,6 +220,12 @@ public class DashboardController {
         saveButton.setOnAction(e -> {
             String uid = org.example.fugitivefinder.session.Session.getInstance().getUserId();
             org.example.fugitivefinder.service.FirestoreService.saveTarget(uid, person.getUid());
+
+            //visual feedback for button press
+            saveButton.setText("Saved ✓");
+            saveButton.getStyleClass().remove("button-green");
+            saveButton.setStyle("-fx-background-color: #166534; -fx-text-fill: #86efac; -fx-background-radius: 8; -fx-font-weight: bold;");
+            saveButton.setDisable(true);
         });
 
         VBox card = new VBox(6, imageView, nameLabel, rewardLabel, saveButton);

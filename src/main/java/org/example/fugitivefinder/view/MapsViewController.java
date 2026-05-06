@@ -53,11 +53,20 @@ public class MapsViewController {
     @FXML
     private Label statusLabel;
 
+    @FXML
+    private Label usernameLabel;
+
     private MapPoint currentViewCenter;
     private double currentZoomLevel;
     @FXML
     public void initialize() {
         viewModel = new MapsViewModel();
+
+        //For username
+        String fullName = org.example.fugitivefinder.session.Session.getInstance().getFullName();
+        String username = org.example.fugitivefinder.session.Session.getInstance().getUsername();
+        String displayName = (fullName != null && !fullName.isBlank()) ? fullName : (username != null ? username : "User");
+        usernameLabel.setText(displayName);
 
         // Bind loading state
         loadingOverlay.visibleProperty().bind(viewModel.loadingProperty());
