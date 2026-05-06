@@ -213,7 +213,7 @@ public class DashboardController {
         }
 
         Button saveButton = new Button("Save");
-        saveButton.getStyleClass().addAll("modern-button", "save-button-dashboard");
+        saveButton.getStyleClass().add("button-green");
         saveButton.getStylesheets().add(getClass().getResource("/org.example.fugitivefinder/styles/buttons.css").toExternalForm());
         saveButton.setPrefWidth(246); // Slightly wider for a better look
         saveButton.setPrefHeight(36);

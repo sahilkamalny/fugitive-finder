@@ -160,7 +160,7 @@
                                         onAction="#saveTarget"
                                         prefHeight="42.0"
                                         prefWidth="220.0"
-                                        styleClass="modern-button, save-button-profile"
+                                        styleClass="button-red"
                                         text="Save Target">
                                     <cursor>
                                         <Cursor fx:constant="HAND" />
