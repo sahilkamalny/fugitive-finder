@@ -59,6 +59,9 @@ public class LeaderboardController {
         totalAnalyzedLabel.textProperty().bind(viewModel.totalFugitivesAnalyzedProperty());
         criticalCountLabel.textProperty().bind(viewModel.criticalThreatCountProperty());
 
+        // Ensure table columns expand to fill all available horizontal space
+        leaderboardTable.setColumnResizePolicy(javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY);
+
         // Configure table columns
         rankColumn.setCellValueFactory(new PropertyValueFactory<>("rank"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
