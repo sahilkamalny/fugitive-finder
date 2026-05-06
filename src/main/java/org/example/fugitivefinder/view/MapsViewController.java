@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import static javafx.util.Duration.millis;
 
@@ -242,10 +244,20 @@ public class MapsViewController {
         rewardLabel.setStyle("-fx-text-fill: #f59e0b; -fx-font-size: 14;");
         rewardLabel.setWrapText(true);
 
-        VBox card = new VBox(6, nameLabel, rewardLabel);
+        ImageView imageView = new ImageView();
+        imageView.setFitWidth(250);
+        imageView.setFitHeight(150);
+        imageView.setPreserveRatio(false);
+
+        String imageUrl = person.getPrimaryImageUrl();
+        if (imageUrl != null && !imageUrl.isBlank()) {
+            imageView.setImage(new Image(imageUrl, true));
+        }
+
+        VBox card = new VBox(8, imageView, nameLabel, rewardLabel);
         card.setPadding(new Insets(12));
         card.setPrefWidth(270);
-        card.setPrefHeight(100);
+        card.setPrefHeight(260); // Increased height to fit image
         card.setStyle("-fx-background-color: #111827; -fx-background-radius: 14; -fx-border-color: #334155; -fx-border-radius: 14;");
         card.setOnMouseClicked(event -> {
             System.out.println("Clicked map criminal: " + person.getTitle());
