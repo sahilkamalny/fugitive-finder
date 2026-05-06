@@ -81,7 +81,7 @@
 
                     <Button text="Search"
                             onAction="#handleNameSearch"
-                            style="-fx-background-color: #f59e0b; -fx-text-fill: black; -fx-font-weight: bold; -fx-background-radius: 8;" />
+                            style="-fx-background-color: #ffa500; -fx-text-fill: black; -fx-font-weight: bold; -fx-background-radius: 8;" />
 
                     <Button text="Clear"
                             onAction="#clearNameSearch"
