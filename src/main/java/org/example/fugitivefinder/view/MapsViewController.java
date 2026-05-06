@@ -71,8 +71,14 @@ public class MapsViewController {
 
     public void setUpMap() {
         mapView = new MapView();
-        mapView.setCenter(new MapPoint(38, -98.5795));
-        mapView.setZoom(4.8);
+        
+        // Initial state
+        this.currentViewCenter = new MapPoint(38, -98.5795);
+        this.currentZoomLevel = 4.8;
+        
+        mapView.setCenter(currentViewCenter);
+        mapView.setZoom(currentZoomLevel);
+        
         mapContainer.getChildren().add(0,mapView);
         setupListeners();
         setupMarkerClicks();
