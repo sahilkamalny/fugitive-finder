@@ -213,7 +213,10 @@ public class DashboardController {
         }
 
         Button saveButton = new Button("Save");
-        saveButton.setStyle("-fx-background-color: #22c55e; -fx-text-fill: white;");
+        saveButton.getStyleClass().addAll("modern-button", "save-button-dashboard");
+        saveButton.getStylesheets().add(getClass().getResource("/org.example.fugitivefinder/styles/buttons.css").toExternalForm());
+        saveButton.setPrefWidth(246); // Slightly wider for a better look
+        saveButton.setPrefHeight(36);
         saveButton.setOnAction(e -> {
             String uid = org.example.fugitivefinder.session.Session.getInstance().getUserId();
             org.example.fugitivefinder.service.FirestoreService.saveTarget(uid, person.getUid());
