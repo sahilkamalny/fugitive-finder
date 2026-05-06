@@ -23,11 +23,13 @@ import java.util.Map;
 
 public class MapsViewModel {
 
-    private final ObservableList<MapPoint> fugitiveLocations = FXCollections.observableArrayList();
     private final Map<MapPoint, List<WantedPerson>> locationGroups = new HashMap<>();
     private final Map<String, MapPoint> officeCoordinates = new HashMap<>();
     private final ObservableList<WantedPerson> allPeople = FXCollections.observableArrayList();
     private final ObservableList<MapPoint> filteredLocations = FXCollections.observableArrayList();
+
+    private String nameQuery = "";
+    private String officeFilter = "All Offices";
 
     private final BooleanProperty loading = new SimpleBooleanProperty(false);
     private final StringProperty statusMessage = new SimpleStringProperty("Initializing map...");
@@ -75,22 +77,60 @@ public class MapsViewModel {
         Platform.runLater(() -> {
             statusMessage.set("Processing coordinates...");
             allPeople.setAll(people);
-            locationGroups.clear();
-            fugitiveLocations.clear();
-
-            for (WantedPerson person : people) {
-                MapPoint point = findCoordinates(person.getFieldOffices());
-                if (point != null) {
-                    locationGroups.computeIfAbsent(point, k -> new ArrayList<>()).add(person);
-                    if (!fugitiveLocations.contains(point)) {
-                        fugitiveLocations.add(point);
-                    }
-                }
-            }
-            filteredLocations.setAll(fugitiveLocations);
+            applyFilters();
             loading.set(false);
             statusMessage.set("Ready");
         });
+    }
+
+    private void applyFilters() {
+        filteredLocations.clear();
+        locationGroups.clear();
+
+        String query = nameQuery.toLowerCase().trim();
+        boolean hasNameQuery = !query.isEmpty();
+        boolean hasOfficeQuery = !officeFilter.equals("All Offices");
+
+        for (WantedPerson person : allPeople) {
+            boolean matchesName = !hasNameQuery || (person.getTitle() != null && person.getTitle().toLowerCase().contains(query));
+            
+            boolean matchesOffice = !hasOfficeQuery;
+            if (hasOfficeQuery && person.getFieldOffices() != null) {
+                String target = officeFilter.toLowerCase().replace(" ", "");
+                matchesOffice = person.getFieldOffices().stream()
+                        .anyMatch(o -> o.toLowerCase().replace(" ", "").equals(target));
+            }
+
+            if (matchesName && matchesOffice) {
+                MapPoint point = findCoordinates(person.getFieldOffices());
+                if (point != null) {
+                    locationGroups.computeIfAbsent(point, k -> new ArrayList<>()).add(person);
+                    if (!filteredLocations.contains(point)) {
+                        filteredLocations.add(point);
+                    }
+                }
+            }
+        }
+    }
+
+    public void filterByName(String name) {
+        this.nameQuery = name != null ? name : "";
+        applyFilters();
+    }
+
+    public void filterByOffice(String officeName) {
+        this.officeFilter = officeName != null ? officeName : "All Offices";
+        applyFilters();
+    }
+
+    public void clearNameSearch() {
+        this.nameQuery = "";
+        applyFilters();
+    }
+
+    public void clearOfficeFilter() {
+        this.officeFilter = "All Offices";
+        applyFilters();
     }
 
     public BooleanProperty loadingProperty() {
@@ -104,59 +144,13 @@ public class MapsViewModel {
     public boolean isLoading() {
         return loading.get();
     }
-    public void filterByName(String name) {
-        filteredLocations.clear();
-
-        String query = name.toLowerCase().trim();
-
-        for (WantedPerson person : allPeople) {
-            if (person.getTitle() != null &&
-                    person.getTitle().toLowerCase().contains(query)) {
-
-                MapPoint point = findCoordinates(person.getFieldOffices());
-
-                if (point != null && !filteredLocations.contains(point)) {
-                    filteredLocations.add(point);
-                }
-            }
-        }
-    }
-    public void filterByOffice(String officeName) {
-        filteredLocations.clear();
-
-        MapPoint point = officeCoordinates.get(officeName);
-
-        if (point != null) {
-            filteredLocations.add(point);
-        }
-    }
-    public void clearNameSearch() {
-        filteredLocations.setAll(fugitiveLocations);
-    }
-
-    public void clearOfficeFilter() {
-        filteredLocations.setAll(fugitiveLocations);
-    }
 
     private MapPoint findCoordinates(List<String> offices) {
         if (offices == null || offices.isEmpty()){
-            // System.out.println("This person has no field offices listed.");
             return null;
         }
         String officeName = offices.get(0).toLowerCase().trim().replace(" ", "");
         MapPoint point = officeCoordinates.get(officeName);
-       /* if (point == null) {
-            System.out.println("Match Failed");
-            System.out.println("   -> API sent: " + offices.get(0));
-            System.out.println("   -> Search key used: '" + officeName + "'");
-            System.out.println("   -> Total keys in json map: " + officeCoordinates.size());
-
-            if (!officeCoordinates.isEmpty()) {
-                System.out.println("   -> This keys is in map: " + officeCoordinates.keySet().stream().limit(5).toList());
-            }
-        } else {
-            System.out.println("Match Success for " + officeName + " at " + point.getLatitude() + ", " + point.getLongitude());
-        }*/
         return  point;
     }
 
@@ -175,7 +169,6 @@ public class MapsViewModel {
         Session.getInstance().setSelectedWantedPerson(person);
         SceneManager.switchScene(sourceNode, "/org.example.fugitivefinder/criminal-profile.fxml", 1440, 900);
     }
-
 
     public void goToCharts(Node source) {
         SceneManager.switchScene(source, "/org.example.fugitivefinder/analytics.fxml", 1440, 900);
