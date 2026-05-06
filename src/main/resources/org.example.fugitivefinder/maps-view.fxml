@@ -8,7 +8,7 @@
 <?import javafx.scene.text.*?>
 
 <?import javafx.scene.control.ProgressIndicator?>
-<BorderPane prefHeight="900.0" prefWidth="1440.0" style="-fx-background-color: #081120;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.fugitivefinder.view.MapsViewController">
+<BorderPane prefHeight="900.0" prefWidth="1440.0" style="-fx-background-color: #081120;" stylesheets="@styles/buttons.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.fugitivefinder.view.MapsViewController">
 
     <left>
         <VBox prefWidth="220.0" spacing="12.0"

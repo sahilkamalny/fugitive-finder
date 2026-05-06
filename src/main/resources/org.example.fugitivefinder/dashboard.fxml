@@ -9,6 +9,7 @@
 <?import javafx.scene.control.ComboBox?>
 
 <BorderPane prefHeight="900.0" prefWidth="1440.0" style="-fx-background-color: #081120;"
+            stylesheets="@styles/buttons.css"
             xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="org.example.fugitivefinder.view.DashboardController">
 
