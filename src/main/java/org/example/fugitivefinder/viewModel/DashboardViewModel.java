@@ -29,9 +29,9 @@ public class DashboardViewModel {
 
     public void loadData() {
         AppUser currentUser = Session.getInstance().getCurrentUser();
-        if (currentUser != null) {
-            Platform.runLater(() -> username.set(currentUser.getUsername()));
-        }
+        String fullName = Session.getInstance().getFullName();
+        String displayName = (fullName != null && !fullName.isBlank()) ? fullName : Session.getInstance().getUsername();
+        Platform.runLater(() -> username.set(displayName != null ? displayName : "User"));
 
         List<WantedPerson> people = FbiApiService.getWantedPeople();
 
