@@ -15,8 +15,8 @@
             xmlns="http://javafx.com/javafx/21.0.6"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="org.example.fugitivefinder.view.LeaderboardController"
-            stylesheets="@styles/charts.css"
-            style="-fx-background-color: #081120;" stylesheets="@styles/buttons.css">
+            stylesheets="@styles/charts.css, @styles/buttons.css"
+            style="-fx-background-color: #081120;">
 
     <!-- LEFT SIDEBAR -->
     <left>
