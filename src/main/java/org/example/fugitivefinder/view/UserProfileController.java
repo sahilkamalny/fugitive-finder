@@ -82,6 +82,8 @@ public class UserProfileController {
         String imageUrl = person.getPrimaryImageUrl();
         if (imageUrl != null && !imageUrl.isBlank()) {
             imageView.setImage(new Image(imageUrl, true));
+        } else {
+            imageView.setImage(new Image(getClass().getResource("/org.example.fugitivefinder/images/criminal1.png").toExternalForm()));
         }
 
         Label nameLabel = new Label(person.getTitle());

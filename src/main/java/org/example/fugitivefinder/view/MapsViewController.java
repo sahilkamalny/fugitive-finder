@@ -19,11 +19,14 @@ import javafx.scene.paint.Color;
 import org.example.fugitivefinder.model.WantedPerson;
 import org.example.fugitivefinder.viewModel.MapsViewModel;
 import org.example.fugitivefinder.viewModel.SceneManager;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ComboBox;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import static javafx.util.Duration.millis;
 
@@ -40,21 +43,44 @@ public class MapsViewController {
 
     @FXML
     private TextField nameSearchField;
+
+    @FXML
+    private VBox loadingOverlay;
+
+    @FXML
+    private ProgressIndicator loadingSpinner;
+
+    @FXML
+    private Label statusLabel;
+
     private MapPoint currentViewCenter;
     private double currentZoomLevel;
     @FXML
     public void initialize() {
         viewModel = new MapsViewModel();
+
+        // Bind loading state
+        loadingOverlay.visibleProperty().bind(viewModel.loadingProperty());
+        loadingOverlay.managedProperty().bind(viewModel.loadingProperty());
+
+        // Bind status text
+        statusLabel.textProperty().bind(viewModel.statusMessageProperty());
+
         setUpMap();
         setupOfficeFilter();
         new Thread(viewModel::loadMapData).start();
-
     }
 
     public void setUpMap() {
         mapView = new MapView();
-        mapView.setCenter(new MapPoint(38, -98.5795));
-        mapView.setZoom(4.8);
+        
+        // Initial state
+        this.currentViewCenter = new MapPoint(38, -98.5795);
+        this.currentZoomLevel = 4.8;
+        
+        mapView.setCenter(currentViewCenter);
+        mapView.setZoom(currentZoomLevel);
+        
         mapContainer.getChildren().add(0,mapView);
         setupListeners();
         setupMarkerClicks();
@@ -112,13 +138,13 @@ public class MapsViewController {
 
         if (isHeatMapMode) {
             viewModel.getLocationGroups().forEach((point, people) -> {
-                MapController layer=(new MapController(point, true, people.size()));
+                MapMarkerLayer layer=(new MapMarkerLayer(point, true, people.size()));
                 activeLayers.add(layer);
                 mapView.addLayer(layer);
             });
         } else {
             for (MapPoint point : viewModel.getFugitiveLocations()) {
-                MapController layer = new MapController(point, false, 0);
+                MapMarkerLayer layer = new MapMarkerLayer(point, false, 0);
                 activeLayers.add(layer);
                 mapView.addLayer(layer);
             }
@@ -215,13 +241,25 @@ public class MapsViewController {
         nameLabel.setWrapText(true);
 
         Label rewardLabel = new Label(person.getDisplayReward());
-        rewardLabel.setStyle("-fx-text-fill: #f59e0b; -fx-font-size: 14;");
+        rewardLabel.setStyle("-fx-text-fill: orange; -fx-font-size: 14;");
         rewardLabel.setWrapText(true);
 
-        VBox card = new VBox(6, nameLabel, rewardLabel);
+        ImageView imageView = new ImageView();
+        imageView.setFitWidth(250);
+        imageView.setFitHeight(150);
+        imageView.setPreserveRatio(false);
+
+        String imageUrl = person.getPrimaryImageUrl();
+        if (imageUrl != null && !imageUrl.isBlank()) {
+            imageView.setImage(new Image(imageUrl, true));
+        } else {
+            imageView.setImage(new Image(getClass().getResource("/org.example.fugitivefinder/images/criminal1.png").toExternalForm()));
+        }
+
+        VBox card = new VBox(8, imageView, nameLabel, rewardLabel);
         card.setPadding(new Insets(12));
         card.setPrefWidth(270);
-        card.setPrefHeight(100);
+        card.setPrefHeight(260); // Increased height to fit image
         card.setStyle("-fx-background-color: #111827; -fx-background-radius: 14; -fx-border-color: #334155; -fx-border-radius: 14;");
         card.setOnMouseClicked(event -> {
             System.out.println("Clicked map criminal: " + person.getTitle());
@@ -241,14 +279,14 @@ public class MapsViewController {
         VBox infoPane = new VBox(15);
         infoPane.setId("officeInfoPane");
         infoPane.setPadding(new Insets(20));
-        infoPane.setStyle("-fx-background-color: rgba(17, 24, 39, 0.8); " +
+        infoPane.setStyle("-fx-background-color: #0b1320; " +
                 "-fx-background-radius: 15; " +
-                "-fx-border-color: rgba(75, 85, 99, 0.5); " +
+                "-fx-border-color: #334155; " +
                 "-fx-border-width: 1.5;");
         infoPane.setPrefWidth(320);
         infoPane.setMaxWidth(320);
         infoPane.setMaxHeight(560);
-        infoPane.setEffect(new DropShadow(15, Color.rgb(0, 0, 0, 0.6)));
+        infoPane.setEffect(new DropShadow(15, Color.BLACK));
 
         HBox header = new HBox(10);
         header.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
@@ -262,7 +300,7 @@ public class MapsViewController {
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
         Button closeBtn = new Button("✕");
-        closeBtn.setStyle("-fx-background-color: rgba(55, 65, 81, 0.7); -fx-text-fill: white; " +
+        closeBtn.setStyle("-fx-background-color: #334155; -fx-text-fill: white; " +
                 "-fx-background-radius: 50; -fx-cursor: hand;");
         closeBtn.setPrefSize(30, 30);
         closeBtn.setFocusTraversable(false);

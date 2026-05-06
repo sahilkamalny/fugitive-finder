@@ -192,6 +192,8 @@ public class DashboardController {
         String imageUrl = person.getPrimaryImageUrl();
         if (imageUrl != null && !imageUrl.isBlank()) {
             imageView.setImage(new javafx.scene.image.Image(imageUrl, true));
+        } else {
+            imageView.setImage(new javafx.scene.image.Image(getClass().getResource("/org.example.fugitivefinder/images/criminal1.png").toExternalForm()));
         }
 
         Button saveButton = new Button("Save");
