@@ -32,9 +32,9 @@ Our objective was to apply modern software engineering practices — including t
 
 ### 🗺️ 3. Geographic Tracking & Interactive Map
 * **Gluon Maps Integration:** A fully interactive, pannable, zoomable map plotting all 56 FBI Field Offices across the United States.
-* **Custom Markers:** Click any marker to view office details.
+* **Interactive Office Markers:** Click any marker to reveal a side panel of local fugitives.
 * **Zoom Controls:** Dedicated zoom in, zoom out, and reset buttons for easy navigation.
-* **Region Statistics:** Detailed breakdown of crime concentration across 4 major US regions (Northeast, South, Midwest, West) with supporting bar and pie charts.
+* **Region Statistics:** Detailed breakdown of crime concentration across 4 major US regions (Northeast, South, Midwest, West) with supporting bar and pie charts (integrated into the Leaderboard view).
 
 ### 🏆 4. "Danger Score" Leaderboard
 * **Custom Scoring Algorithm:** A proprietary 0–100 Danger Score evaluates each fugitive based on:
