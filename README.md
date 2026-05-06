@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Seal_of_the_Federal_Bureau_of_Investigation.svg" alt="FBI Seal" width="120"/>
+  <img src="src/main/resources/org.example.fugitivefinder/images/logo.png" alt="FBI Seal" width="120"/>
   <h1>Fugitive Finder</h1>
   <p><strong>A modern, data-driven intelligence dashboard for tracking the FBI's Most Wanted.</strong></p>
   <p><em>CSC325 — Software Engineering Capstone Project</em></p>
