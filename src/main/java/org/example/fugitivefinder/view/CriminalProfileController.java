@@ -65,16 +65,6 @@ public class CriminalProfileController {
         SceneManager.switchScene(criminalImageView, "/org.example.fugitivefinder/maps-view.fxml", 1440, 900);
     }
 
-    @FXML
-    private void handleSaveTarget() {
-        String uid = Session.getInstance().getUserId();
-        WantedPerson person = viewModel.getSelectedPerson();
-
-        if (uid != null && person != null && person.getUid() != null) {
-            FirestoreService.saveTarget(uid, person.getUid());
-            System.out.println("Saved from RED button: " + person.getUid());
-        }
-    }
 
     @FXML
     private void goToAnalytics() {

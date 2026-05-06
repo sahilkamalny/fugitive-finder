@@ -67,16 +67,33 @@ public class CriminalProfileViewModel {
         } else {
             imageUrl.set(getClass().getResource("/org.example.fugitivefinder/images/criminal1.png").toExternalForm());
         }
-    }
 
-    public void saveTarget() {
+        // Initialize button text based on current state
         AppUser currentUser = Session.getInstance().getCurrentUser();
-
         if (currentUser != null && selectedPerson.getUid() != null
                 && currentUser.hasSavedTarget(selectedPerson.getUid())) {
             saveButtonText.set("Remove from Watchlist");
         } else {
             saveButtonText.set("Save Target");
         }
+    }
+
+    public void saveTarget() {
+        AppUser currentUser = Session.getInstance().getCurrentUser();
+        String uid = Session.getInstance().getUserId();
+
+        if (currentUser != null && uid != null && selectedPerson != null && selectedPerson.getUid() != null) {
+            if (currentUser.hasSavedTarget(selectedPerson.getUid())) {
+                // Already saved, so remove it
+                org.example.fugitivefinder.service.FirestoreService.removeTarget(uid, selectedPerson.getUid());
+                currentUser.getSavedTargetIds().remove(selectedPerson.getUid());
+                saveButtonText.set("Save Target");
+            } else {
+                // Not saved, so add it
+                org.example.fugitivefinder.service.FirestoreService.saveTarget(uid, selectedPerson.getUid());
+                currentUser.getSavedTargetIds().add(selectedPerson.getUid());
+                saveButtonText.set("Remove from Watchlist");
+            }
         }
     }
+}
