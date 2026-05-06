@@ -1,8 +1,11 @@
-src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Seal_of_the_Federal_Bureau_of_Investigation.svg" alt="FBI Seal" width="120"/>
+<div align="center">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Seal_of_the_Federal_Bureau_of_Investigation.svg" alt="FBI Seal" width="120"/>
   <h1>Fugitive Finder</h1>
   <p><strong>A modern, data-driven intelligence dashboard for tracking the FBI's Most Wanted.</strong></p>
   <p><em>CSC325 — Software Engineering Capstone Project</em></p>
   <p><em>Farmingdale State College — Spring 2026</em></p>
+  <br />
+  <img src="REF/Demo%20Recording.gif" alt="Fugitive Finder Demo" width="800" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);"/>
 </div>
 
 ---
