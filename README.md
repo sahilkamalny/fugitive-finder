@@ -69,11 +69,12 @@ Our design lead (Darianne) created all wireframes and high-fidelity mockups in F
 | **HiFi Mockups** | Polished Figma screens with the dark theme color palette, typography, chart placements, and responsive grid |
 | **FXML Implementation** | Final JavaFX screens built from the HiFi designs using FXML + CSS, maintaining visual fidelity to the mockups |
 
-LoFi vs HiFi comparison here
-<img width="1400" height="839" alt="Screenshot 2026-05-06 at 11 05 20 AM" src="https://github.com/user-attachments/assets/9e0916da-49cb-4223-9091-d4bb917e7652" /><img width="1409" height="797" alt="Screenshot 2026-05-06 at 11 06 14 AM" src="https://github.com/user-attachments/assets/6d0fa31f-583b-423f-9625-5d26f5be961d" />
-<img width="1319" height="789" alt="Screenshot 2026-05-06 at 11 05 44 AM" src="https://github.com/user-attachments/assets/386fd8bb-29aa-4b59-b603-735fd105fa4a" />
+### LoFi vs HiFi Comparison
 
-<img width="1440" height="811" alt="Screenshot 2026-05-06 at 11 06 26 AM" src="https://github.com/user-attachments/assets/2cb17f5a-0401-4267-8124-f24c0aa888f3" />
+| LoFi Wireframes | HiFi Implementation |
+|:---:|:---:|
+| <img width="600" alt="LoFi 1" src="https://github.com/user-attachments/assets/9e0916da-49cb-4223-9091-d4bb917e7652" /> | <img width="600" alt="HiFi 1" src="https://github.com/user-attachments/assets/6d0fa31f-583b-423f-9625-5d26f5be961d" /> |
+| <img width="600" alt="LoFi 2" src="https://github.com/user-attachments/assets/386fd8bb-29aa-4b59-b603-735fd105fa4a" /> | <img width="600" alt="HiFi 2" src="https://github.com/user-attachments/assets/2cb17f5a-0401-4267-8124-f24c0aa888f3" /> |
 
 
 ---
