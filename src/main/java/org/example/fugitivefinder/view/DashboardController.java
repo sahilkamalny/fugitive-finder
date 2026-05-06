@@ -9,10 +9,13 @@ import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import org.example.fugitivefinder.model.WantedPerson;
 import org.example.fugitivefinder.viewModel.DashboardViewModel;
+import org.example.fugitivefinder.viewModel.SceneManager;
 
 public class DashboardController {
 
@@ -259,5 +262,11 @@ public class DashboardController {
             currentPage++;
             renderPage();
         }
+    }
+
+    @FXML
+    private void signOut(MouseEvent event) {
+        org.example.fugitivefinder.session.Session.getInstance().clear();
+        SceneManager.switchScene((Node) event.getSource(), "/org.example.fugitivefinder/login.fxml", 1440, 900);
     }
 }

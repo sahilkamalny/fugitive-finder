@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.example.fugitivefinder.model.WantedPerson;
@@ -374,4 +375,9 @@ public class MapsViewController {
         viewModel.goToUserProfile(mapContainer);    }
 
 
+    @FXML
+    private void signOut(MouseEvent event) {
+        org.example.fugitivefinder.session.Session.getInstance().clear();
+        SceneManager.switchScene((Node) event.getSource(), "/org.example.fugitivefinder/login.fxml", 1440, 900);
+    }
 }

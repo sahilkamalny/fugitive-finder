@@ -1,11 +1,13 @@
 package org.example.fugitivefinder.view;
 
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import org.example.fugitivefinder.viewModel.AnalyticsViewModel;
 import org.example.fugitivefinder.viewModel.SceneManager;
@@ -197,5 +199,11 @@ public class AnalyticsController {
     @FXML
     private void goToMap() {
         SceneManager.switchScene(subjectsChart, "/org.example.fugitivefinder/maps-view.fxml", 1440, 900);
+    }
+
+    @FXML
+    private void signOut(MouseEvent event) {
+        org.example.fugitivefinder.session.Session.getInstance().clear();
+        SceneManager.switchScene((Node) event.getSource(), "/org.example.fugitivefinder/login.fxml", 1440, 900);
     }
 }
