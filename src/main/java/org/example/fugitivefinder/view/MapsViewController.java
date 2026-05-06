@@ -241,7 +241,7 @@ public class MapsViewController {
         nameLabel.setWrapText(true);
 
         Label rewardLabel = new Label(person.getDisplayReward());
-        rewardLabel.setStyle("-fx-text-fill: #f59e0b; -fx-font-size: 14;");
+        rewardLabel.setStyle("-fx-text-fill: orange; -fx-font-size: 14;");
         rewardLabel.setWrapText(true);
 
         ImageView imageView = new ImageView();
@@ -252,6 +252,8 @@ public class MapsViewController {
         String imageUrl = person.getPrimaryImageUrl();
         if (imageUrl != null && !imageUrl.isBlank()) {
             imageView.setImage(new Image(imageUrl, true));
+        } else {
+            imageView.setImage(new Image(getClass().getResource("/org.example.fugitivefinder/images/criminal1.png").toExternalForm()));
         }
 
         VBox card = new VBox(8, imageView, nameLabel, rewardLabel);
@@ -277,14 +279,14 @@ public class MapsViewController {
         VBox infoPane = new VBox(15);
         infoPane.setId("officeInfoPane");
         infoPane.setPadding(new Insets(20));
-        infoPane.setStyle("-fx-background-color: rgba(17, 24, 39, 0.8); " +
+        infoPane.setStyle("-fx-background-color: #0b1320; " +
                 "-fx-background-radius: 15; " +
-                "-fx-border-color: rgba(75, 85, 99, 0.5); " +
+                "-fx-border-color: #334155; " +
                 "-fx-border-width: 1.5;");
         infoPane.setPrefWidth(320);
         infoPane.setMaxWidth(320);
         infoPane.setMaxHeight(560);
-        infoPane.setEffect(new DropShadow(15, Color.rgb(0, 0, 0, 0.6)));
+        infoPane.setEffect(new DropShadow(15, Color.BLACK));
 
         HBox header = new HBox(10);
         header.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
@@ -298,7 +300,7 @@ public class MapsViewController {
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
         Button closeBtn = new Button("✕");
-        closeBtn.setStyle("-fx-background-color: rgba(55, 65, 81, 0.7); -fx-text-fill: white; " +
+        closeBtn.setStyle("-fx-background-color: #334155; -fx-text-fill: white; " +
                 "-fx-background-radius: 50; -fx-cursor: hand;");
         closeBtn.setPrefSize(30, 30);
         closeBtn.setFocusTraversable(false);

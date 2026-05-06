@@ -21,8 +21,8 @@ public class MapMarkerLayer extends MapLayer {
             this.circle = new Circle(radius);
             RadialGradient heatGradient = new RadialGradient(0, 0, 0.5, 0.5, 1, true,
                     javafx.scene.paint.CycleMethod.NO_CYCLE,
-                    new Stop(0, Color.rgb(239, 68, 68, 0.8)), // Bright Red/Orange
-                    new Stop(1, Color.rgb(239, 68, 68, 0.0))); // Faded Edge
+                    new Stop(0, Color.ORANGE),
+                    new Stop(1, Color.TRANSPARENT)); 
             this.circle.setFill(heatGradient);
         } else {
             // Standard Style: Solid Red Circle

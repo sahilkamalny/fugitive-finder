@@ -65,7 +65,7 @@ public class CriminalProfileViewModel {
         if (url != null && !url.isBlank()) {
             imageUrl.set(url);
         } else {
-            imageUrl.set("https://via.placeholder.com/150");
+            imageUrl.set(getClass().getResource("/org.example.fugitivefinder/images/criminal1.png").toExternalForm());
         }
     }
 
