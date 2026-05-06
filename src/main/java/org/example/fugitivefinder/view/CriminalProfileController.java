@@ -53,7 +53,29 @@ public class CriminalProfileController {
 
     @FXML
     private void saveTarget() {
-        viewModel.saveTarget();
+        System.out.println("DEBUG: Save Target button clicked!");
+        String uid = Session.getInstance().getUserId();
+        WantedPerson person = viewModel.getSelectedPerson();
+
+        if (uid != null && person != null && person.getUid() != null) {
+            org.example.fugitivefinder.model.AppUser currentUser = Session.getInstance().getCurrentUser();
+            
+            if (currentUser != null && currentUser.hasSavedTarget(person.getUid())) {
+                System.out.println("DEBUG: Removing target " + person.getUid());
+                FirestoreService.removeTarget(uid, person.getUid());
+                currentUser.getSavedTargetIds().remove(person.getUid());
+                viewModel.saveButtonTextProperty().set("Save Target");
+            } else {
+                System.out.println("DEBUG: Saving target " + person.getUid());
+                FirestoreService.saveTarget(uid, person.getUid());
+                if (currentUser != null) {
+                    currentUser.getSavedTargetIds().add(person.getUid());
+                }
+                viewModel.saveButtonTextProperty().set("Remove from Watchlist");
+            }
+        } else {
+            System.out.println("DEBUG: Save failed - UID or Person is null! UID: " + uid + ", Person: " + (person != null ? person.getUid() : "null"));
+        }
     }
     @FXML
     private void goToDashboard() {
