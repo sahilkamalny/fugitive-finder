@@ -40,6 +40,10 @@
                        style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16; -fx-cursor: hand;" />
                 <Label text="Profile" onMouseClicked="#goToUserProfile"
                        style="-fx-text-fill: #cbd5e1; -fx-padding: 12 16; -fx-cursor: hand;" />
+
+                <Region VBox.vgrow="ALWAYS" />
+                <Label text="Sign Out" onMouseClicked="#signOut"
+                       style="-fx-text-fill: #ef4444; -fx-padding: 12 16; -fx-cursor: hand;" />
             </children>
         </VBox>
     </left>

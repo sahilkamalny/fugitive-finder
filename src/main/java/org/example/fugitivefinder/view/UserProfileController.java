@@ -136,4 +136,10 @@ public class UserProfileController {
 
         return card;
     }
+
+    @FXML
+    private void signOut(MouseEvent event) {
+        org.example.fugitivefinder.session.Session.getInstance().clear();
+        SceneManager.switchScene((Node) event.getSource(), "/org.example.fugitivefinder/login.fxml", 1440, 900);
+    }
 }

@@ -1,10 +1,12 @@
 package org.example.fugitivefinder.view;
 
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import org.example.fugitivefinder.model.WantedPerson;
 import org.example.fugitivefinder.service.FirestoreService;
 import org.example.fugitivefinder.session.Session;
@@ -99,5 +101,11 @@ public class CriminalProfileController {
     @FXML
     private void goToUserProfile() {
         SceneManager.switchScene(criminalImageView, "/org.example.fugitivefinder/user-profile.fxml", 1440, 900);
+    }
+
+    @FXML
+    private void signOut(MouseEvent event) {
+        org.example.fugitivefinder.session.Session.getInstance().clear();
+        SceneManager.switchScene((Node) event.getSource(), "/org.example.fugitivefinder/login.fxml", 1440, 900);
     }
 }
