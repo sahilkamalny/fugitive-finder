@@ -28,8 +28,14 @@ public final class SceneManager {
             Scene currentScene = sourceNode.getScene();
             
             // Preserve window dimensions and fullscreen state by swapping the root node
-            // instead of replacing the entire Scene object
             currentScene.setRoot(root);
+
+            // Add smooth fade-in effect
+            root.setOpacity(0);
+            javafx.animation.FadeTransition ft = new javafx.animation.FadeTransition(javafx.util.Duration.millis(350), root);
+            ft.setFromValue(0.0);
+            ft.setToValue(1.0);
+            ft.play();
 
         } catch (Exception e) {
             System.out.println("SCENE SWITCH FAILED");
