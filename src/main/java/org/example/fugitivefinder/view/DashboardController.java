@@ -73,9 +73,18 @@ public class DashboardController {
                 "Name: Z to A"
         );
         sortComboBox.setValue("Default");
-        sortComboBox.getStylesheets().add(getClass().getResource(
+       /** sortComboBox.getStylesheets().add(getClass().getResource(
                 "/org.example.fugitivefinder/styles/combobox.css").toExternalForm());
-    }
+    */
+        String comboStyle = getClass()
+                .getResource("/org.example.fugitivefinder/styles/combobox.css")
+                .toExternalForm();
+
+        sortComboBox.getStylesheets().add(comboStyle);
+        statusFilterComboBox.getStylesheets().add(comboStyle);
+        rewardFilterComboBox.getStylesheets().add(comboStyle);
+
+        }
 
     private void setupListeners() {
         viewModel.getAllPeople().addListener((ListChangeListener<WantedPerson>) change -> {

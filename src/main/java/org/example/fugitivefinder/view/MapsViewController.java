@@ -78,6 +78,15 @@ public class MapsViewController {
 
         setUpMap();
         setupOfficeFilter();
+        setUpMap();
+        setupOfficeFilter();
+
+        String comboStyle = getClass()
+                .getResource("/org.example.fugitivefinder/styles/combobox.css")
+                .toExternalForm();
+
+        officeFilterComboBox.getStylesheets().add(comboStyle);
+
         new Thread(viewModel::loadMapData).start();
     }
 
