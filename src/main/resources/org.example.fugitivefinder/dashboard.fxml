@@ -122,47 +122,50 @@
                             </font>
                         </Label>
 
-                        <HBox spacing="12.0" alignment="CENTER_LEFT">
+                        <HBox spacing="6.0" alignment="CENTER_LEFT">
                             <children>
-                                <Label text="Sort by:" textFill="#cbd5e1"/>
+                                <Label text="Sort by:" textFill="#cbd5e1" minWidth="45"/>
 
                                 <ComboBox fx:id="sortComboBox"
                                           onAction="#handleSort"
-                                          prefWidth="180.0"
+                                          prefWidth="200.0"
                                           style="-fx-background-color: #1e293b; -fx-text-fill: white;"/>
 
-                                <Label text="Status:" textFill="#cbd5e1"/>
+                                <Label text="Status:" textFill="#cbd5e1" minWidth="45"/>
 
                                 <ComboBox fx:id="statusFilterComboBox"
-                                          onAction="#handleFilters"
-                                          prefWidth="150.0"
-                                          style="-fx-background-color: #1e293b; -fx-text-fill: white;"/>
-
-                                <Label text="Reward:" textFill="#cbd5e1"/>
-
-                                <ComboBox fx:id="rewardFilterComboBox"
                                           onAction="#handleFilters"
                                           prefWidth="170.0"
                                           style="-fx-background-color: #1e293b; -fx-text-fill: white;"/>
 
-                                <Button text="Clear All Filters"
+                                <Label text="Reward:" textFill="#cbd5e1" minWidth="55"/>
+
+                                <ComboBox fx:id="rewardFilterComboBox"
+                                          onAction="#handleFilters"
+                                          prefWidth="190.0"
+                                          style="-fx-background-color: #1e293b; -fx-text-fill: white;"/>
+
+                                <Button text="Clear Filters"
                                         onAction="#clearAllFilters"
+                                        prefWidth="120"
                                         style="-fx-background-color: #dc2626; -fx-text-fill: white; -fx-background-radius: 8; -fx-font-weight: bold;"/>
 
-                                <Label text="Search:" textFill="#cbd5e1"/>
+                                <Label text="Search:" textFill="#cbd5e1" minWidth="50"/>
 
                                 <TextField fx:id="searchField"
                                            onAction="#handleFilters"
                                            promptText="Search name"
-                                           prefWidth="180.0"
+                                           prefWidth="170.0"
                                            style="-fx-background-radius: 8;"/>
 
                                 <Button text="Search"
                                         onAction="#handleFilters"
+                                        prefWidth="90"
                                         style="-fx-background-color: #f59e0b; -fx-text-fill: black; -fx-background-radius: 8; -fx-font-weight: bold;"/>
 
                                 <Button text="Clear"
                                         onAction="#clearSearch"
+                                        prefWidth="80"
                                         style="-fx-background-color: #334155; -fx-text-fill: white; -fx-background-radius: 8;"/>
                             </children>
                         </HBox>
