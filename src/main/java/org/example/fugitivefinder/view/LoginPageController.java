@@ -22,6 +22,9 @@ public class LoginPageController {
 
         emailField.textProperty().bindBidirectional(viewModel.emailProperty());
         passwordField.textProperty().bindBidirectional(viewModel.passwordProperty());
+        
+        // Trigger login when Enter is pressed in the password field
+        passwordField.setOnAction(event -> handleLogin());
     }
 
     @FXML

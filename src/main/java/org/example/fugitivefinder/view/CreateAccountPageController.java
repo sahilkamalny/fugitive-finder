@@ -38,6 +38,9 @@ public class CreateAccountPageController {
         emailField.textProperty().bindBidirectional(viewModel.emailProperty());
         passwordField.textProperty().bindBidirectional(viewModel.passwordProperty());
         confirmPasswordField.textProperty().bindBidirectional(viewModel.confirmPasswordProperty());
+        
+        // Trigger account creation when Enter is pressed in the confirm password field
+        confirmPasswordField.setOnAction(event -> handleCreateAccount());
     }
 
     @FXML
