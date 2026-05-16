@@ -1,24 +1,16 @@
 package org.example.fugitivefinder.viewModel;
 
 import javafx.application.Platform;
-import com.gluonhq.maps.MapPoint;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
-import org.example.fugitivefinder.model.AppUser;
 import org.example.fugitivefinder.model.WantedPerson;
 import org.example.fugitivefinder.service.FbiApiService;
 import org.example.fugitivefinder.session.Session;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class DashboardViewModel {
 
@@ -28,7 +20,6 @@ public class DashboardViewModel {
     private final ObservableList<WantedPerson> allPeople = FXCollections.observableArrayList();
 
     public void loadData() {
-        AppUser currentUser = Session.getInstance().getCurrentUser();
         String fullName = Session.getInstance().getFullName();
         String displayName = (fullName != null && !fullName.isBlank()) ? fullName : Session.getInstance().getUsername();
         Platform.runLater(() -> username.set(displayName != null ? displayName : "User"));
