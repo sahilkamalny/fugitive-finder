@@ -14,16 +14,24 @@ import java.util.List;
 public final class FbiApiService {
 
     private static final String BASE_URL = "https://fbi-backend-wilt.onrender.com/api/wanted/?pageSize=100";
+    
+    // Cache the API response so we don't spam the network on every page load
+    private static List<WantedPerson> cachedPeople = null;
 
     private FbiApiService() {
     }
 
     public static List<WantedPerson> getWantedPeople() {
+        if (cachedPeople != null && !cachedPeople.isEmpty()) {
+            return cachedPeople;
+        }
         try {
             URL url = new URL(BASE_URL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Accept", "application/json");
+            connection.setConnectTimeout(5000); // 5 second connection timeout
+            connection.setReadTimeout(10000);   // 10 second read timeout
             System.out.println("Calling API: " + BASE_URL);
             System.out.println("Response Code: " + connection.getResponseCode());
 
@@ -53,9 +61,12 @@ public final class FbiApiService {
             } else {
                 System.out.println("WantedResponse or items is NULL");
             }
-            return wantedResponse != null && wantedResponse.getItems() != null
-                    ? wantedResponse.getItems()
-                    : Collections.emptyList();
+            if (wantedResponse != null && wantedResponse.getItems() != null) {
+                cachedPeople = wantedResponse.getItems();
+                return cachedPeople;
+            } else {
+                return Collections.emptyList();
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
