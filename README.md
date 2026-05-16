@@ -6,6 +6,8 @@
   <p><em>Farmingdale State College — Spring 2026</em></p>
   <br />
   <img src="REF/Demo%20Recording.gif" alt="Fugitive Finder Demo" width="800" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);"/>
+  <br /><br />
+  <h3>🎥 Watch Our Final Demo: <a href="https://youtu.be/CySVqaJ8HWY">YouTube Link</a></h3>
 </div>
 
 ---

@@ -446,7 +446,7 @@ JUnit 5 is configured in the Maven `pom.xml` for automated testing. Test files a
 
 ## 9. Demo Video
 
-> **📹 PLACEHOLDER — INSERT DEMO VIDEO LINK HERE**
+> **📹 Watch our final demo here: [YouTube Link](https://youtu.be/CySVqaJ8HWY)**
 >
 > The demo video (4–8 minutes) demonstrates:
 > - User registration and login
